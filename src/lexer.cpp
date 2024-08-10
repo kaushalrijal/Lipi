@@ -94,9 +94,9 @@ std::vector<Token> Lexer::tokenize(){
             }
             remainingInput.erase(match.position(), match.length());
         } else {
-            std::cerr << "Unexpected input: " << remainingInput << std::endl;
+            std::cerr << "Unexpected input: " << remainingInput[0] << std::endl;
             // Handle unexpected input or continue
-            remainingInput.clear(); // Or adjust to continue processing
+            remainingInput.erase(0, 1); // Or adjust to continue processing
         }
     }
     
