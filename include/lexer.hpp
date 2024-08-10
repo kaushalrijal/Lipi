@@ -6,23 +6,21 @@
 
 struct Token;
 
-enum TokenType {
-    // Keywords
-    KEYWORD,
-    // Data types
-    PURNA, DASA, AKSHAR, PAATH, SAHI_GALAT,
-    // Identifiers
-    IDENTIFIER,
-    // Literals
-    NUMBER, STRING,
-    // Operators
-    OPERATOR,
-    // Delimiters
-    LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
-};
-
 struct Token {
-    TokenType type;
+    enum Type {
+        // Keywords
+        KEYWORD,
+        // Data types
+        PURNA, DASA, AKSHAR, PAATH, SAHI_GALAT,
+        // Identifiers
+        IDENTIFIER,
+        // Literals
+        NUMBER, STRING,
+        // Operators
+        OPERATOR,
+        // Delimiters
+        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
+    } type;
     std::string value;
 };
 
