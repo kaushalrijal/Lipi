@@ -18,7 +18,7 @@ The language includes the following keywords:
 - `dasa`
 - `akshar`
 - `paath`
-- `thik`
+- `sahi`
 - `galat`
 
 ### Data Types
@@ -27,7 +27,7 @@ The language supports the following data types:
 - `dasa` (integer)
 - `akshar` (character)
 - `paath` (string)
-- `thik`/`galat` (boolean)
+- `sahi`/`galat` (boolean)
 
 ### Identifiers
 Identifiers in the language follow the pattern of starting with a letter or underscore, followed by any number of letters, digits, or underscores.
