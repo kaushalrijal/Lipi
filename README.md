@@ -1,6 +1,6 @@
-# Lipi : Programming Language
+# Lipi : A Programming Language
 
-This project is an implementation of a nepali programming language. The language includes various features such as keywords, data types, identifiers, literals, operators, and delimiters. This README provides an overview of the language and details on how a compiler can be implemented.
+This project is an implementation of a Nepali programming language. The language includes various features such as keywords, data types, identifiers, literals, operators, and delimiters. This README provides an overview of the language and details on how a compiler can be implemented.
 
 ## Language Features
 
