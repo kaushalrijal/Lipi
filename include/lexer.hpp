@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+// thik bethik to be used for booleans
 struct Token {
     enum Type {
         // Keywords
