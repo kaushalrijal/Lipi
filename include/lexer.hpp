@@ -4,8 +4,6 @@
 #include <string>
 #include <vector>
 
-struct Token;
-
 struct Token {
     enum Type {
         // Keywords

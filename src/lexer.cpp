@@ -1,13 +1,17 @@
 #include"lexer.hpp"
 #include<regex>
+#include <iostream>
+
+Lexer::Lexer(const std::string& in) : input(in) {}
 
 std::vector<Token> Lexer::tokenize(){
     std::vector<Token> tokens;
     std::string remainingInput = input;
+    std::smatch match;
 
     //regex for different token types
     std::regex keyword_regex(R"(\b(bhana|suna|yadi|anyatha|jabasamma|kaam|firta|lagi|purna|dasa|akshar|paath|sahi|galat)\b)");
-    std::regex string_regex(R"(^"(\\.|[^"])*"$)");
+    std::regex string_regex(R"("(\\.|[^"])*")");
     std::regex identifier_regex(R"([a-zA-Z_][a-zA-Z0-9_]*)");
     std::regex integer_regex(R"(\d+)");
     std::regex float_regex(R"([-+]?[0-9]*\.[0-9]+)");
@@ -19,72 +23,82 @@ std::vector<Token> Lexer::tokenize(){
     std::regex single_line_comment_regex(R"(\:\)[^\n]*$)");
 
     //check for match adn create tokens as per
-    while (!remainingInput.empty()) {
-        std::smatch match;
-        if (std::regex_match(remainingInput, match, whitespace_regex)) {
-            remainingInput = match.suffix().str();
+   while (!remainingInput.empty()) {
+        // Handle comments
+        if (std::regex_search(remainingInput, match, multiline_comment_regex)) {
+            remainingInput.erase(match.position(), match.length());
             continue;
         }
 
-        if (std::regex_match(remainingInput, match, string_regex)) {
+        // Single Line comments
+        if (std::regex_search(remainingInput, match, single_line_comment_regex)) {
+            remainingInput.erase(match.position(), match.length());
+            continue;
+        }
+
+        // Match and handle each token type
+        if (std::regex_search(remainingInput, match, string_regex)) {
             tokens.push_back({Token::STRING, match[0]});
-            remainingInput = match.suffix().str();
+            remainingInput.erase(match.position(), match.length());
+        } 
+
+        // Handle whitespace
+        if (std::regex_search(remainingInput, match, whitespace_regex)) {
+            remainingInput.erase(match.position(), match.length());
             continue;
         }
 
-        if (std::regex_match(remainingInput, match, keyword_regex)) {
+        
+        if (std::regex_search(remainingInput, match, keyword_regex)) {
             tokens.push_back({Token::KEYWORD, match[0]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, identifier_regex)) {
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, identifier_regex)) {
             tokens.push_back({Token::IDENTIFIER, match[0]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, integer_regex)) {
-            tokens.push_back({Token::PURNA, match[0]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, float_regex)) {
-            tokens.push_back({Token::DASA, match[0]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, char_regex)) {
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, integer_regex)) {
+            tokens.push_back({Token::NUMBER, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, float_regex)) {
+            tokens.push_back({Token::NUMBER, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, char_regex)) {
             tokens.push_back({Token::AKSHAR, match[1]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, operator_regex)) {
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, operator_regex)) {
             tokens.push_back({Token::OPERATOR, match[0]});
-            remainingInput = match.suffix().str();
-            continue;
-        }
-
-        if (std::regex_match(remainingInput, match, delimiter_regex)) {
-            if (match[0] == "(") {
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, delimiter_regex)) {
+            std::string delimiter = match[0];
+            if (delimiter == "(") {
                 tokens.push_back({Token::LEFT_PAREN, "("});
-            } else if (match[0] == ")") {
+            } else if (delimiter == ")") {
                 tokens.push_back({Token::RIGHT_PAREN, ")"});
-            } else if (match[0] == "{") {
+            } else if (delimiter == "{") {
                 tokens.push_back({Token::LEFT_BRACE, "{"});
-            } else if (match[0] == "}") {
+            } else if (delimiter == "}") {
                 tokens.push_back({Token::RIGHT_BRACE, "}"});
-            } else if (match[0] == ";") {
+            } else if (delimiter == ";") {
                 tokens.push_back({Token::SEMICOLON, ";"});
             }
-            remainingInput = match.suffix().str();
-            continue;
+            remainingInput.erase(match.position(), match.length());
+        } else {
+            std::cerr << "Unexpected input: " << remainingInput << std::endl;
+            // Handle unexpected input or continue
+            remainingInput.clear(); // Or adjust to continue processing
         }
-
     }
-
+    
     return tokens;
 }
