@@ -16,11 +16,10 @@ struct Token {
 };
 
 class Lexer {
-public:
-    Lexer(const std::string& input);
-    std::vector<Token> tokenize();
-private:
     std::string input;
+public:
+    Lexer(const std::string&);
+    std::vector<Token> tokenize();
 };
 
 #endif
