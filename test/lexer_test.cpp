@@ -15,6 +15,5 @@ int main() {
         std::cout << token.type << ": " << token.value << std::endl;
     }
 
-
     return 0;
 }
