@@ -6,6 +6,21 @@
 #include "ast.hpp"
 #include "lexer.hpp"
 
+class Parser{
+    std::vector<Token> tokens;
+    size_t current;
 
+    // Methods to manage tokens
+    Token& currentToken();  
+    Token& nextToken();    
+    void consumeToken();   
+    bool match(TokenType type);
+    void expect(TokenType type);
+
+    // Parsing Methods
+    ASTNode* parseExpression();
+    ASTNode* parseStatement();
+    ASTNode* parseDeclaration();
+};
 
 #endif  // PARSER_HPP
