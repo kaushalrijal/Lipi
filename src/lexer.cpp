@@ -2,6 +2,7 @@
 #include<regex>
 #include <iostream>
 
+
 Lexer::Lexer(const std::string& in) : input(in) {}
 
 std::vector<Token> Lexer::tokenize(){
@@ -22,6 +23,7 @@ std::vector<Token> Lexer::tokenize(){
     std::regex multiline_comment_regex(R"(\(:.*?\:\))");
     std::regex single_line_comment_regex(R"(\:\)[^\n]*$)");
 
+
     //check for match adn create tokens as per
    while (!remainingInput.empty()) {
         // Handle comments
@@ -38,59 +40,57 @@ std::vector<Token> Lexer::tokenize(){
 
         // Match and handle each token type
         if (std::regex_search(remainingInput, match, string_regex)) {
-            tokens.push_back({Token::STRING, match[0]});
+            tokens.push_back({TokenType::STRING, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
-
         // Handle whitespace
         if (std::regex_search(remainingInput, match, whitespace_regex)) {
             remainingInput.erase(match.position(), match.length());
             continue;
         }
-
         
         if (std::regex_search(remainingInput, match, keyword_regex)) {
-            tokens.push_back({Token::KEYWORD, match[0]});
+            tokens.push_back({TokenType::KEYWORD, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, identifier_regex)) {
-            tokens.push_back({Token::IDENTIFIER, match[0]});
+            tokens.push_back({TokenType::IDENTIFIER, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, integer_regex)) {
-            tokens.push_back({Token::NUMBER, match[0]});
+            tokens.push_back({TokenType::NUMBER, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, float_regex)) {
-            tokens.push_back({Token::NUMBER, match[0]});
+            tokens.push_back({TokenType::NUMBER, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, char_regex)) {
-            tokens.push_back({Token::AKSHAR, match[1]});
+            tokens.push_back({TokenType::AKSHAR, match[1]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, operator_regex)) {
-            tokens.push_back({Token::OPERATOR, match[0]});
+            tokens.push_back({TokenType::OPERATOR, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, delimiter_regex)) {
             std::string delimiter = match[0];
             if (delimiter == "(") {
-                tokens.push_back({Token::LEFT_PAREN, "("});
+                tokens.push_back({TokenType::LEFT_PAREN, "("});
             } else if (delimiter == ")") {
-                tokens.push_back({Token::RIGHT_PAREN, ")"});
+                tokens.push_back({TokenType::RIGHT_PAREN, ")"});
             } else if (delimiter == "{") {
-                tokens.push_back({Token::LEFT_BRACE, "{"});
+                tokens.push_back({TokenType::LEFT_BRACE, "{"});
             } else if (delimiter == "}") {
-                tokens.push_back({Token::RIGHT_BRACE, "}"});
+                tokens.push_back({TokenType::RIGHT_BRACE, "}"});
             } else if (delimiter == ";") {
-                tokens.push_back({Token::SEMICOLON, ";"});
+                tokens.push_back({TokenType::SEMICOLON, ";"});
             }
             remainingInput.erase(match.position(), match.length());
         } else {
