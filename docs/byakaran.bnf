@@ -19,7 +19,7 @@
 <declaration_statement> ::= <type> <identifier> "=" <expression>
                           | <type> <identifier>
 
-<type> ::= "purna" | "dasa" | "akshar" | "paath"
+<type> ::= "purna" | "dasa" | "akshar" | "paath" | "khali"
 
 <assignment_statement> ::= <identifier> "=" <expression>
 
