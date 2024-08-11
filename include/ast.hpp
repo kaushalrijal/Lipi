@@ -93,6 +93,13 @@ public:
     ~PrintStatement() { delete expr; }
 };
 
+class InputStatement : public Statement {
+public:
+    std::string varName; 
+    InputStatement(const std::string& name) : varName(name) {}
+    ~InputStatement() = 0;
+};
+
 class AssignmentStatement : public Statement {
 public:
     std::string varName;
