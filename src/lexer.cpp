@@ -18,6 +18,7 @@ std::vector<Token> Lexer::tokenize(){
     std::regex float_regex(R"([-+]?[0-9]*\.[0-9]+)");
     std::regex char_regex(R"('(.)')");
     std::regex operator_regex(R"([+\-*/%=<>!&|])");
+    std::regex boolean_regex(R"(\b(thik|bethik)\b)");
     std::regex delimiter_regex(R"([(){}|;])");
     std::regex whitespace_regex(R"(^\s+)");
     std::regex multiline_comment_regex(R"(\(:.*?\:\))");
@@ -53,6 +54,12 @@ std::vector<Token> Lexer::tokenize(){
             tokens.push_back({TokenType::KEYWORD, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
+
+        if (std::regex_search(remainingInput, match, boolean_regex)) {
+            tokens.push_back({TokenType::BOOLEAN, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        }
+
         
         if (std::regex_search(remainingInput, match, identifier_regex)) {
             tokens.push_back({TokenType::IDENTIFIER, match[0]});
@@ -60,12 +67,12 @@ std::vector<Token> Lexer::tokenize(){
         } 
         
         if (std::regex_search(remainingInput, match, integer_regex)) {
-            tokens.push_back({TokenType::NUMBER, match[0]});
+            tokens.push_back({TokenType::INTEGER, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
         if (std::regex_search(remainingInput, match, float_regex)) {
-            tokens.push_back({TokenType::NUMBER, match[0]});
+            tokens.push_back({TokenType::FLOAT, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
         
