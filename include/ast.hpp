@@ -4,147 +4,124 @@
 #include <string>
 #include <vector>
 
-// Base class for all AST nodes
+// Forward declarations for various node types
+class Expression;
+class Statement;
+class Declaration;
+
 class ASTNode {
 public:
-    virtual ~ASTNode() = default;
+    virtual ~ASTNode() = 0;
 };
 
-// Node for variable declarations and assignments
-class VariableDeclarationNode : public ASTNode {
+// Base class for expressions
+class Expression : public ASTNode {
 public:
-    std::string type;
-    std::string variableName;
-    ASTNode* initialValue;  // Can be null if no initial value is assigned
-
-    VariableDeclarationNode(const std::string& type, const std::string& name, ASTNode* value = nullptr)
-        : type(type), variableName(name), initialValue(value) {}
+    virtual ~Expression() = 0;
 };
 
-class AssignmentNode : public ASTNode {
+// Base class for statements
+class Statement : public ASTNode {
 public:
-    std::string variableName;
-    ASTNode* value;
-
-    AssignmentNode(const std::string& name, ASTNode* value)
-        : variableName(name), value(value) {}
+    virtual ~Statement() = 0;
 };
 
-// Node for print statements
-class PrintNode : public ASTNode {
+// Base class for declarations
+class Declaration : public ASTNode {
 public:
-    ASTNode* expression;
-
-    PrintNode(ASTNode* expr) : expression(expr) {}
+    virtual ~Declaration() = 0;
 };
 
-// Node for input statements
-class InputNode : public ASTNode {
+// Literal expressions
+class IntegerLiteral : public Expression {
 public:
-    std::string variableName;
-
-    InputNode(const std::string& name) : variableName(name) {}
+    int value;
+    IntegerLiteral(int val) : value(val) {}
 };
 
-// Node for if statements
-class IfNode : public ASTNode {
+class FloatLiteral : public Expression {
 public:
-    ASTNode* condition;
-    ASTNode* thenBlock;
-    ASTNode* elseBlock;  // Can be null if no else block
-
-    IfNode(ASTNode* cond, ASTNode* thenBlk, ASTNode* elseBlk = nullptr)
-        : condition(cond), thenBlock(thenBlk), elseBlock(elseBlk) {}
+    float value;
+    FloatLiteral(float val) : value(val) {}
 };
 
-// Node for while statements
-class WhileNode : public ASTNode {
-public:
-    ASTNode* condition;
-    ASTNode* block;
-
-    WhileNode(ASTNode* cond, ASTNode* blk) : condition(cond), block(blk) {}
-};
-
-// Node for for statements
-class ForNode : public ASTNode {
-public:
-    ASTNode* initStatement;
-    ASTNode* condition;
-    ASTNode* increment;
-    ASTNode* block;
-
-    ForNode(ASTNode* init, ASTNode* cond, ASTNode* incr, ASTNode* blk)
-        : initStatement(init), condition(cond), increment(incr), block(blk) {}
-};
-
-// Node for function definitions
-class FunctionDefinitionNode : public ASTNode {
-public:
-    std::string returnType;  // Use "khali" for void functions
-    std::string functionName;
-    std::vector<VariableDeclarationNode*> parameters;
-    ASTNode* body;
-
-    FunctionDefinitionNode(const std::string& returnType, const std::string& name,
-                           const std::vector<VariableDeclarationNode*>& params, ASTNode* body)
-        : returnType(returnType), functionName(name), parameters(params), body(body) {}
-};
-
-// Node for return statements
-class ReturnNode : public ASTNode {
-public:
-    ASTNode* value;  // Can be null if returning nothing
-
-    ReturnNode(ASTNode* val = nullptr) : value(val) {}
-};
-
-// Node for expressions
-class ExpressionNode : public ASTNode {
-public:
-    virtual ~ExpressionNode() = default;
-};
-
-// Concrete expression nodes
-class LiteralNode : public ExpressionNode {
+class StringLiteral : public Expression {
 public:
     std::string value;
-
-    LiteralNode(const std::string& val) : value(val) {}
+    StringLiteral(const std::string& val) : value(val) {}
 };
 
-class IdentifierNode : public ExpressionNode {
+class BooleanLiteral : public Expression {
+public:
+    bool value; // true for thik, false for bethik
+    BooleanLiteral(bool val) : value(val) {}
+};
+
+// Variable expression
+class Variable : public Expression {
 public:
     std::string name;
-
-    IdentifierNode(const std::string& name) : name(name) {}
+    Variable(const std::string& name) : name(name) {}
 };
 
-class BinaryOperationNode : public ExpressionNode {
+// Binary operations
+class BinaryOperation : public Expression {
 public:
-    ExpressionNode* left;
-    std::string op;  // Operator (e.g., "+", "-", "*", "/")
-    ExpressionNode* right;
-
-    BinaryOperationNode(ExpressionNode* left, const std::string& op, ExpressionNode* right)
-        : left(left), op(op), right(right) {}
+    enum OpType { ADD, SUB, MUL, DIV, MOD, AND, OR, EQ, NEQ, LT, GT, LE, GE };
+    Expression* left;
+    Expression* right;
+    OpType op;
+    BinaryOperation(Expression* l, Expression* r, OpType op) : left(l), right(r), op(op) {}
+    ~BinaryOperation() { delete left; delete right; }
 };
 
-class UnaryOperationNode : public ExpressionNode {
+// Unary operations
+class UnaryOperation : public Expression {
 public:
-    std::string op;  // Operator (e.g., "-", "!")
-    ExpressionNode* operand;
-
-    UnaryOperationNode(const std::string& op, ExpressionNode* operand)
-        : op(op), operand(operand) {}
+    enum OpType { NOT, NEG };
+    Expression* expr;
+    OpType op;
+    UnaryOperation(Expression* e, OpType op) : expr(e), op(op) {}
+    ~UnaryOperation() { delete expr; }
 };
 
-// Node for blocks of statements
-class BlockNode : public ASTNode {
+// Statements
+class PrintStatement : public Statement {
 public:
-    std::vector<ASTNode*> statements;
+    Expression* expr;
+    PrintStatement(Expression* e) : expr(e) {}
+    ~PrintStatement() { delete expr; }
+};
 
-    BlockNode(const std::vector<ASTNode*>& stmts) : statements(stmts) {}
+class AssignmentStatement : public Statement {
+public:
+    std::string varName;
+    Expression* expr;
+    AssignmentStatement(const std::string& name, Expression* e) : varName(name), expr(e) {}
+    ~AssignmentStatement() { delete expr; }
+};
+
+// Declarations
+class VariableDeclaration : public Declaration {
+public:
+    enum Type { INT, FLOAT, CHAR, STRING, VOID };
+    Type type;
+    std::string varName;
+    VariableDeclaration(Type t, const std::string& name) : type(t), varName(name) {}
+};
+
+// Function Declaration
+class FunctionDeclaration : public Declaration {
+public:
+    std::string name;
+    std::vector<VariableDeclaration*> parameters;
+    Declaration* returnType;
+    FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType)
+        : name(name), parameters(params), returnType(returnType) {}
+    ~FunctionDeclaration() { 
+        for (auto param : parameters) delete param;
+        delete returnType;
+    }
 };
 
 #endif // AST_H
