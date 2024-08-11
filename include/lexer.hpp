@@ -8,12 +8,12 @@ enum TokenType {
         // Keywords
         KEYWORD,
         // Data types
-        PURNA, DASA, AKSHAR, PAATH, SAHI_GALAT,
+        PURNA, DASA, AKSHAR, PAATH, KHALI,
         // Identifiers
         IDENTIFIER,
         // Literals
-        NUMBER, STRING,
-        // Operatorsk
+        INTEGER, STRING, FLOAT, BOOLEAN,
+        // Operator
         OPERATOR,
         // Delimiters
         LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
