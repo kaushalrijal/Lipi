@@ -21,6 +21,12 @@ class Parser{
     ASTNode* parseExpression();
     ASTNode* parseStatement();
     ASTNode* parseDeclaration();
+
+    public:
+        Parser(std::vector<Token>&);
+
+        // Main parse function
+        ASTNode* parse();
 };
 
 #endif  // PARSER_HPP
