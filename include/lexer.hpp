@@ -4,9 +4,7 @@
 #include <string>
 #include <vector>
 
-// thik bethik to be used for booleans
-struct Token {
-    enum Type {
+enum TokenType {
         // Keywords
         KEYWORD,
         // Data types
@@ -15,11 +13,17 @@ struct Token {
         IDENTIFIER,
         // Literals
         NUMBER, STRING,
-        // Operators
+        // Operatorsk
         OPERATOR,
         // Delimiters
         LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
-    } type;
+        // End of File
+        END_OF_FILE,
+};
+
+// thik bethik to be used for booleans
+struct Token {
+    TokenType type;
     std::string value;
 };
 
