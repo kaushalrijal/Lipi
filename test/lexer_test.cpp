@@ -12,7 +12,7 @@ int main() {
     std::vector<Token> tokens = lexer.tokenize();
     
     for (const Token& token : tokens) {
-        std::cout << token.type << ": " << token.value << std::endl;
+        std::cout << static_cast<int>(token.type) << ": " << token.value << std::endl;
     }
 
     return 0;
