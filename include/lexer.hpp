@@ -4,21 +4,20 @@
 #include <string>
 #include <vector>
 
-enum TokenType {
-        // Keywords
-        KEYWORD,
-        // Data types
-        PURNA, DASA, AKSHAR, PAATH, KHALI,
-        // Identifiers
-        IDENTIFIER,
-        // Literals
-        INTEGER, STRING, FLOAT, BOOLEAN,
-        // Operator
-        OPERATOR,
-        // Delimiters
-        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
-        // End of File
-        END_OF_FILE,
+enum class TokenType {
+    Purna, Dasa, Akshar, Paath, Bhana, Suna, Lagi, Jabasamma,
+    Yadi, Anyatha, Thik, Bethik, Khali, // Keywords
+
+    Plus, Minus, Multiply, Divide, Assign, Equal, NotEqual, LessThan,
+    GreaterThan, LessEqual, GreaterEqual, And, Or, // Operators
+
+    Semicolon, Comma, LeftParen, RightParen, LeftBrace, RightBrace, // Symbols
+
+    IntegerLiteral, FloatLiteral, CharLiteral, StringLiteral, // Literals
+
+    Identifier, // Identifiers
+
+    EndOfFile, Unknown // Special Tokens
 };
 
 // thik bethik to be used for booleans

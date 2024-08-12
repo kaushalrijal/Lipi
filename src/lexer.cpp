@@ -38,54 +38,14 @@ std::vector<Token> Lexer::tokenize(){
             remainingInput.erase(match.position(), match.length());
             continue;
         }
-
-        // Match and handle each token type
-        if (std::regex_search(remainingInput, match, string_regex)) {
-            tokens.push_back({TokenType::STRING, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        // Handle whitespace
-        if (std::regex_search(remainingInput, match, whitespace_regex)) {
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        }
         
+        // Match keywords
         if (std::regex_search(remainingInput, match, keyword_regex)) {
             tokens.push_back({TokenType::KEYWORD, match[0]});
             remainingInput.erase(match.position(), match.length());
         } 
 
-        if (std::regex_search(remainingInput, match, boolean_regex)) {
-            tokens.push_back({TokenType::BOOLEAN, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        }
-
-        
-        if (std::regex_search(remainingInput, match, identifier_regex)) {
-            tokens.push_back({TokenType::IDENTIFIER, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        
-        if (std::regex_search(remainingInput, match, integer_regex)) {
-            tokens.push_back({TokenType::INTEGER, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        
-        if (std::regex_search(remainingInput, match, float_regex)) {
-            tokens.push_back({TokenType::FLOAT, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        
-        if (std::regex_search(remainingInput, match, char_regex)) {
-            tokens.push_back({TokenType::AKSHAR, match[1]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        
-        if (std::regex_search(remainingInput, match, operator_regex)) {
-            tokens.push_back({TokenType::OPERATOR, match[0]});
-            remainingInput.erase(match.position(), match.length());
-        } 
-        
+        // Match symbols like parenthesis and braces
         if (std::regex_search(remainingInput, match, delimiter_regex)) {
             std::string delimiter = match[0];
             if (delimiter == "(") {
@@ -100,11 +60,60 @@ std::vector<Token> Lexer::tokenize(){
                 tokens.push_back({TokenType::SEMICOLON, ";"});
             }
             remainingInput.erase(match.position(), match.length());
+        } 
+
+        // Match Strings
+        if (std::regex_search(remainingInput, match, string_regex)) {
+            tokens.push_back({TokenType::STRING, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        }
+
+        // Identifieres                
+        if (std::regex_search(remainingInput, match, identifier_regex)) {
+            tokens.push_back({TokenType::IDENTIFIER, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        }  
+        
+        // Handle whitespace
+        if (std::regex_search(remainingInput, match, whitespace_regex)) {
+            remainingInput.erase(match.position(), match.length());
+            continue;
+        }
+        
+        // booleans
+        if (std::regex_search(remainingInput, match, boolean_regex)) {
+            tokens.push_back({TokenType::BOOLEAN, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        }
+        
+        // float before integer
+        if (std::regex_search(remainingInput, match, float_regex)) {
+            tokens.push_back({TokenType::FLOAT, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        // integer
+        if (std::regex_search(remainingInput, match, integer_regex)) {
+            tokens.push_back({TokenType::INTEGER, match[0]});
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        // character
+        if (std::regex_search(remainingInput, match, char_regex)) {
+            tokens.push_back({TokenType::AKSHAR, match[1]});
+            remainingInput.erase(match.position(), match.length());
+        } 
+        
+        if (std::regex_search(remainingInput, match, operator_regex)) {
+            tokens.push_back({TokenType::OPERATOR, match[0]});
+            remainingInput.erase(match.position(), match.length());
         } else {
-            std::cerr << "Unexpected input: " << remainingInput[0] << std::endl;
+            std::cerr << "Unexpected input: " << remainingInput << std::endl;
             // Handle unexpected input or continue
             remainingInput.erase(0, 1); // Or adjust to continue processing
         }
+        
+        
     }
     
     return tokens;
