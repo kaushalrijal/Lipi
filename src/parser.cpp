@@ -274,3 +274,19 @@ ASTNode* Parser::parseDeclaration(){
         throw std::runtime_error("Unexpected token for declaration");
     }
 }
+
+ASTNode* Parser::parse(){
+    std::vector<ASTNode*> nodes;
+
+    while(!match(END_OF_FILE)){
+        if(match(TokenType::FUNC_DEF)){
+            nodes.push_back(parseFunctionDeclaration());
+        } else if (match(TYPE) || match(ID)){
+            nodes.push_back(parseDeclaration());
+        } else {
+            nodes.push_back(parseStatement());
+        }
+    }
+
+    return new Program(nodes);
+}
