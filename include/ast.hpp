@@ -11,25 +11,25 @@ class Declaration;
 
 class ASTNode {
 public:
-    virtual ~ASTNode() = 0;
+    virtual ~ASTNode() = default;
 };
 
 // Base class for expressions
 class Expression : public ASTNode {
 public:
-    virtual ~Expression() = 0;
+    virtual ~Expression() = default;
 };
 
 // Base class for statements
 class Statement : public ASTNode {
 public:
-    virtual ~Statement() = 0;
+    virtual ~Statement() = default;
 };
 
 // Base class for declarations
 class Declaration : public ASTNode {
 public:
-    virtual ~Declaration() = 0;
+    virtual ~Declaration() = default;
 };
 
 // Literal expressions
@@ -97,7 +97,7 @@ class InputStatement : public Statement {
 public:
     std::string varName; 
     InputStatement(const std::string& name) : varName(name) {}
-    ~InputStatement() = 0;
+    ~InputStatement() = default;
 };
 
 class AssignmentStatement : public Statement {

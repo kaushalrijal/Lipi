@@ -33,3 +33,33 @@ void Parser::expect(TokenType type) {
         throw std::runtime_error("Unexpected token type");
     }
 }
+
+// Methods for parsing
+ASTNode* Parser::parseExpression(){
+    return nullptr;
+}
+
+ASTNode* Parser::parseStatement(){
+    if(match(TokenType::PRINT)){
+        expect(TokenType::LPAREN);
+        Expression* expr = dynamic_cast<Expression*>(parseExpression());
+        expect(TokenType::LPAREN);
+        expect(TokenType::END);
+        return new PrintStatement(expr);
+    } else if(match(TokenType::INPUT)){
+        expect(TokenType::LPAREN);
+        expect(TokenType::ID);
+        std::string vName = currentToken().value;
+        expect(TokenType::RPAREN);
+        expect(TokenType::END);
+        return new InputStatement(vName);
+    } else if (match(TokenType::TYPE)) { 
+        Token typeToken = currentToken();  
+        expect(TokenType::ID);  
+        std::string varName = currentToken().value; 
+        expect(TokenType::ASSIGN); 
+        Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
+        expect(TokenType::END); 
+        return new AssignmentStatement(varName, expr); 
+    }
+}
