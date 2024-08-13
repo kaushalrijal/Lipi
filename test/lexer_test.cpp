@@ -37,9 +37,9 @@ void printTokens(const std::vector<Token> &tokens) {
 
 
 int main() {
-    std::string sourceCode = R"(
-        purna kaam kehi_kaam(dasa )
-    )";
+    std::string sourceCode;
+
+    std::getline(std::cin, sourceCode);
 
     // Initialize the lexer with the source code
     Lexer lexer(sourceCode);
