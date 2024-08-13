@@ -255,3 +255,22 @@ ASTNode* Parser::parseFunctionDeclaration(){
 
     return new FunctionDeclaration(functionName, parameters, returnType);
 }
+
+
+ASTNode* Parser::parseDeclaration(){
+    TokenType typeT = currentToken().type;
+
+    if(typeT == TYPE){
+        expect(TYPE);
+        TokenType varType = currentToken().type;
+        expect(ID);
+        std::string varName = currentToken().value;
+        expect(END);
+
+        return new VariableDeclaration(static_cast<VariableDeclaration::Type>(varType), varName);
+    } else if(typeT == FUNC_DEF){
+        return parseFunctionDeclaration();
+    } else {
+        throw std::runtime_error("Unexpected token for declaration");
+    }
+}
