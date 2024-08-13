@@ -218,3 +218,40 @@ ASTNode* Parser::parseStatement(){
         throw std::runtime_error("Unexpected Error Occured");
     }
 }
+
+// Parse Function Decalartion
+ASTNode* Parser::parseFunctionDeclaration(){
+    expect(FUNC_DEF);
+    expect(ID);
+
+    std::string functionName = currentToken().value;
+
+    expect(LPAREN);
+
+    std::vector<VariableDeclaration*> parameters;
+
+    while(!match(RPAREN)){
+        Token typeToken = currentToken();
+        expect(TYPE);
+        expect(ID);
+        std::string paramName = currentToken().value;
+        parameters.push_back(new VariableDeclaration(static_cast<VariableDeclaration::Type>(typeToken.type), paramName));
+
+        if(match(COMMA)){
+            continue;
+        } else {
+            break;
+        }
+    }
+
+    // Parse return type
+    Declaration* returnType = nullptr;
+    if(match(TYPE)){
+        Token typeToken = currentToken();
+        returnType = new VariableDeclaration(static_cast<VariableDeclaration::Type>(typeToken.type), "");
+    }
+
+    Statement* body = dynamic_cast<Statement *>(parseStatement());
+
+    return new FunctionDeclaration(functionName, parameters, returnType);
+}
