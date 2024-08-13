@@ -45,6 +45,12 @@ public:
     FloatLiteral(float val) : value(val) {}
 };
 
+class CharacterLiteral : public Expression {
+public:
+    char value;
+    CharacterLiteral(char val) : value(val) {}
+};
+
 class StringLiteral : public Expression {
 public:
     std::string value;
