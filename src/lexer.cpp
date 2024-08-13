@@ -58,7 +58,5 @@ std::vector<Token> Lexer::tokenize(){
         }
     }
 
-    tokens.push_back({END_OF_FILE, ""});
-
     return tokens;
 }
