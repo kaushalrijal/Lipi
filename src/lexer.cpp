@@ -45,6 +45,7 @@ std::vector<Token> Lexer::tokenize(){
         {TokenType::GT, std::regex(">")},
         {TokenType::LE, std::regex("<=")},
         {TokenType::GE, std::regex(">=")},
+        {TokenType::NOT, std::regex("!")},
         {TokenType::SKIP, std::regex("[ \t]+")},
         {TokenType::NEWLINE, std::regex("\n")},
         {TokenType::MISMATCH, std::regex(".")}
