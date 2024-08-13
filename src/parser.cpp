@@ -203,6 +203,16 @@ ASTNode* Parser::parseStatement(){
         Statement* body = dynamic_cast<Statement *>(parseStatement());
 
         return new ForStatement(initializer, condition, increment, body);
+    } 
+    else if (match(TokenType::LBRACE)) {  // Block Statement
+        std::vector<Statement*> statements;
+        while (!match(TokenType::RBRACE) && !match(TokenType::END_OF_FILE)) {
+            statements.push_back(dynamic_cast<Statement*>(parseStatement()));
+        }
+        if (!match(TokenType::RBRACE)) {
+            throw std::runtime_error("Expected '}' at end of block");
+        }
+        return new BlockStatement(statements);
     }
     else {
         throw std::runtime_error("Unexpected Error Occured");
