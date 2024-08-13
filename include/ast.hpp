@@ -162,6 +162,21 @@ public:
     }
 };
 
+// Block Statement for collection of statements
+class BlockStatement : public Statement {
+public:
+    std::vector<Statement*> statements;
+
+    BlockStatement(const std::vector<Statement*>& stmts) : statements(stmts) {}
+
+    ~BlockStatement() {
+        for (auto stmt : statements) {
+            delete stmt;
+        }
+    }
+};
+
+
 // Declarations
 class VariableDeclaration : public Declaration {
 public:
