@@ -135,14 +135,16 @@ ASTNode* Parser::parseStatement(){
         expect(LPAREN);
         expect(END);
         return new PrintStatement(expr);
-    } else if(match(INPUT)){ // Input Statement
+    } 
+    else if(match(INPUT)){ // Input Statement
         expect(LPAREN);
         expect(ID);
         std::string vName = currentToken().value;
         expect(RPAREN);
         expect(END);
         return new InputStatement(vName);
-    } else if (match(TYPE)) { // Assignment statement
+    } 
+    else if (match(TYPE)) { // Assignment statement
         Token typeToken = currentToken();  
         expect(ID);  
         std::string varName = currentToken().value; 
@@ -150,18 +152,23 @@ ASTNode* Parser::parseStatement(){
         Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
         expect(END); 
         return new AssignmentStatement(varName, expr); 
-    } else if (match(ID)) { // Assignment statement for predeclared variables
+    } 
+    else if (match(ID)) { // Assignment statement for predeclared variables
         std::string varName = currentToken().value;
         consumeToken();
         expect(ASSIGN);
         Expression* expr = dynamic_cast<Expression *>(parseExpression());
         expect(END);
         return new AssignmentStatement(varName, expr);
-    } else if (match(IF)){
+    } 
+    else if (match(IF)){
         consumeToken();
         expect(LPAREN);
+
         Expression* condition = dynamic_cast<Expression*>(parseExpression());
+        
         expect(RPAREN);
+        
         Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
         Statement* elseBranch = nullptr;
 
@@ -169,6 +176,35 @@ ASTNode* Parser::parseStatement(){
             consumeToken();
             elseBranch = dynamic_cast<Statement*>(parseStatement());
         }
-        
+
+        return new IfStatement(condition, thenBranch, elseBranch);
+    }
+    else if(match(WHILE)){
+        consumeToken();
+        expect(LPAREN);
+
+        Expression* condition = dynamic_cast<Expression *>(parseExpression());
+
+        expect(RPAREN);
+
+        Statement * body = dynamic_cast<Statement*>(parseStatement());
+
+        return new WhileStatement(condition, body);
+    }
+    else if(match(FOR)){
+        consumeToken();
+        expect(LPAREN);
+
+        Statement* initializer = dynamic_cast<Statement *>(parseStatement());
+        Expression* condition = dynamic_cast<Expression *>(parseExpression());
+        expect(END);
+        Expression* increment = dynamic_cast<Expression *>(parseExpression());
+        expect(RPAREN);
+        Statement* body = dynamic_cast<Statement *>(parseStatement());
+
+        return new ForStatement(initializer, condition, increment, body);
+    }
+    else {
+        throw std::runtime_error("Unexpected Error Occured");
     }
 }
