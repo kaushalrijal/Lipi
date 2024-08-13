@@ -21,6 +21,10 @@ class Parser{
     ASTNode* parseExpression();
     ASTNode* parseStatement();
     ASTNode* parseDeclaration();
+    ASTNode* parseFunctionDeclaration();
+
+    // Error Handling
+    void reportError(const std::string& message);
 
     public:
         Parser(std::vector<Token>&);
