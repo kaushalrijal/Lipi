@@ -37,17 +37,8 @@ void printTokens(const std::vector<Token> &tokens) {
 
 
 int main() {
-    // Sample source code in your custom programming language
     std::string sourceCode = R"(
-        purna x = 10;
-        dasa y = 3.14;
-        paath greeting = "hello sansar";
-        bhana(greeting);
-        yadi (x > 5) {
-            bhana("x is greater than 5");
-        } anyatha {
-
-        }
+        purna kaam kehi_kaam(dasa )
     )";
 
     // Initialize the lexer with the source code
