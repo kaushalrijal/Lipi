@@ -18,7 +18,12 @@ class Parser{
     void expect(TokenType type);
 
     // Parsing Methods
+    // Parse different types of expressions
+    ASTNode* parsePrimaryExpression();  // Parse Literals, variables, and parenthesized expressions
+    ASTNode* parseUnaryExpression(); // parse unary operations like -, !
+    ASTNode* parseBinaryExpression();
     ASTNode* parseExpression();
+
     ASTNode* parseStatement();
     ASTNode* parseDeclaration();
     ASTNode* parseFunctionDeclaration();
