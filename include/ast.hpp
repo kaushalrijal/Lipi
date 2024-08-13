@@ -84,10 +84,9 @@ public:
 // Unary operations
 class UnaryOperation : public Expression {
 public:
-    enum OpType { NOT, NEG };
+    enum OpType { NOT, NEG } op;
     Expression* expr;
-    OpType op;
-    UnaryOperation(Expression* e, OpType op) : expr(e), op(op) {}
+    UnaryOperation(Expression* e, OpType opt) : expr(e), op(opt) {}
     ~UnaryOperation() { delete expr; }
 };
 
