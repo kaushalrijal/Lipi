@@ -32,6 +32,19 @@ public:
     virtual ~Declaration() = default;
 };
 
+// Program node to represent entire program
+class Program : public ASTNode {
+public:
+    std::vector<ASTNode*> nodes;
+
+    Program(const std::vector<ASTNode*>& nodes) : nodes(nodes) {}
+    ~Program() {
+        for (auto node : nodes) {
+            delete node;
+        }
+    }
+};
+
 // Literal expressions
 class IntegerLiteral : public Expression {
 public:
