@@ -56,6 +56,12 @@ ASTNode* Parser::parsePrimaryExpression(){
         ASTNode* expression = parseExpression();
         expect(RPAREN);
         return expression;
+    } else if (match(TRUE)) {
+        consumeToken();
+        return new BooleanLiteral(true);
+    } else if (match(FALSE)) {
+        consumeToken();
+        return new BooleanLiteral(false);
     }
     throw std::runtime_error("Unexpected token in primary expression.");
 }

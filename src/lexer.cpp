@@ -22,6 +22,8 @@ std::vector<Token> Lexer::tokenize(){
         {FOR, std::regex("lagi")},
         {FUNC_DEF, std::regex("kaam")},
         {RETURN, std::regex("firta")},
+        {TRUE, std::regex("thik")},
+        {FALSE, std::regex("bethik")},
         {NUMBER, std::regex("\\d+(\\.\\d*)?")},
         {STRING, std::regex("\"[^\"]*\"")},
         {CHAR, std::regex("'[^']'")},
