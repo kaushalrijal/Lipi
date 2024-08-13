@@ -35,57 +35,140 @@ void Parser::expect(TokenType type) {
 }
 
 ASTNode* Parser::parsePrimaryExpression(){
-    if(match(TokenType::NUMBER)){
+    if(match(NUMBER)){
         int value = std::stoi(currentToken().value);
         consumeToken();
         return new IntegerLiteral(value);
-    } else if (match(TokenType::STRING)){
+    } else if (match(STRING)){
         std::string value = currentToken().value;
         consumeToken();
         return new StringLiteral(value);
-    } else if (match(TokenType::ID)){
+    } else if (match(ID)){
         std::string name = currentToken().value;
         consumeToken();
         return new Variable(name);
-    } else if (match(TokenType::CHAR)){
+    } else if (match(CHAR)){
         char value = currentToken().value[1];
         consumeToken();
         return new CharacterLiteral(value);
-    } else if (match(TokenType::LPAREN)){
-        consumeToken(); // Consume (
+    } else if (match(LPAREN)){
+        consumeToken(); // Consume '('
         ASTNode* expression = parseExpression();
-        expect(TokenType::RPAREN);
+        expect(RPAREN);
         return expression;
     }
     throw std::runtime_error("Unexpected token in primary expression.");
 }
 
+Expression* Parser::parseUnaryExpression(){
+    if(match(SUB)|| match(NOT)){
+        Token op = currentToken();
+        consumeToken();
+
+        Expression* operand = parseUnaryExpression();
+
+        return new UnaryOperation(operand, op.type == SUB ? UnaryOperation::NEG : UnaryOperation::NOT);
+    }
+    parsePrimaryExpression();
+}
+
+int getPrecedence(TokenType type){
+    switch (type) {
+        case ADD:
+        case SUB:
+            return 1;
+        case MUL:
+        case DIV:
+        case MOD:
+            return 2;
+        case EQ:
+        case NEQ:
+            return 0;
+        default:
+            return -1;
+    }
+}
+
+BinaryOperation::OpType getBinaryOpType(TokenType type) {
+    switch (type) {
+        case ADD: return BinaryOperation::ADD;
+        case SUB: return BinaryOperation::SUB;
+        case MUL: return BinaryOperation::MUL;
+        case DIV: return BinaryOperation::DIV;
+        case MOD: return BinaryOperation::MOD;
+        case EQ: return BinaryOperation::EQ;
+        case NEQ: return BinaryOperation::NEQ;
+        default:
+            throw std::runtime_error("Unknown binary operator type");
+    }
+}
+
+Expression* Parser::parseBinaryExpression(int precedence = 0){
+    Expression* left = parseUnaryExpression();
+    while(true){
+        TokenType opType = currentToken().type;
+
+        int currentPrecedence = getPrecedence(opType);
+
+        if(currentPrecedence < precedence)
+            break;
+        
+        consumeToken();
+
+        Expression* right = parseBinaryExpression(currentPrecedence + 1);
+
+        left = new BinaryOperation(left, right, getBinaryOpType(opType));
+    }
+    return left;
+}
+
+
 // Methods for parsing
 ASTNode* Parser::parseExpression(){
-    return nullptr;
+    parseBinaryExpression();
 }
 
 ASTNode* Parser::parseStatement(){
-    if(match(TokenType::PRINT)){ // Print Statement
-        expect(TokenType::LPAREN);
+    if(match(PRINT)){ // Print Statement
+        expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
-        expect(TokenType::LPAREN);
-        expect(TokenType::END);
+        expect(LPAREN);
+        expect(END);
         return new PrintStatement(expr);
-    } else if(match(TokenType::INPUT)){ // Input Statement
-        expect(TokenType::LPAREN);
-        expect(TokenType::ID);
+    } else if(match(INPUT)){ // Input Statement
+        expect(LPAREN);
+        expect(ID);
         std::string vName = currentToken().value;
-        expect(TokenType::RPAREN);
-        expect(TokenType::END);
+        expect(RPAREN);
+        expect(END);
         return new InputStatement(vName);
-    } else if (match(TokenType::TYPE)) { // Assignment statement
+    } else if (match(TYPE)) { // Assignment statement
         Token typeToken = currentToken();  
-        expect(TokenType::ID);  
+        expect(ID);  
         std::string varName = currentToken().value; 
-        expect(TokenType::ASSIGN); 
+        expect(ASSIGN); 
         Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
-        expect(TokenType::END); 
+        expect(END); 
         return new AssignmentStatement(varName, expr); 
+    } else if (match(ID)) { // Assignment statement for predeclared variables
+        std::string varName = currentToken().value;
+        consumeToken();
+        expect(ASSIGN);
+        Expression* expr = dynamic_cast<Expression *>(parseExpression());
+        expect(END);
+        return new AssignmentStatement(varName, expr);
+    } else if (match(IF)){
+        consumeToken();
+        expect(LPAREN);
+        Expression* condition = dynamic_cast<Expression*>(parseExpression());
+        expect(RPAREN);
+        Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
+        Statement* elseBranch = nullptr;
+
+        if(match(ELSE)){
+            consumeToken();
+            elseBranch = dynamic_cast<Statement*>(parseStatement());
+        }
+        
     }
 }

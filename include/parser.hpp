@@ -20,8 +20,8 @@ class Parser{
     // Parsing Methods
     // Parse different types of expressions
     ASTNode* parsePrimaryExpression();  // Parse Literals, variables, and parenthesized expressions
-    ASTNode* parseUnaryExpression(); // parse unary operations like -, !
-    ASTNode* parseBinaryExpression();
+    Expression* parseUnaryExpression(); // parse unary operations like -, !
+    Expression* parseBinaryExpression(int);
     ASTNode* parseExpression();
 
     ASTNode* parseStatement();
@@ -38,4 +38,4 @@ class Parser{
         ASTNode* parse();
 };
 
-#endif  // PARSER_HPP
+#endif  
