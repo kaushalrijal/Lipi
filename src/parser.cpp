@@ -34,26 +34,52 @@ void Parser::expect(TokenType type) {
     }
 }
 
+ASTNode* Parser::parsePrimaryExpression(){
+    if(match(TokenType::NUMBER)){
+        int value = std::stoi(currentToken().value);
+        consumeToken();
+        return new IntegerLiteral(value);
+    } else if (match(TokenType::STRING)){
+        std::string value = currentToken().value;
+        consumeToken();
+        return new StringLiteral(value);
+    } else if (match(TokenType::ID)){
+        std::string name = currentToken().value;
+        consumeToken();
+        return new Variable(name);
+    } else if (match(TokenType::CHAR)){
+        char value = currentToken().value[1];
+        consumeToken();
+        return new CharacterLiteral(value);
+    } else if (match(TokenType::LPAREN)){
+        consumeToken(); // Consume (
+        ASTNode* expression = parseExpression();
+        expect(TokenType::RPAREN);
+        return expression;
+    }
+    throw std::runtime_error("Unexpected token in primary expression.");
+}
+
 // Methods for parsing
 ASTNode* Parser::parseExpression(){
     return nullptr;
 }
 
 ASTNode* Parser::parseStatement(){
-    if(match(TokenType::PRINT)){
+    if(match(TokenType::PRINT)){ // Print Statement
         expect(TokenType::LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
         expect(TokenType::LPAREN);
         expect(TokenType::END);
         return new PrintStatement(expr);
-    } else if(match(TokenType::INPUT)){
+    } else if(match(TokenType::INPUT)){ // Input Statement
         expect(TokenType::LPAREN);
         expect(TokenType::ID);
         std::string vName = currentToken().value;
         expect(TokenType::RPAREN);
         expect(TokenType::END);
         return new InputStatement(vName);
-    } else if (match(TokenType::TYPE)) { 
+    } else if (match(TokenType::TYPE)) { // Assignment statement
         Token typeToken = currentToken();  
         expect(TokenType::ID);  
         std::string varName = currentToken().value; 
