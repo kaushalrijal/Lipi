@@ -25,7 +25,20 @@ void printTokens(const std::vector<Token> &tokens) {
             case TokenType::RPAREN: typeStr = "RPAREN"; break;
             case TokenType::LBRACE: typeStr = "LBRACE"; break;
             case TokenType::RBRACE: typeStr = "RBRACE"; break;
-            case TokenType::OP: typeStr = "OP"; break;
+            case TokenType::ADD: typeStr =  "+"; break;
+            case TokenType::SUB: typeStr =  "-"; break;
+            case TokenType::MUL: typeStr =  "*"; break;
+            case TokenType::DIV: typeStr =  "/"; break;
+            case TokenType::MOD: typeStr =  "%"; break;
+            case TokenType::AND: typeStr =  "&&"; break;
+            case TokenType::OR: typeStr =  "||"; break;
+            case TokenType::EQ: typeStr =  "=="; break;
+            case TokenType::NEQ: typeStr =  "!="; break;
+            case TokenType::LT: typeStr =  "<"; break;
+            case TokenType::GT: typeStr =  ">"; break;
+            case TokenType::LE: typeStr =  "<="; break;
+            case TokenType::GE: typeStr =  ">="; break;
+
             case TokenType::SKIP: typeStr = "SKIP"; break;
             case TokenType::NEWLINE: typeStr = "NEWLINE"; break;
             case TokenType::MISMATCH: typeStr = "MISMATCH"; break;
