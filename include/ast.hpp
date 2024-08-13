@@ -113,6 +113,55 @@ public:
     ~AssignmentStatement() { delete expr; }
 };
 
+// Classes for control flow statement
+class IfStatement : public Statement {
+public:
+    Expression* condition;
+    Statement* thenBranch;
+    Statement* elseBranch;
+
+    IfStatement(Expression* cond, Statement* thenStmt, Statement* elseStmt = nullptr)
+        : condition(cond), thenBranch(thenStmt), elseBranch(elseStmt) {}
+
+    ~IfStatement() {
+        delete condition;
+        delete thenBranch;
+        delete elseBranch;
+    }
+};
+
+class WhileStatement : public Statement {
+public:
+    Expression* condition;
+    Statement* body;
+
+    WhileStatement(Expression* cond, Statement* bodyStmt)
+        : condition(cond), body(bodyStmt) {}
+
+    ~WhileStatement() {
+        delete condition;
+        delete body;
+    }
+};
+
+class ForStatement : public Statement {
+public:
+    Statement* initializer;
+    Expression* condition;
+    Expression* increment;
+    Statement* body;
+
+    ForStatement(Statement* initStmt, Expression* condExpr, Expression* incrExpr, Statement* bodyStmt)
+        : initializer(initStmt), condition(condExpr), increment(incrExpr), body(bodyStmt) {}
+
+    ~ForStatement() {
+        delete initializer;
+        delete condition;
+        delete increment;
+        delete body;
+    }
+};
+
 // Declarations
 class VariableDeclaration : public Declaration {
 public:
