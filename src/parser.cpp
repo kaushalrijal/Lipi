@@ -132,7 +132,7 @@ ASTNode* Parser::parseStatement(){
     if(match(PRINT)){ // Print Statement
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
-        expect(LPAREN);
+        expect(RPAREN);
         expect(END);
         return new PrintStatement(expr);
     } 
