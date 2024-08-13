@@ -7,124 +7,58 @@ Lexer::Lexer(const std::string& in) : input(in) {}
 
 std::vector<Token> Lexer::tokenize(){
     std::vector<Token> tokens;
-    std::string remainingInput = input;
+    std::string::const_iterator start = input.begin();
+    std::string::const_iterator end = input.end();
     std::smatch match;
 
     //regex for different token types
-    std::regex keyword_regex(R"(\b(bhana|suna|yadi|anyatha|jabasamma|kaam|firta|lagi|purna|dasa|akshar|paath|thik|galat)\b)");
-    std::regex string_regex(R"("(\\.|[^"])*")");
-    std::regex identifier_regex(R"([a-zA-Z_][a-zA-Z0-9_]*)");
-    std::regex integer_regex(R"(\d+)");
-    std::regex float_regex(R"([-+]?[0-9]*\.[0-9]+)");
-    std::regex char_regex(R"('(.)')");
-    std::regex operator_regex(R"([+\-*/%=<>!&|])");
-    std::regex boolean_regex(R"(\b(thik|bethik)\b)");
-    std::regex delimiter_regex(R"([(){}|;])");
-    std::regex whitespace_regex(R"(^\s+)");
-    std::regex multiline_comment_regex(R"(\(:.*?\:\))");
-    std::regex single_line_comment_regex(R"(\:\)[^\n]*$)");
-
+    const std::vector<std::pair<TokenType, std::regex>> tokenPatterns = {
+        {TokenType::PRINT, std::regex("bhana")},
+        {TokenType::INPUT, std::regex("suna")},
+        {TokenType::TYPE, std::regex("purna|dasa|akshar|paath|khali")},
+        {TokenType::IF, std::regex("yadi")},
+        {TokenType::ELSE, std::regex("anyatha")},
+        {TokenType::WHILE, std::regex("jabasamma")},
+        {TokenType::FOR, std::regex("lagi")},
+        {TokenType::FUNC_DEF, std::regex("kaam")},
+        {TokenType::RETURN, std::regex("firta")},
+        {TokenType::NUMBER, std::regex("\\d+(\\.\\d*)?")},
+        {TokenType::STRING, std::regex("\"[^\"]*\"")},
+        {TokenType::CHAR, std::regex("'[^']'")},
+        {TokenType::ID, std::regex("[a-zA-Z_][a-zA-Z0-9_]*")},
+        {TokenType::ASSIGN, std::regex("=")},
+        {TokenType::END, std::regex(";")},
+        {TokenType::LPAREN, std::regex("\\(")},
+        {TokenType::RPAREN, std::regex("\\)")},
+        {TokenType::LBRACE, std::regex("\\{")},
+        {TokenType::RBRACE, std::regex("\\}")},
+        {TokenType::OP, std::regex("[+\\-*/]")},
+        {TokenType::SKIP, std::regex("[ \t]+")},
+        {TokenType::NEWLINE, std::regex("\n")},
+        {TokenType::MISMATCH, std::regex(".")}
+    };
 
     //check for match adn create tokens as per
-   while (!remainingInput.empty()) {
-        // Handle comments
-        if (std::regex_search(remainingInput, match, multiline_comment_regex)) {
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        }
+    while (start != end) {
+        bool matched = false;
 
-        // Single Line comments
-        if (std::regex_search(remainingInput, match, single_line_comment_regex)) {
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        }
-        
-        // Match keywords
-        if (std::regex_search(remainingInput, match, keyword_regex)) {
-            tokens.push_back({TokenType::KEYWORD, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } 
-
-        // Match symbols like parenthesis and braces
-        if (std::regex_search(remainingInput, match, delimiter_regex)) {
-            std::string delimiter = match[0];
-            if (delimiter == "(") {
-                tokens.push_back({TokenType::LEFT_PAREN, "("});
-            } else if (delimiter == ")") {
-                tokens.push_back({TokenType::RIGHT_PAREN, ")"});
-            } else if (delimiter == "{") {
-                tokens.push_back({TokenType::LEFT_BRACE, "{"});
-            } else if (delimiter == "}") {
-                tokens.push_back({TokenType::RIGHT_BRACE, "}"});
-            } else if (delimiter == ";") {
-                tokens.push_back({TokenType::SEMICOLON, ";"});
+        for (const auto &pattern : tokenPatterns) {
+            if (std::regex_search(start, end, match, pattern.second, std::regex_constants::match_continuous)) {
+                if (pattern.first != TokenType::SKIP) {
+                    tokens.push_back({pattern.first, match.str()});
+                }
+                start = match[0].second;
+                matched = true;
+                break;
             }
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } 
-
-        // Match Strings
-        if (std::regex_search(remainingInput, match, string_regex)) {
-            tokens.push_back({TokenType::STRING, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
         }
 
-        // Identifieres                
-        if (std::regex_search(remainingInput, match, identifier_regex)) {
-            tokens.push_back({TokenType::IDENTIFIER, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        }  
-        
-        // Handle whitespace
-        if (std::regex_search(remainingInput, match, whitespace_regex)) {
-            remainingInput.erase(match.position(), match.length());
-            continue;
-            continue;
+        if (!matched) {
+            throw std::runtime_error("Unexpected character: " + std::string(1, *start));
         }
-        
-        // booleans
-        if (std::regex_search(remainingInput, match, boolean_regex)) {
-            tokens.push_back({TokenType::BOOLEAN, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        }
-        
-        // float before integer
-        if (std::regex_search(remainingInput, match, float_regex)) {
-            tokens.push_back({TokenType::FLOAT, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } 
-        
-        // integer
-        if (std::regex_search(remainingInput, match, integer_regex)) {
-            tokens.push_back({TokenType::INTEGER, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } 
-        
-        // character
-        if (std::regex_search(remainingInput, match, char_regex)) {
-            tokens.push_back({TokenType::AKSHAR, match[1]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } 
-        
-        if (std::regex_search(remainingInput, match, operator_regex)) {
-            tokens.push_back({TokenType::OPERATOR, match[0]});
-            remainingInput.erase(match.position(), match.length());
-            continue;
-        } else {
-            std::cerr << "Unexpected input: " << remainingInput[0] << std::endl;
-            // Handle unexpected input or continue
-            remainingInput.erase(0, 1); // Or adjust to continue processing
-        }
-        
-        
     }
-    
+
+    tokens.push_back({END_OF_FILE, ""});
+
     return tokens;
 }

@@ -5,20 +5,9 @@
 #include <vector>
 
 enum TokenType {
-        // Keywords
-        KEYWORD,
-        // Data types
-        PURNA, DASA, AKSHAR, PAATH, KHALI,
-        // Identifiers
-        IDENTIFIER,
-        // Literals
-        INTEGER, STRING, FLOAT, BOOLEAN,
-        // Operator
-        OPERATOR,
-        // Delimiters
-        LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, SEMICOLON,
-        // End of File
-        END_OF_FILE,
+    PRINT, INPUT, TYPE, IF, ELSE, WHILE, FOR, FUNC_DEF, RETURN,
+    NUMBER, STRING, CHAR, ID, ASSIGN, END, LPAREN, RPAREN,
+    LBRACE, RBRACE, OP, SKIP, NEWLINE, MISMATCH, END_OF_FILE
 };
 
 // thik bethik to be used for booleans
