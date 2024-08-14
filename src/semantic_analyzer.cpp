@@ -1,20 +1,6 @@
 #include <stdexcept>
 #include "semantic_analyzer.hpp"
 
-void SemanticAnalyzer::analyzeNode(ASTNode* node) {
-    if (auto* program = dynamic_cast<Program*>(node)) {
-        for (auto* n : program->nodes) {
-            analyzeNode(n);
-        }
-    } else if (auto* declaration = dynamic_cast<Declaration*>(node)) {
-        analyzeDeclaration(declaration);
-    } else if (auto* statement = dynamic_cast<Statement*>(node)) {
-        analyzeStatement(statement);
-    } else if (auto* expression = dynamic_cast<Expression*>(node)) {
-        analyzeExpression(expression);
-    }
-}
-
 void SemanticAnalyzer::analyzeStatement(Statement *stmt){
     if(auto* printStmt = dynamic_cast<PrintStatement*>(stmt)){
         analyzeExpression(printStmt->expr);
@@ -65,7 +51,7 @@ void SemanticAnalyzer::analyzeDeclaration(Declaration* decl){
             throw std::runtime_error("Variable cannot have void type");
         }
         symbolTable.declareVariable(varDecl->varName, static_cast<VarType>(varDecl->type));
-        
+
     } else if(auto * funcDecl = dynamic_cast<FunctionDeclaration*>(decl)){
         try {
             symbolTable.lookupVariable(funcDecl->name);
@@ -95,8 +81,16 @@ void SemanticAnalyzer::checkType(Expression* expr, VarType expectedType){
 }
 
 void SemanticAnalyzer::analyze(ASTNode* root){
-    if(root){
-        analyzeNode(root);
+    if (auto* program = dynamic_cast<Program*>(root)) {
+        for (auto* n : program->nodes) {
+            analyzeNode(n);
+        }
+    } else if (auto* declaration = dynamic_cast<Declaration*>(root)) {
+        analyzeDeclaration(declaration);
+    } else if (auto* statement = dynamic_cast<Statement*>(root)) {
+        analyzeStatement(statement);
+    } else if (auto* expression = dynamic_cast<Expression*>(root)) {
+        analyzeExpression(expression);
     }
 }
 
