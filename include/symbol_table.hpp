@@ -4,12 +4,21 @@
 #include<string>
 #include<unordered_map>
 
+enum class VarType {
+    Purna,  // Integer
+    Dasa,   // Float
+    Akshar, // Character
+    Paath,  // String
+    Khali,  // Void for functions
+    Thik_Bethik // Boolean
+};
+
 class SymbolTable{
-    std::unordered_map<std::string, std::string> table;
+    std::unordered_map<std::string, VarType> table;
 
     public:
-        void declareVariable(const std::string& name, const std::string& type);
-        std::string lookupVariable(const std::string& name);
+        void declareVariable(const std::string& name, VarType type);
+        VarType lookupVariable(const std::string& name);
 };
 
 #endif SYMBOL_TABLE_H
