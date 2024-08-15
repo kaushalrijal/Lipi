@@ -76,8 +76,46 @@ void SemanticAnalyzer::analyzeDeclaration(Declaration* decl){
     }
 }
 
-void SemanticAnalyzer::checkType(Expression* expr, VarType expectedType){
+std::string varTypeToString(VarType type) {
+    switch (type) {
+        case VarType::Purna:
+            return "Purna (Integer)";
+        case VarType::Dasa:
+            return "Dasa (Float)";
+        case VarType::Akshar:
+            return "Akshar (Character)";
+        case VarType::Paath:
+            return "Paath (String)";
+        case VarType::Thik_Bethik:
+            return "Thik/Bethik (Boolean)";
+        case VarType::Khali:
+            return "Khali (Void)";
+        default:
+            return "Unknown Type";
+    }
+}
 
+void SemanticAnalyzer::checkType(Expression* expr, VarType expectedType){
+    VarType actualType;
+    if (auto* varExpr = dynamic_cast<Variable*>(expr)) {
+        actualType = symbolTable.lookupVariable(varExpr->name);
+    } else if (auto* intLiteral = dynamic_cast<IntegerLiteral*>(expr)) {
+        actualType = VarType::Purna;
+    } else if (auto* floatLiteral = dynamic_cast<FloatLiteral*>(expr)) {
+        actualType = VarType::Dasa;
+    } else if (auto* stringLiteral = dynamic_cast<StringLiteral*>(expr)) {
+        actualType = VarType::Paath;
+    } else if (auto* charLiteral = dynamic_cast<CharacterLiteral*>(expr)) {
+        actualType = VarType::Akshar;
+    } else if (auto* boolLiteral = dynamic_cast<BooleanLiteral*>(expr)) {
+        actualType = VarType::Thik_Bethik;
+    } else {
+        throw std::runtime_error("Unknown expression type in type check");
+    }
+
+    if (actualType != expectedType) {
+        throw std::runtime_error("Type mismatch: Expected " + varTypeToString(expectedType) + ", got " + varTypeToString(actualType));
+    }
 }
 
 void SemanticAnalyzer::analyze(ASTNode* root){
