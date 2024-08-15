@@ -21,4 +21,4 @@ class SymbolTable{
         VarType lookupVariable(const std::string& name);
 };
 
-#endif SYMBOL_TABLE_H
+#endif

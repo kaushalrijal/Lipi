@@ -62,8 +62,10 @@ ASTNode* Parser::parsePrimaryExpression(){
     } else if (match(FALSE)) {
         consumeToken();
         return new BooleanLiteral(false);
+    } else{
+        throw std::runtime_error("Unexpected token in primary expression.");
     }
-    throw std::runtime_error("Unexpected token in primary expression.");
+    return nullptr;
 }
 
 Expression* Parser::parseUnaryExpression(){
@@ -75,7 +77,7 @@ Expression* Parser::parseUnaryExpression(){
 
         return new UnaryOperation(operand, op.type == SUB ? UnaryOperation::NEG : UnaryOperation::NOT);
     }
-    parsePrimaryExpression();
+    return dynamic_cast<Expression*>(parsePrimaryExpression());
 }
 
 int getPrecedence(TokenType type){
@@ -131,7 +133,7 @@ Expression* Parser::parseBinaryExpression(int precedence = 0){
 
 // Methods for parsing
 ASTNode* Parser::parseExpression(){
-    parseBinaryExpression();
+    return parseBinaryExpression();
 }
 
 ASTNode* Parser::parseStatement(){
