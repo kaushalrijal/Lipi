@@ -121,7 +121,7 @@ void SemanticAnalyzer::checkType(Expression* expr, VarType expectedType){
 void SemanticAnalyzer::analyze(ASTNode* root){
     if (auto* program = dynamic_cast<Program*>(root)) {
         for (auto* n : program->nodes) {
-            analyzeNode(n);
+            analyze(n);
         }
     } else if (auto* declaration = dynamic_cast<Declaration*>(root)) {
         analyzeDeclaration(declaration);
