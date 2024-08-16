@@ -2,11 +2,12 @@ Here's the documentation formatted for a README file:
 
 ---
 
-# Custom Compiler Documentation
+# LIPI
+LIPI is known as a custom compiler.The word LIPI is come from the LIPI Patra i.e. Script in english. 
 
 ## Overview
 
-This document provides an overview of the grammar used in the custom compiler. The grammar is designed to define the structure and syntax of a programming language that is being developed.
+This document provides an overview of the grammar used in the LIPI. The grammar is designed to define the structure and syntax of a programming language that is being developed.
 
 ## Grammar Structure
 
