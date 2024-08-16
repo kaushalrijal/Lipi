@@ -139,7 +139,3 @@ A statement in the program can be one of several types:
   ```
 
 ---
-
-Copy and paste this into your `README.md` file, and it will serve as the documentation for your custom compiler.
-
-Let me know if you need any further adjustments!
