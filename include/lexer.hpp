@@ -24,4 +24,6 @@ public:
     std::vector<Token> tokenize();
 };
 
+void printToken(Token);
+
 #endif

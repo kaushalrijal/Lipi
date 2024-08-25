@@ -40,7 +40,7 @@ public:
 
     Program(const std::vector<ASTNode*>& nodes) : nodes(nodes) {}
 
-    void print(){}
+    void print();
     
     ~Program() {
         for (auto node : nodes) {
@@ -54,35 +54,35 @@ class IntegerLiteral : public Expression {
 public:
     int value;
     IntegerLiteral(int val) : value(val) {}
-    void print(){}
+    void print();
 };
 
 class FloatLiteral : public Expression {
 public:
     float value;
     FloatLiteral(float val) : value(val) {}
-    void print(){}
+    void print();
 };
 
 class CharacterLiteral : public Expression {
 public:
     char value;
     CharacterLiteral(char val) : value(val) {}
-    void print(){};
+    void print();;
 };
 
 class StringLiteral : public Expression {
 public:
     std::string value;
     StringLiteral(const std::string& val) : value(val) {}
-    void print(){};
+    void print();;
 };
 
 class BooleanLiteral : public Expression {
 public:
     bool value; // true for thik, false for bethik
     BooleanLiteral(bool val) : value(val) {}
-    void print(){};
+    void print();;
 };
 
 // Variable expression
@@ -90,7 +90,7 @@ class Variable : public Expression {
 public:
     std::string name;
     Variable(const std::string& name) : name(name) {}
-    void print(){}
+    void print();
 };
 
 // Binary operations
@@ -103,7 +103,7 @@ public:
 
     BinaryOperation(Expression* l, Expression* r, OpType op) : left(l), right(r), op(op) {}
     
-    void print(){};
+    void print();;
 
     ~BinaryOperation() { delete left; delete right; }
 };
@@ -115,7 +115,7 @@ public:
     Expression* expr;
     UnaryOperation(Expression* e, OpType opt) : expr(e), op(opt) {}
 
-    void print(){}
+    void print();
 
     ~UnaryOperation() { delete expr; }
 };
@@ -126,7 +126,7 @@ public:
     Expression* expr;
     PrintStatement(Expression* e) : expr(e) {}
 
-    void print(){}
+    void print();
 
     ~PrintStatement() { delete expr; }
 };
@@ -136,7 +136,7 @@ public:
     std::string varName; 
     InputStatement(const std::string& name) : varName(name) {}
 
-    void print(){}
+    void print();
 
     ~InputStatement() = default;
 };
@@ -147,7 +147,7 @@ public:
     Expression* expr;
     AssignmentStatement(const std::string& name, Expression* e) : varName(name), expr(e) {}
 
-    void print(){}
+    void print();
 
     ~AssignmentStatement() { delete expr; }
 };
@@ -162,7 +162,7 @@ public:
     IfStatement(Expression* cond, Statement* thenStmt, Statement* elseStmt = nullptr)
         : condition(cond), thenBranch(thenStmt), elseBranch(elseStmt) {}
 
-    void print(){}
+    void print();
 
     ~IfStatement() {
         delete condition;
@@ -179,7 +179,7 @@ public:
     WhileStatement(Expression* cond, Statement* bodyStmt)
         : condition(cond), body(bodyStmt) {}
 
-    void print(){}
+    void print();
 
     ~WhileStatement() {
         delete condition;
@@ -197,7 +197,7 @@ public:
     ForStatement(Statement* initStmt, Expression* condExpr, Expression* incrExpr, Statement* bodyStmt)
         : initializer(initStmt), condition(condExpr), increment(incrExpr), body(bodyStmt) {}
 
-    void print(){}
+    void print();
 
     ~ForStatement() {
         delete initializer;
@@ -214,7 +214,7 @@ public:
 
     BlockStatement(const std::vector<Statement*>& stmts) : statements(stmts) {}
 
-    void print(){}
+    void print();
 
     ~BlockStatement() {
         for (auto stmt : statements) {
@@ -232,7 +232,7 @@ public:
     std::string varName;
     VariableDeclaration(Type t, const std::string& name) : type(t), varName(name) {}
 
-    void print(){}
+    void print();
 };
 
 // Function Declaration
@@ -244,7 +244,7 @@ public:
     FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType)
         : name(name), parameters(params), returnType(returnType) {}
 
-    void print(){}
+    void print();
 
     ~FunctionDeclaration() { 
         for (auto param : parameters) delete param;

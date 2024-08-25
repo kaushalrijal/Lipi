@@ -25,11 +25,20 @@ int main(int argc, char** argv){
 
     std::cout << code << std::endl;
 
+    try{
+
     Lexer lexer(code);
     std::vector<Token> tokens = lexer.tokenize();
 
+    std::cout << "This should printing before initialization of parser\n";
+
     Parser parser(tokens);
+
+    std::cout << "This should print before parse function is called\n";
     ASTNode* root = parser.parse();
+
+    std::cout << "This should print after the parse function!";
+    root->print();
 
     SemanticAnalyzer semanticAnalyzer;
     semanticAnalyzer.analyze(root);
@@ -38,6 +47,10 @@ int main(int argc, char** argv){
     std::string gen = codeGenerator.generate(root);
 
     std::cout << "Generated Code:\n" << gen << std::endl;
+
+    } catch(std::runtime_error){
+        std::cout << "someone threw a fucking runtime error!\n";
+    }
 
     return 0;
 }

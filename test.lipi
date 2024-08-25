@@ -1,6 +1,1 @@
 bhana("Hello world");
-
-purna x = 5;
-dasa y = 6.9;
-
-bhana(x + y);
