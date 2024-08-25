@@ -2,3 +2,10 @@
 **/.vscode
 **/tempCodeRunnerFile
 notes.txt
+build/
+**/*.obj
+*.o
+*.i
+*.s
+*.log
+*.tmp
