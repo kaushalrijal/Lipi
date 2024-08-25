@@ -4,8 +4,9 @@
 #include <sstream>
 
 #include "lexer.hpp"
-// #include "parser.hpp"
-// #include "semantic_analyzer.hpp"
+#include "parser.hpp"
+#include "semantic_analyzer.hpp"
+#include "code_generator.hpp"
 
 int main(int argc, char** argv){
     if(argc<2){
@@ -24,6 +25,19 @@ int main(int argc, char** argv){
 
     std::cout << code << std::endl;
 
+    Lexer lexer(code);
+    std::vector<Token> tokens = lexer.tokenize();
+
+    Parser parser(tokens);
+    ASTNode* root = parser.parse();
+
+    SemanticAnalyzer semanticAnalyzer;
+    semanticAnalyzer.analyze(root);
+
+    CodeGenerator codeGenerator;
+    std::string gen = codeGenerator.generate(root);
+
+    std::cout << "Generated Code:\n" << gen << std::endl;
 
     return 0;
 }
