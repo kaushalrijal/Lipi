@@ -5,23 +5,55 @@ std::string CodeGenerator::generate(ASTNode* root){
     std::string code = "#include <iostream>\n\nint main(){\n";
 
     for(auto node : program->nodes){
-        Statement* stmt = dynamic_cast<Statement*>(node);
-        if(stmt){
-            code += generateStatement(stmt) + "\n";
+        if (auto stmt = dynamic_cast<Statement*>(node)) {
+            code += generateStatement(stmt);
+        } else if (auto decl = dynamic_cast<Declaration*>(node)) {
+            code += generateDeclaration(decl); 
         }
     }
 
-    code += "return 0;\n";
+    code += "return 0;\n}";
     return code;
 }
 
 std::string CodeGenerator::generateStatement(Statement *stmt){
-    if(auto printStmt = dynamic_cast<PrintStatement*>(stmt)){
-        return "std::cout << " + generateExpression(printStmt->expr) + ";";
-    } else if (auto assignStmt = dynamic_cast<AssignmentStatement* >(stmt)){
-        return assignStmt->varName + "=" + generateExpression(assignStmt->expr) + ";";
-    } else if (auto inputStmt = dynamic_cast<InputStatement* >(stmt)){
-        return "cin >> " + inputStmt->varName + ";";
+    if(auto printStmt = dynamic_cast<PrintStatement*>(stmt)){   // Generate print statement
+        return "std::cout << " + generateExpression(printStmt->expr) + ";\n";
+    } else if (auto assignStmt = dynamic_cast<AssignmentStatement* >(stmt)){ // assignment statement
+        return assignStmt->varName + "=" + generateExpression(assignStmt->expr) + ";\n";
+    } else if (auto inputStmt = dynamic_cast<InputStatement* >(stmt)){  // imput statement
+        return "std::cin >> " + inputStmt->varName + ";\n";
+    } else if (auto ifStmt = dynamic_cast<IfStatement* >(stmt)){
+        std::string code = "if (";
+        code += generateExpression(ifStmt->condition);
+        code += ") {\n";
+        code += generateStatement(ifStmt->thenBranch);
+        code += "}\n";
+        if(ifStmt->elseBranch){
+            code += "else {\n";
+            code += generateStatement(ifStmt->elseBranch);
+            code += "}\n";
+        }
+
+        return code;
+    } else if (auto whileStmt = dynamic_cast<WhileStatement* >(stmt)){
+        std::string code;
+        code += "while (";
+        code += generateExpression(whileStmt->condition);  // Generate the condition expression
+        code += ") {\n";
+        code += generateStatement(whileStmt->body);  // Generate the body of the loop
+        code += "}\n";
+
+        return code;
+    } else if (auto blockStmt = dynamic_cast<BlockStatement*>(stmt)) {
+        std::string code = "{\n";
+        for (auto& s : blockStmt->statements) {
+            code += generateStatement(s);  // Generate all statements inside the block
+        }
+        code += "}\n";
+        return code;
+    } else if (auto declStmt = dynamic_cast<Declaration *>(stmt)){
+        return generateDeclaration(declStmt);
     }
 
     return "";
@@ -76,6 +108,22 @@ std::string CodeGenerator::generateExpression(Expression *expr){
     return "";
 }
 
-std::string CodeGenerator::generateDeclaration(Declaration *){
-    
+std::string CodeGenerator::generateDeclaration(Declaration *decl){
+    if(auto varDecl = dynamic_cast<VariableDeclaration *>(decl)){
+        switch(varDecl->type){
+            case VariableDeclaration::INT:
+                return "int " + varDecl->varName + ";\n";
+            case VariableDeclaration::FLOAT:
+                return "float " + varDecl->varName + ";\n";
+            case VariableDeclaration::CHAR:
+                return "char " + varDecl->varName + ";\n";
+            case VariableDeclaration::STRING:
+                return "std::string " + varDecl->varName + ";\n";
+            case VariableDeclaration::VOID:
+                break;
+            default:
+                break;
+        }
+    }
+    return "";
 }
