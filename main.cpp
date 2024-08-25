@@ -1,32 +1,29 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
+#include <sstream>
 
-
+#include "lexer.hpp"
+// #include "parser.hpp"
+// #include "semantic_analyzer.hpp"
 
 int main(int argc, char** argv){
-    // if(argc<2){
-    //     std::cerr << "Arguments list cannot be empty.";
-    // }
+    if(argc<2){
+        std::cerr << "Arguments list cannot be empty.";
+    }
     
-    // std::ifstream inf(argv[1]);
+    std::ifstream inf(argv[1]);
 
-    // if(inf.fail()){
-    //     std::cerr << "Failed to open file " << argv[1];
-    // }
+    if(inf.fail()){
+        std::cerr << "Failed to open file " << argv[1];
+    }
 
-    // char ch[1000];
+    std::stringstream buffer;
+    buffer << inf.rdbuf();
+    std::string code = buffer.str();
 
-    // std::string code;
-    
-    // while(inf.eof()!=true){
-    //     inf.getline(ch, 1000);
-    //     code.append(ch);
-    // } 
+    std::cout << code << std::endl;
 
-    // cout << code;
-
-    std::cout << "ITs' workign";
 
     return 0;
 }
