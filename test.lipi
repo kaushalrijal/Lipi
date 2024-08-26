@@ -1,2 +1,9 @@
 purna x;
-x = 5;
+
+suna(x);
+
+yadi (x == 5){
+    bhana("x is greater than 5");
+} anyatha {
+    bhana("x is not greater than 5");
+}

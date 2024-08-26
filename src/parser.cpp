@@ -28,6 +28,7 @@ bool Parser::check(TokenType type) {
 
 // Checks if the current token matches specific type
 bool Parser::match(TokenType type) {
+    std::cout << "matching token " << printTokenType(type) << std::endl;
     if (currentToken().type == type) {
         consumeToken();
         return true;
@@ -159,8 +160,8 @@ ASTNode* Parser::parseStatement(){
     } 
     else if(match(INPUT)){ // Input Statement
         expect(LPAREN);
-        expect(ID);
         std::string vName = currentToken().value;
+        expect(ID);
         expect(RPAREN);
         expect(END);
         return new InputStatement(vName);
@@ -188,12 +189,11 @@ ASTNode* Parser::parseStatement(){
         Expression* condition = dynamic_cast<Expression*>(parseExpression());
         
         expect(RPAREN);
-        
         Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
+        std::cout << "then block executed succesfully" << std::endl;
         Statement* elseBranch = nullptr;
-
+        printToken(currentToken());
         if(match(ELSE)){
-            consumeToken();
             elseBranch = dynamic_cast<Statement*>(parseStatement());
         }
 
