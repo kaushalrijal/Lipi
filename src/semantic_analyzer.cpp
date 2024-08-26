@@ -23,7 +23,7 @@ void SemanticAnalyzer::analyzeStatement(Statement *stmt){
         }
         analyzeExpression(forStmt->condition);
         if (forStmt->increment) {
-            analyzeExpression(forStmt->increment);
+            analyzeStatement(forStmt->increment);
         }
         analyzeStatement(forStmt->body);
     } else if (auto* blockStmt = dynamic_cast<BlockStatement*>(stmt)) {

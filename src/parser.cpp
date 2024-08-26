@@ -95,18 +95,27 @@ Expression* Parser::parseUnaryExpression(){
 
 int getPrecedence(TokenType type){
     switch (type) {
-        case ADD:
-        case SUB:
-            return 1;
-        case MUL:
-        case DIV:
-        case MOD:
-            return 2;
-        case EQ:
-        case NEQ:
+        case OR:         
             return 0;
+        case AND:        
+            return 1;
+        case EQ:         
+        case NEQ:        
+            return 2;
+        case LT:         
+        case GT:         
+        case LE:         
+        case GE:         
+            return 3;
+        case ADD:        
+        case SUB:        
+            return 4;
+        case MUL:        
+        case DIV:        
+        case MOD:        
+            return 5;
         default:
-            return -1;
+            return -1;  // unknown operator
     }
 }
 
@@ -119,6 +128,12 @@ BinaryOperation::OpType getBinaryOpType(TokenType type) {
         case MOD: return BinaryOperation::MOD;
         case EQ: return BinaryOperation::EQ;
         case NEQ: return BinaryOperation::NEQ;
+        case LT: return BinaryOperation::LT;
+        case GT: return BinaryOperation::GT;
+        case LE: return BinaryOperation::LE;
+        case GE: return BinaryOperation::GE;
+        case AND: return BinaryOperation::AND;
+        case OR: return BinaryOperation::OR;
         default:
             throw std::runtime_error("Unknown binary operator type");
     }
@@ -190,7 +205,6 @@ ASTNode* Parser::parseStatement(){
         
         expect(RPAREN);
         Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
-        std::cout << "then block executed succesfully" << std::endl;
         Statement* elseBranch = nullptr;
         printToken(currentToken());
         if(match(ELSE)){
@@ -211,16 +225,34 @@ ASTNode* Parser::parseStatement(){
         return new WhileStatement(condition, body);
     }
     else if(match(FOR)){
-        consumeToken();
         expect(LPAREN);
 
         Statement* initializer = dynamic_cast<Statement *>(parseStatement());
-        Expression* condition = dynamic_cast<Expression *>(parseExpression());
-        expect(END);
-        Expression* increment = dynamic_cast<Expression *>(parseExpression());
-        expect(RPAREN);
-        Statement* body = dynamic_cast<Statement *>(parseStatement());
+        if (!initializer) {
+            throw std::runtime_error("Failed to parse initializer in for loop");
+        }
+        std::cout << "initialization successful" << std::endl;
 
+        Expression* condition = dynamic_cast<Expression *>(parseExpression());
+        if (!condition) {
+            throw std::runtime_error("Failed to parse condition in for loop");
+        }
+        std::cout << "condition successful" << std::endl;
+
+        expect(END);
+
+        Statement* increment = dynamic_cast<Statement *>(parseStatement());
+        if (!increment) {
+            throw std::runtime_error("Failed to parse increment in for loop");
+        }
+
+        expect(RPAREN);
+
+        Statement* body = dynamic_cast<Statement *>(parseStatement());
+        if (!body) {
+            throw std::runtime_error("Failed to parse body in for loop");
+        }
+        
         return new ForStatement(initializer, condition, increment, body);
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
@@ -292,7 +324,6 @@ VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
 }
 
 ASTNode* Parser::parseDeclaration(){
-    std::cout << "this is inside the declaration function---------" << std::endl;
     TokenType typeT = currentToken().type;
     printToken(currentToken());
 
@@ -302,7 +333,6 @@ ASTNode* Parser::parseDeclaration(){
         std::string varName = currentToken().value;
         expect(ID);
         expect(END);
-        std::cout << "variable declaration complete:::::::::::::::::::" << std::endl;
         VariableDeclaration::Type varType = mapTokenTypeToVarType(varTypeToken);
         return new VariableDeclaration(varType, varName);
     } else if(typeT == FUNC_DEF){

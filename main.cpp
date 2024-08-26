@@ -33,9 +33,7 @@ int main(int argc, char** argv){
     for(auto token : tokens){
         printToken(token);
     }
-
-    std::cout << "This should printing before initialization of parser\n";
-
+    
     Parser parser(tokens);
 
     std::cout << "This should print before parse function is called\n";

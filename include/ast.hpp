@@ -191,10 +191,10 @@ class ForStatement : public Statement {
 public:
     Statement* initializer;
     Expression* condition;
-    Expression* increment;
+    Statement* increment;
     Statement* body;
 
-    ForStatement(Statement* initStmt, Expression* condExpr, Expression* incrExpr, Statement* bodyStmt)
+    ForStatement(Statement* initStmt, Expression* condExpr, Statement* incrExpr, Statement* bodyStmt)
         : initializer(initStmt), condition(condExpr), increment(incrExpr), body(bodyStmt) {}
 
     void print();
