@@ -30,6 +30,10 @@ int main(int argc, char** argv){
     Lexer lexer(code);
     std::vector<Token> tokens = lexer.tokenize();
 
+    for(auto token : tokens){
+        printToken(token);
+    }
+
     std::cout << "This should printing before initialization of parser\n";
 
     Parser parser(tokens);

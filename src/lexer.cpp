@@ -49,7 +49,7 @@ void printToken(Token token){
     std::cout << typeStr << ": " << token.value << std::endl;
 }
 
-void printTokenType(TokenType type){
+std::string printTokenType(TokenType type){
     std::string typeStr;
     switch (type) {
         case TokenType::PRINT: typeStr = "PRINT"; break;
@@ -90,7 +90,7 @@ void printTokenType(TokenType type){
         case TokenType::MISMATCH: typeStr = "MISMATCH"; break;
         case TokenType::END_OF_FILE: typeStr = "END OF FILE"; break;
     }
-    std::cout << typeStr << std::endl;
+    return typeStr;
 }
 
 std::vector<Token> Lexer::tokenize(){
@@ -116,7 +116,6 @@ std::vector<Token> Lexer::tokenize(){
         {STRING, std::regex("\"[^\"]*\"")},
         {CHAR, std::regex("'[^']'")},
         {ID, std::regex("[a-zA-Z_][a-zA-Z0-9_]*")},
-        {ASSIGN, std::regex("=")},
         {END, std::regex(";")},
         {LPAREN, std::regex("\\(")},
         {RPAREN, std::regex("\\)")},
@@ -136,6 +135,7 @@ std::vector<Token> Lexer::tokenize(){
         {GT, std::regex(">")},
         {LE, std::regex("<=")},
         {GE, std::regex(">=")},
+        {ASSIGN, std::regex("=")},
         {NOT, std::regex("!")},
         {SKIP, std::regex("[ \t]+")},
         {NEWLINE, std::regex("\n")},

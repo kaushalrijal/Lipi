@@ -26,6 +26,6 @@ public:
 
 void printToken(Token);
 
-void printTokenType(TokenType);
+std::string printTokenType(TokenType);
 
 #endif

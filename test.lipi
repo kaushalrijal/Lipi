@@ -1,1 +1,3 @@
-bhana("Hello world");
+jabasamma(x == 5){
+    bhana("hello world");
+}

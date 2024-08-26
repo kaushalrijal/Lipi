@@ -32,13 +32,17 @@ bool Parser::match(TokenType type) {
         consumeToken();
         return true;
     }
-    return false;
+    // Skip NEWLINE tokens
+    while (currentToken().type == TokenType::NEWLINE) {
+        consumeToken();
+    }
+    return currentToken().type == type;
 }
 
 // Check if the tokens matches a specific type and consume it. 
 void Parser::expect(TokenType type) {
     if (!match(type)) {
-        throw std::runtime_error("Unexpected token type");
+        throw std::runtime_error("Unexpected token type: " + printTokenType(type));;
     }
 }
 
@@ -145,6 +149,7 @@ ASTNode* Parser::parseExpression(){
 }
 
 ASTNode* Parser::parseStatement(){
+    printToken(currentToken());
     if(match(PRINT)){ // Print Statement
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
@@ -178,7 +183,6 @@ ASTNode* Parser::parseStatement(){
         return new AssignmentStatement(varName, expr);
     } 
     else if (match(IF)){
-        consumeToken();
         expect(LPAREN);
 
         Expression* condition = dynamic_cast<Expression*>(parseExpression());
@@ -196,7 +200,6 @@ ASTNode* Parser::parseStatement(){
         return new IfStatement(condition, thenBranch, elseBranch);
     }
     else if(match(WHILE)){
-        consumeToken();
         expect(LPAREN);
 
         Expression* condition = dynamic_cast<Expression *>(parseExpression());
@@ -275,6 +278,7 @@ ASTNode* Parser::parseFunctionDeclaration(){
 
 ASTNode* Parser::parseDeclaration(){
     TokenType typeT = currentToken().type;
+    printToken(currentToken());
 
     if(typeT == TYPE){
         expect(TYPE);
