@@ -49,6 +49,50 @@ void printToken(Token token){
     std::cout << typeStr << ": " << token.value << std::endl;
 }
 
+void printTokenType(TokenType type){
+    std::string typeStr;
+    switch (type) {
+        case TokenType::PRINT: typeStr = "PRINT"; break;
+        case TokenType::INPUT: typeStr = "INPUT"; break;
+        case TokenType::TYPE: typeStr = "TYPE"; break;
+        case TokenType::IF: typeStr = "IF"; break;
+        case TokenType::ELSE: typeStr = "ELSE"; break;
+        case TokenType::WHILE: typeStr = "WHILE"; break;
+        case TokenType::FOR: typeStr = "FOR"; break;
+        case TokenType::FUNC_DEF: typeStr = "FUNC_DEF"; break;
+        case TokenType::RETURN: typeStr = "RETURN"; break;
+        case TokenType::NUMBER: typeStr = "NUMBER"; break;
+        case TokenType::STRING: typeStr = "STRING"; break;
+        case TokenType::CHAR: typeStr = "CHAR"; break;
+        case TokenType::ID: typeStr = "ID"; break;
+        case TokenType::ASSIGN: typeStr = "ASSIGN"; break;
+        case TokenType::END: typeStr = "END"; break;
+        case TokenType::LPAREN: typeStr = "LPAREN"; break;
+        case TokenType::RPAREN: typeStr = "RPAREN"; break;
+        case TokenType::LBRACE: typeStr = "LBRACE"; break;
+        case TokenType::RBRACE: typeStr = "RBRACE"; break;
+        case TokenType::ADD: typeStr =  "+"; break;
+        case TokenType::SUB: typeStr =  "-"; break;
+        case TokenType::MUL: typeStr =  "*"; break;
+        case TokenType::DIV: typeStr =  "/"; break;
+        case TokenType::MOD: typeStr =  "%"; break;
+        case TokenType::AND: typeStr =  "&&"; break;
+        case TokenType::OR: typeStr =  "||"; break;
+        case TokenType::EQ: typeStr =  "=="; break;
+        case TokenType::NEQ: typeStr =  "!="; break;
+        case TokenType::LT: typeStr =  "<"; break;
+        case TokenType::GT: typeStr =  ">"; break;
+        case TokenType::LE: typeStr =  "<="; break;
+        case TokenType::GE: typeStr =  ">="; break;
+
+        case TokenType::SKIP: typeStr = "SKIP"; break;
+        case TokenType::NEWLINE: typeStr = "NEWLINE"; break;
+        case TokenType::MISMATCH: typeStr = "MISMATCH"; break;
+        case TokenType::END_OF_FILE: typeStr = "END OF FILE"; break;
+    }
+    std::cout << typeStr << std::endl;
+}
+
 std::vector<Token> Lexer::tokenize(){
     std::vector<Token> tokens;
     std::string::const_iterator start = input.begin();
@@ -117,6 +161,9 @@ std::vector<Token> Lexer::tokenize(){
             throw std::runtime_error("Unexpected character: " + std::string(1, *start));
         }
     }
+
+    
+    tokens.push_back({END_OF_FILE, "END OF FILE"});
 
     return tokens;
 }

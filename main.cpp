@@ -48,8 +48,8 @@ int main(int argc, char** argv){
 
     std::cout << "Generated Code:\n" << gen << std::endl;
 
-    } catch(std::runtime_error){
-        std::cout << "someone threw a fucking runtime error!\n";
+    } catch(std::exception &e){
+        std::cout << e.what();
     }
 
     return 0;

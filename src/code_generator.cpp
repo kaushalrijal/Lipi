@@ -66,7 +66,7 @@ std::string CodeGenerator::generateExpression(Expression *expr){
     } else if (auto floatLiteral = dynamic_cast<FloatLiteral*>(expr)) { // float literals
         return std::to_string(floatLiteral->value);
     } else if (auto stringLiteral = dynamic_cast<StringLiteral*>(expr)) { // strings
-        return "\"" + stringLiteral->value + "\"";
+        return stringLiteral->value;
     } else if (auto charLiteral = dynamic_cast<CharacterLiteral*>(expr)) { // characters
         return "'" + std::string(1, charLiteral->value) + "'";
     } else if (auto boolLiteral = dynamic_cast<BooleanLiteral*>(expr)) {

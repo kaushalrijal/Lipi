@@ -1,3 +1,4 @@
+#include <iostream>
 #include "parser.hpp"
 #include <stdexcept>
 
@@ -8,7 +9,7 @@ Token& Parser::currentToken(){
     if(current>=tokens.size()){
         throw std::runtime_error("No more tokens");
     }
-    return tokens[current+1];
+    return tokens[current];
 }
 
 // Move to next token
@@ -16,6 +17,13 @@ void Parser::consumeToken() {
     if (current < tokens.size()) {
         ++current;
     }
+}
+
+bool Parser::check(TokenType type) {
+    if(currentToken().type == type){
+        return true;
+    }
+    return false;
 }
 
 // Checks if the current token matches specific type
@@ -35,31 +43,31 @@ void Parser::expect(TokenType type) {
 }
 
 ASTNode* Parser::parsePrimaryExpression(){
-    if(match(NUMBER)){
+    if(check(NUMBER)){
         int value = std::stoi(currentToken().value);
         consumeToken();
         return new IntegerLiteral(value);
-    } else if (match(STRING)){
+    } else if (check(STRING)){
         std::string value = currentToken().value;
         consumeToken();
         return new StringLiteral(value);
-    } else if (match(ID)){
+    } else if (check(ID)){
         std::string name = currentToken().value;
         consumeToken();
         return new Variable(name);
-    } else if (match(CHAR)){
+    } else if (check(CHAR)){
         char value = currentToken().value[1];
         consumeToken();
         return new CharacterLiteral(value);
-    } else if (match(LPAREN)){
+    } else if (check(LPAREN)){
         consumeToken(); // Consume '('
         ASTNode* expression = parseExpression();
         expect(RPAREN);
         return expression;
-    } else if (match(TRUE)) {
+    } else if (check(TRUE)) {
         consumeToken();
         return new BooleanLiteral(true);
-    } else if (match(FALSE)) {
+    } else if (check(FALSE)) {
         consumeToken();
         return new BooleanLiteral(false);
     } else{
@@ -286,10 +294,10 @@ ASTNode* Parser::parseDeclaration(){
 ASTNode* Parser::parse(){
     std::vector<ASTNode*> nodes;
 
-    while(!match(END_OF_FILE)){
-        if(match(TokenType::FUNC_DEF)){
+    while(!check(END_OF_FILE)){
+        if(check(TokenType::FUNC_DEF)){
             nodes.push_back(parseFunctionDeclaration());
-        } else if (match(TYPE) || match(ID)){
+        } else if (check(TYPE) || check(ID)){
             nodes.push_back(parseDeclaration());
         } else {
             nodes.push_back(parseStatement());

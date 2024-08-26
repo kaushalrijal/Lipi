@@ -26,4 +26,6 @@ public:
 
 void printToken(Token);
 
+void printTokenType(TokenType);
+
 #endif
