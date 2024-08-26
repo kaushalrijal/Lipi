@@ -1,3 +1,2 @@
-jabasamma(x == 5){
-    bhana("hello world");
-}
+purna x;
+x = 5;

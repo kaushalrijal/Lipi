@@ -174,7 +174,7 @@ ASTNode* Parser::parseStatement(){
         expect(END); 
         return new AssignmentStatement(varName, expr); 
     } 
-    else if (match(ID)) { // Assignment statement for predeclared variables
+    else if (check(ID)) { // Assignment statement for predeclared variables
         std::string varName = currentToken().value;
         consumeToken();
         expect(ASSIGN);
@@ -275,19 +275,36 @@ ASTNode* Parser::parseFunctionDeclaration(){
     return new FunctionDeclaration(functionName, parameters, returnType);
 }
 
+VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
+    if (tokenType == "purna") {
+        return VariableDeclaration::INT;
+    } else if (tokenType == "dasa") {
+        return VariableDeclaration::FLOAT;
+    } else if (tokenType == "akshar") {
+        return VariableDeclaration::CHAR;
+    } else if (tokenType == "paath") {
+        return VariableDeclaration::STRING;
+    } else if (tokenType == "khali") {
+        return VariableDeclaration::VOID;
+    } else {
+        throw std::runtime_error("Unknown token type for variable declaration");
+    }
+}
 
 ASTNode* Parser::parseDeclaration(){
+    std::cout << "this is inside the declaration function---------" << std::endl;
     TokenType typeT = currentToken().type;
     printToken(currentToken());
 
     if(typeT == TYPE){
-        expect(TYPE);
-        TokenType varType = currentToken().type;
-        expect(ID);
+        std::string varTypeToken = currentToken().value;
+        consumeToken();
         std::string varName = currentToken().value;
+        expect(ID);
         expect(END);
-
-        return new VariableDeclaration(static_cast<VariableDeclaration::Type>(varType), varName);
+        std::cout << "variable declaration complete:::::::::::::::::::" << std::endl;
+        VariableDeclaration::Type varType = mapTokenTypeToVarType(varTypeToken);
+        return new VariableDeclaration(varType, varName);
     } else if(typeT == FUNC_DEF){
         return parseFunctionDeclaration();
     } else {
