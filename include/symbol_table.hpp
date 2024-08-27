@@ -13,6 +13,8 @@ enum class VarType {
     Thik_Bethik // Boolean
 };
 
+
+
 class SymbolTable{
     std::unordered_map<std::string, VarType> table;
 
