@@ -49,8 +49,8 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
         return code;
     } else if (auto blockStmt = dynamic_cast<BlockStatement*>(stmt)) {
         std::string code = "{\n";
-        for (auto& s : blockStmt->statements) {
-            code += generateStatement(s);  // Generate all statements inside the block
+        for (auto& s : blockStmt->nodes) {
+            code += generateStatement(dynamic_cast<Statement*>(s));  // Generate all statements inside the block
         }
         code += "}\n";
         return code;
