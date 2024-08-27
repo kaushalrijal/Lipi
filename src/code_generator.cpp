@@ -61,7 +61,7 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
     } else if (auto declStmt = dynamic_cast<Declaration *>(stmt)){
         return generateDeclaration(declStmt);
     } else if (auto returnStmt = dynamic_cast<ReturnStatement*>(stmt)) { // Return statement
-        return "return " + returnStmt->varName + ";\n";
+        return "return " + generateExpression(returnStmt->ret_expr) + ";\n";
     }
 
     return "";

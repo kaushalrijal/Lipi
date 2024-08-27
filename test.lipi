@@ -1,10 +1,1 @@
-
-purna y;
-
-suna(y);
-
-yadi(y == 5){
-    bhana("Hello world");
-    purna x;
-    x = 5;
-}
+firta 3.5;

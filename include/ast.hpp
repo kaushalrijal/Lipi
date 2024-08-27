@@ -225,8 +225,8 @@ public:
 
 class ReturnStatement : public Statement {
 public:
-    std::string varName;
-    ReturnStatement(std::string vName) : varName(vName) {}
+    Expression* ret_expr;
+    ReturnStatement(Expression* ret) : ret_expr(ret) {}
     void print();
 
 };

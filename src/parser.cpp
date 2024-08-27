@@ -296,13 +296,12 @@ ASTNode* Parser::parseStatement(bool isFun){
     }
     else if (match(TokenType::RETURN)){
         if(isFun){
-            throw std::runtime_error("You return from outside any functions");
+            throw std::runtime_error("You cannot return from outside any functions");
         }
-        std::string return_name = currentToken().value;
-        expect(ID);
+        Expression* expr = dynamic_cast<Expression*>(parseExpression());
         expect(END);
 
-        return new ReturnStatement(return_name);
+        return new ReturnStatement(expr);
     }
     else if (match(NEWLINE)){
         consumeToken();

@@ -105,7 +105,8 @@ void BlockStatement::print() {
 }
 
 void ReturnStatement::print() {
-    std::cout << "ReturnStatement: variable = " << varName << std::endl;
+    std::cout << "ReturnStatement: ";
+    ret_expr -> print();
 }
 
 // Function to print a variable declaration
