@@ -23,8 +23,8 @@
 
 <assignment_statement> ::= <identifier> "=" <expression>
 
-<if_statement> ::= "yadi" "(" <expression> ")" <block> 
-                 | "yadi" "(" <expression> ")" <block> "anyatha" <block>
+<if_statement> ::= "yadi" "(" <expression> ")" <block>
+                | "yadi" "(" <expression> ")" <block> "anyatha" <block>
 
 <while_statement> ::= "jabasamma" "(" <expression> ")" <block>
 
@@ -37,20 +37,35 @@
 <block> ::= "{" <statement_list> "}"
 
 <expression> ::= <term> { ("+" | "-" | "*" | "/") <term> }
-               | "thik"
-               | "bethik"
-               | <identifier>
-               | <number>
-               | <string>
-               | <character>
+              | "thik"
+              | "bethik"
+              | <identifier>
+              | <number>
+              | <string>
+              | <character>
+              | <logical_expression>
+              | <mod_expression>
+
+<logical_expression> ::= <logical_term> { ("&&" | "||" | "!") <logical_term> }
+
+<logical_term> ::= "(" <logical_expression> ")"
+                | "thik"
+                | "bethik"
+                | <identifier>
+                | <comparison>
+                | <mod_expression>
+
+<comparison> ::= <expression> ("==" | "!=" | "<" | "<=" | ">" | ">=") <expression>
+
+<mod_expression> ::= <expression> "%" <expression>
 
 <term> ::= <factor> { ("*" | "/") <factor> }
 
 <factor> ::= <identifier>
-           | <number>
-           | <string>
-           | <character>
-           | "(" <expression> ")"
+          | <number>
+          | <string>
+          | <character>
+          | "(" <expression> ")"
 
 <identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
 
