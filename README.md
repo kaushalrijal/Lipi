@@ -1,147 +1,298 @@
-<<<<<<< HEAD
-Here's the documentation formatted for a README file:
+# LIPI Documentation
 
----
+Welcome to the LIPI documentation! This guide will help you understand how to write and execute code in LIPI language.
 
-# LIPI
-LIPI is known as a custom compiler.The word LIPI is come from the LIPI Patra i.e. Script in english. 
-
-## Overview
-
-This document provides an overview of the grammar used in the LIPI. The grammar is designed to define the structure and syntax of a programming language that is being developed.
-
-## Grammar Structure
+## Basic Syntax
 
 ### Program Structure
 
-- **Program**: The starting point of the code is a `<program>`, which consists of a list of statements.
-  ```
-  <program> ::= <statement_list>
-  ```
+A program is a sequence of statements, each ending with a semicolon `;`.
 
-- **Statement List**: A `<statement_list>` can be one or more statements separated by semicolons (`;`).
-  ```
-  <statement_list> ::= <statement> ";" <statement_list> | <statement> ";"
-  ```
+```sh
+statement1;
+statement2;
+```
 
-### Statements
+## Keywords
 
-A statement in the program can be one of several types:
+The following keywords are reserved and cannot be used as identifiers:
 
-- **Print Statement**: Outputs the value of an expression.
-  ```
-  <print_statement> ::= "bhana" "(" <expression> ")"
-  ```
+  `bhana` `suna` `purna` `dasa` `akshar` `paath` `khali` `yadi` `anyatha` `jabasamma` `lagi` `kaam` `firta` `thik` `bethik`
 
-- **Input Statement**: Takes input and assigns it to an identifier.
-  ```
-  <input_statement> ::= "suna" "(" <identifier> ")"
-  ```
+## Statements
 
-- **Declaration Statement**: Declares a variable with a specific type and optionally assigns a value to it.
-  ```
-  <declaration_statement> ::= <type> <identifier> "=" <expression> | <type> <identifier>
-  ```
+### Print Statement
 
-- **Assignment Statement**: Assigns the value of an expression to an identifier.
-  ```
-  <assignment_statement> ::= <identifier> "=" <expression>
-  ```
+1. Use `bhana` to print a value or expression to the output.
 
-- **If Statement**: A conditional statement that executes a block of code if the condition is true. It can also have an `else` block.
-  ```
-  <if_statement> ::= "yadi" "(" <expression> ")" <block> | "yadi" "(" <expression> ")" <block> "anyatha" <block>
-  ```
+*Syntax:*
 
-- **While Statement**: A loop that continues to execute as long as the condition is true.
-  ```
-  <while_statement> ::= "jabasamma" "(" <expression> ")" <block>
-  ```
+```sh
+bhana(expression);
+```
 
-- **For Statement**: A loop that iterates a specific number of times, with initialization, condition, and iteration steps.
-  ```
-  <for_statement> ::= "lagi" "(" <declaration_statement> ";" <expression> ";" <assignment_statement> ")" <block>
-  ```
+*Example:*
 
-- **Function Definition**: Defines a function with a return type, name, parameters, and a block of code.
-  ```
-  <function_definition> ::= <type> "kaam" <identifier> "(" <parameter_list> ")" <block>
-  ```
+```sh
+bhana(5 + 3);  // Output: 8
+bhana("Hello, World!");  // Output: Hello, World!
+```
 
-- **Return Statement**: Returns a value from a function.
-  ```
-  <return_statement> ::= "firta" <expression>
-  ```
+### Input Statement
 
-### Blocks and Expressions
+2. Use `suna` to read a value from the user and store it in a variable.
 
-- **Block**: A block of code enclosed in curly braces `{}`, which can contain multiple statements.
-  ```
-  <block> ::= "{" <statement_list> "}"
-  ```
+*Syntax:*
 
-- **Expression**: Represents a value or a calculation, which can involve terms and operators.
-  ```
-  <expression> ::= <term> { ("+" | "-" | "*" | "/") <term> }
-                 | "thik"
-                 | "bethik"
-                 | <identifier>
-                 | <number>
-                 | <string>
-                 | <character>
-  ```
+```sh
+suna(variable_name);
+```
 
-- **Term**: A component of an expression, which can be a factor or involve multiplication/division.
-  ```
-  <term> ::= <factor> { ("*" | "/") <factor> }
-  ```
+*Example:*
 
-- **Factor**: The most basic unit in an expression, which can be an identifier, number, string, character, or another expression in parentheses.
-  ```
-  <factor> ::= <identifier>
-             | <number>
-             | <string>
-             | <character>
-             | "(" <expression> ")"
-  ```
+```sh
+purna name; // Declares an purna variable `name`
+suna(name);  // Reads input into the variable `name`
+bhana(name);  // Prints the value of the variable `name`
+```
 
-### Identifiers and Literals
+### Declaration Statement
 
-- **Identifier**: A name for a variable, function, or other entities in the program.
-  ```
-  <identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
-  ```
+3. Use to  a variable. You cannot initialize a variable at the time of declaration.
 
-- **Number**: A numeric literal, which can be an integer or a floating-point number.
-  ```
-  <number> ::= [0-9]+ | [0-9]*\.[0-9]+
-  ```
 
-- **String**: A sequence of characters enclosed in double quotes.
-  ```
-  <string> ::= '"' [^"]* '"'
-  ```
 
-- **Character**: A single character enclosed in single quotes.
-  ```
-  <character> ::= "'" [^'] "'"
-  ```
+*Syntax:*
 
-### Data Types
+```sh
+type variable_name;
+```
 
-- **Types**: The language supports several data types:
-  - `purna`: Integer type
-  - `dasa`: Floating-point type
-  - `akshar`: String type
-  - `paath`: Character type
-  - `khali`: Void type
-  ```
-  <type> ::= "purna" | "dasa" | "akshar" | "paath" | "khali"
-  ```
+*Examples:*
+
+```sh
+purna age;  // Declares an integer variable `age`
+dasa salary;  // Declares a decimal variable `salary`
+```
+
+### Assignment Statement
+
+4. Use your own `Identifier` to assign a value to an existing variable.
+
+*Syntax:*
+
+```sh
+variable_name = expression;
+```
+
+*Examples:*
+
+```sh
+age = 31;  // Assigns the value 31 to the variable `age`
+```
+
+### If Statement
+
+Use yadi to execute a block of code conditionally. You can include an anyatha block for the else condition.
+
+*Syntax:*
+
+```sh
+yadi(expression) {
+    // block of code
+} anyatha {
+    // else block of code
+}
+```
+
+*Examples:*
+
+```sh
+yadi(age > 18) {
+    bhana("Adult");
+} anyatha {
+    bhana("Minor");
+}
+```
+
+### While Statement
+
+Use jabasamma to repeat a block of code while a condition is true.
+
+*Syntax:*
+
+```sh
+jabasamma(expression) {
+    // block of code
+}
+```
+
+*Examples:*
+
+```sh
+jabasamma(age < 30) {
+    age = age + 1;
+}
+```
+
+### For Statement
+
+Use lagi to loop through a range of values, specifying initialization, condition, and update.
+
+*Syntax:*
+
+```sh
+lagi(initialization; condition; update) {
+    // block of code
+}
+```
+
+*Examples:*
+
+```sh
+lagi(i = 0; i < 10; i = i + 1) {
+    bhana(i);
+}
+```
+
+### Function Definition
+
+Use kaam to define a new function.
+
+*Syntax:*
+
+```sh
+kaam return_type function_name(parameter_list) {
+    // block of code
+}
+```
+
+*Examples:*
+
+```sh
+kaam purna add(purna a, purna b) {
+    firta a + b;
+}
+```
+
+### Return Statement
+
+Use firta to return a value from a function.
+
+*Syntax:*
+
+```sh
+firta(expression);
+```
+
+*Examples:*
+
+```sh
+firta result;
+```
+
+## Expressions
+
+### Basic Expressions
+
+You can perform operations with numbers, strings, and other values.
+
+*Syntax:*
+
+```sh
+term { ("+" | "-" | "*" | "/") term }
+```
+
+*Examples:*
+
+```sh
+5 + 3 * 2
+"Hello"
+'c'
+```
+
+### Logical Expressions
+
+Combine logical terms using &&, ||, or ! to form complex conditions.
+
+*Syntax:*
+
+```sh
+logical_term { ("&&" | "||" | "!") logical_term }
+```
+
+*Examples:*
+
+```sh
+age > 18 && age < 65
+```
+
+### Comparison
+
+Compare values using operators like ==, !=, <, <=, >, and >=.
+
+*Syntax:*
+
+```sh
+expression (== | != | < | <= | > | >=) expression
+```
+
+*Examples:*
+
+```sh
+age == 30
+```
+
+### Modulo Expression
+
+Calculate the remainder of a division using %.
+
+*Syntax:*
+
+```sh
+expression % expression
+```
+
+*Examples:*
+
+```sh
+10 % 3  // Results in 1
+```
+
+## Data Types
+
+- purna: Integer
+- dasa: Decimal
+- akshar: Character
+- paath: String
+- khali: Void
+
+*Examples:*
+
+```sh
+purna count;  // Declare an integer variable
+dasa price;   // Declare a decimal variable
+akshar ch;  // Declare a character variable
+paath name;  // Declare a string variable
+khali nothing;  // Declare a void variable
+```
+
+## Identifiers and Literals
+
+- *Identifier:* A name for a variable or function, starting with a letter or underscore, followed by letters, numbers, or underscores (e.g., variable1, _temp).
+- *Number:* An integer or decimal value (e.g., 42, 3.14).
+- *String:* A sequence of characters enclosed in double quotes (e.g., "Sample text").
+- *Character:* A single character enclosed in single quotes (e.g., 'A').
+
+*Examples:*
+
+```sh
+number = 42;
+text = "Sample text";
+letter = 'A';
+```
 
 ---
-=======
-# Lipi
 
 ## Building the Project
 
@@ -153,23 +304,27 @@ A statement in the program can be one of several types:
 ### Steps
 
 1. **Clone the Repository**:
+
     ```sh
     git clone https://github.com/yourusername/lipi.git
     cd lipi
     ```
 
 2. **Create a Build Directory**:
+
     ```sh
     mkdir build
     cd build
     ```
 
 3. **Run CMake**:
+
     ```sh
     cmake ..
     ```
 
 4. **Build the Project**:
+
     ```sh
     make
     ```
