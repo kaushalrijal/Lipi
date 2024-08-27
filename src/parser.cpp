@@ -28,7 +28,7 @@ bool Parser::check(TokenType type) {
 
 // Checks if the current token matches specific type
 bool Parser::match(TokenType type) {
-    std::cout << "matching token " << printTokenType(type) << std::endl;
+    // std::cout << "matching token " << printTokenType(type) << std::endl;
     if (currentToken().type == type) {
         consumeToken();
         return true;
@@ -188,9 +188,7 @@ ASTNode* Parser::parseExpression(){
 }
 
 ASTNode* Parser::parseStatement(bool isFun){
-    Token currToken = currentToken();
     if(match(PRINT)){ // Print Statement
-        std::cout << "this should be inside the print statement";
         printToken(currentToken());
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
@@ -207,22 +205,24 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new InputStatement(vName);
     } 
     else if (check(ID)) { // Assignment statement for predeclared variables
+        std::cout << "this is the beginning of assignment matcher" << std::endl;
+        printToken(currentToken());
         std::string varName = currentToken().value;
-        consumeToken();
+        expect(ID);
         expect(ASSIGN);
         Expression* expr = dynamic_cast<Expression *>(parseExpression());
+        std::cout << "Expression matched succesfully!" << std::endl;
         expect(END);
+        std::cout << "Assignment succesful" << std::endl;
         return new AssignmentStatement(varName, expr);
     } 
     else if (check(TYPE)) { // Assignment statement
-        std::cout << "----------------------hello there-------------------" << std::endl;
         std::string varTypeToken = currentToken().value;
         consumeToken();
         std::string varName = currentToken().value;
         expect(ID);
         expect(END);
         VariableDeclaration::Type varType = mapTokenTypeToVarType(varTypeToken);
-        std::cout << "this is the end of variable declaration" << std::endl;
         return new VariableDeclaration(varType, varName);
     } 
     else if (match(IF)){
@@ -274,20 +274,22 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new ForStatement(initializer, condition, increment, body);
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
-        std::cout << "Reached block statement succesfully" << std::endl;
+        std::cout << "Reached block statement successfully" << std::endl;
         std::vector<ASTNode*> statements;
-        while (!match(TokenType::RBRACE) && !match(TokenType::END_OF_FILE)) {
+        while (!match(RBRACE)) {
             std::cout << "Begin parsing statements!" << std::endl;
             printToken(currentToken());
-            if(auto decl = dynamic_cast<Declaration*>(parseStatement())){
+            if (auto stmt = dynamic_cast<Statement*>(parseStatement())) {
+                statements.push_back(stmt);
+            } else if (auto decl = dynamic_cast<Declaration*>(parseStatement())) {
+                std::cout << "This is printed out before pushback";
                 statements.push_back(decl);
-            } else{
-                statements.push_back(dynamic_cast<Statement*>(parseStatement()));
+                std::cout << "This is printed out after pushback";
             }
+            std::cout << "This should be printed out after matching the first statement/declaration";
+            printToken(currentToken());
         }
-        if (!match(TokenType::RBRACE)) {
-            throw std::runtime_error("Expected '}' at end of block");
-        }
+        expect(TokenType::RBRACE);  // Ensure the closing brace is consumed
         return new BlockStatement(statements);
     }
     else if (match(TokenType::RETURN)){
@@ -300,7 +302,12 @@ ASTNode* Parser::parseStatement(bool isFun){
 
         return new ReturnStatement(return_name);
     }
+    else if (match(NEWLINE)){
+        consumeToken();
+        return nullptr;
+    }
     else {
+        Token currToken = currentToken();
         throw std::runtime_error("Failed to parse statements, found unexpected token: " + printTokenType(currToken.type));
     }
 }
@@ -333,11 +340,7 @@ ASTNode* Parser::parseFunctionDeclaration() {
         }
     }
 
-    std::cout << "This needs to print right after parameters" << std::endl;
-
     expect(RPAREN);
-
-    std::cout << "This needs to print right before body" << std::endl;
 
     Statement* body = dynamic_cast<Statement*>(parseStatement(true));
     

@@ -1,3 +1,9 @@
-{
-    purna x;
+purna age;
+
+age = 17;
+
+yadi(age > 18) {
+    bhana("Adult");
+} anyatha {
+    bhana("Minor");
 }
