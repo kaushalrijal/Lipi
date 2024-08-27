@@ -1,4 +1,4 @@
-
+#include "executer.hpp"
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
@@ -50,47 +50,4 @@ std::string runBinary(const std::string &binaryName)
     std::remove(outputFileName.c_str());
 
     return output;
-}
-
-int main()
-{   
-    // 1. Read the generated code from the file.
-    std::string generatedCode;
-    std::ifstream tempFile("temp.txt");
-
-    if (tempFile.is_open())
-    {
-        generatedCode.assign((std::istreambuf_iterator<char>(tempFile)),
-                             std::istreambuf_iterator<char>());
-        tempFile.close();
-    }
-    else
-    {
-        std::cerr << "Failed to open test.txt file for reading." << std::endl;
-        return 1;
-    }
-
-    // 2. Define file names for the temp C++ file and binary.
-    std::string cppFilename = "temp_program.cpp";
-    std::string binaryFilename = "temp_program";
-
-    // 3. Write the generated code to a file.
-    generateCppFile(generatedCode, cppFilename);
-
-    // 4. Compile the generated C++ code.
-    if (compileCppFile(cppFilename, binaryFilename))
-    {
-        // 5. Run the compiled binary and get the output.
-        std::string output = runBinary(binaryFilename);
-
-        // Optionally, remove the binary after execution.
-        std::remove(binaryFilename.c_str());
-        std::remove(cppFilename.c_str());
-    }
-    else
-    {
-        std::cerr << "Compilation failed." << std::endl;
-    }
-
-    return 0;
 }

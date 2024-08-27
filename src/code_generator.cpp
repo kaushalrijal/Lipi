@@ -72,7 +72,38 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
         }
         code += ");\n";
         return code;
+    } else if (auto forStmt = dynamic_cast<ForStatement*>(stmt)) {
+        std::string code = "for (";
+
+        // Generate initialization code
+        if (forStmt->initializer) {
+            code += generateStatement(forStmt->initializer);
+            code = code.substr(0, code.size() - 2); // Remove the trailing newline and semicolon
+        }
+        code += "; ";
+
+        // Generate condition code
+        if (forStmt->condition) {
+            code += generateExpression(forStmt->condition);
+        }
+        code += "; ";
+
+        // Generate increment code
+        if (forStmt->increment) {
+            code += generateStatement(forStmt->increment);
+            code = code.substr(0, code.size() - 2); // Remove the trailing newline and semicolon
+        }
+        code += ")";
+
+        // Generate body code
+        if (forStmt->body) {
+            code += generateStatement(forStmt->body);
+        }
+        code += "\n";
+
+        return code;
     }
+
 
     return "";
 }

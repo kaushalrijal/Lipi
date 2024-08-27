@@ -1,5 +1,11 @@
 purna x;
 
-lagi(x = 0; x < 10; x = x + 1;){
-    bhana("Hello world");
+kaam purna jod(purna x, purna y){
+    firta (x + y);
 }
+
+purna sum;
+
+sum = jod(5, 6);
+
+bhana(sum);

@@ -279,12 +279,10 @@ ASTNode* Parser::parseStatement(bool isFun){
 
         return new WhileStatement(condition, body);
     }
-    else if(match(FOR)){
+        else if(match(FOR)){
         expect(LPAREN);
         Statement* initializer = dynamic_cast<Statement *>(parseStatement());
-        std::cout << "initialization successful" << std::endl;
         Expression* condition = dynamic_cast<Expression *>(parseExpression());
-        std::cout << "condition successful" << std::endl;
         expect(END);
         Statement* increment = dynamic_cast<Statement *>(parseStatement());
         expect(RPAREN);
