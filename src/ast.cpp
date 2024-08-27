@@ -46,6 +46,13 @@ void UnaryOperation::print() {
     expr->print();
 }
 
+void FunctionCall::print() {
+    std::cout << "FunctionCall: ";
+    for(auto arg : arguments){
+        arg->print();
+    }
+}
+
 // Function to print a print statement
 void PrintStatement::print() {
     std::cout << "PrintStatement: ";
@@ -101,6 +108,13 @@ void BlockStatement::print() {
     std::cout << "BlockStatement: ";
     for (auto node : nodes) {
         node->print();
+    }
+}
+
+void FunctionCallStatement::print() {
+    std::cout << "FunctionCall: ";
+    for(auto arg : args){
+        arg->print();
     }
 }
 

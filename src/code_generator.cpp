@@ -62,6 +62,16 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
         return generateDeclaration(declStmt);
     } else if (auto returnStmt = dynamic_cast<ReturnStatement*>(stmt)) { // Return statement
         return "return " + generateExpression(returnStmt->ret_expr) + ";\n";
+    } else if (auto functionCallStmt = dynamic_cast<FunctionCallStatement*>(stmt)) {
+        std::string code = functionCallStmt->functionName + "(";
+        for (size_t i = 0; i < functionCallStmt->args.size(); ++i) {
+            code += generateExpression(dynamic_cast<Expression*>(functionCallStmt->args[i]));
+            if (i < functionCallStmt->args.size() - 1) {
+                code += ", ";
+            }
+        }
+        code += ");\n";
+        return code;
     }
 
     return "";
@@ -112,6 +122,16 @@ std::string CodeGenerator::generateExpression(Expression *expr){
             default: op = ""; break; 
         }
         return op + operand;
+    } else if (auto funcCall = dynamic_cast<FunctionCall*>(expr)) {
+        std::string code = funcCall->functionName + "(";
+        for (size_t i = 0; i < funcCall->arguments.size(); ++i) {
+            code += generateExpression(dynamic_cast<Expression*>(funcCall->arguments[i]));
+            if (i < funcCall->arguments.size() - 1) {
+                code += ", ";
+            }
+        }
+        code += ")";
+        return code;
     }
     return "";
 }

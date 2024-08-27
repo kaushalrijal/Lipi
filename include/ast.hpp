@@ -120,6 +120,23 @@ public:
     ~UnaryOperation() { delete expr; }
 };
 
+// class for function calls
+class FunctionCall : public Expression {
+public:
+    std::string functionName;
+    std::vector<ASTNode*> arguments;
+
+    FunctionCall(const std::string& functionName, std::vector<ASTNode*> args)
+        : functionName(functionName), arguments(args) {}
+
+    void print();
+
+    ~FunctionCall() {
+        for (auto arg : arguments) delete arg;
+    }
+};
+
+
 // Statements
 class PrintStatement : public Statement {
 public:
@@ -230,6 +247,25 @@ public:
     void print();
 
 };
+
+// Statement for function call
+class FunctionCallStatement : public Statement {
+public:
+    std::string functionName;
+    std::vector<ASTNode*> args;
+
+    FunctionCallStatement(const std::string& functionName, const std::vector<ASTNode*>& args)
+        : functionName(functionName), args(args) {}
+
+    ~FunctionCallStatement() {
+        for (auto arg : args) {
+            delete arg;
+        }
+    }
+
+    void print();
+};
+
 
 // Declarations
 class VariableDeclaration : public Declaration {

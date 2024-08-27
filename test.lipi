@@ -5,3 +5,8 @@ kaam purna jod(purna x, purna y){
 kaam purna jodi(purna x){
     firta x % 2;
 }
+
+purna y;
+y = jod(3, 4);
+purna z;
+jodi(y);

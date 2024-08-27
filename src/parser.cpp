@@ -85,6 +85,20 @@ ASTNode* Parser::parsePrimaryExpression(){
     } else if (check(ID)){
         std::string name = currentToken().value;
         consumeToken();
+
+        if (match(LPAREN)) { // If followed by '(', it's a function call
+            std::cout << "Hello there" << std::endl;
+            std::vector<ASTNode*> args;
+            printToken(currentToken());
+            if (!match(RPAREN)) { // Check if there are arguments
+                do {
+                    args.push_back(parseExpression());
+                } while (match(COMMA));
+            }
+            expect(RPAREN); // Expect closing ')'
+            return new FunctionCall(name, args);
+            
+        }
         return new Variable(name);
     } else if (check(CHAR)){
         char value = currentToken().value[1];
@@ -216,6 +230,25 @@ ASTNode* Parser::parseStatement(bool isFun){
         printToken(currentToken());
         std::string varName = currentToken().value;
         expect(ID);
+
+        // Check for function call and take it on
+        if (match(LPAREN)) {  // Function call detected
+            std::vector<ASTNode*> args;
+            std::cout << "------------attention--------------------------" << std::endl;
+            printToken(currentToken());
+            if (!match(RPAREN)) { // Check if there are arguments
+                do {
+                    std::cout << "This is supposed to be printed before parsing expressions" << std::endl;
+                    args.push_back(parseExpression());
+                    args.back()->print();
+                    std::cout << "This should show up after parsing any expression" << std::endl;
+                } while (match(COMMA));
+            }
+            expect(RPAREN);
+            expect(END); // Expect a semicolon at the end of the statement
+            return new FunctionCallStatement(varName, args);
+        }
+
         expect(ASSIGN);
         Expression* expr = dynamic_cast<Expression *>(parseExpression());
         std::cout << "Expression matched succesfully!" << std::endl;
