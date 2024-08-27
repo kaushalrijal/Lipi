@@ -1,7 +1,4 @@
-purna x;
-
-dasa y;
-
-y = x % 2;
-
-bhana(x + "hello world");
+kaam purna add(purna x, purna y){
+    bhana(x + y);
+    firta x;
+}

@@ -42,8 +42,9 @@ bool Parser::match(TokenType type) {
 
 // Check if the tokens matches a specific type and consume it. 
 void Parser::expect(TokenType type) {
+    TokenType currType = currentToken().type;
     if (!match(type)) {
-        throw std::runtime_error("Unexpected token type: " + printTokenType(type));;
+        throw std::runtime_error("Expected token type: " + printTokenType(type) + "\nFound instead: " + printTokenType(currType));
     }
 }
 
@@ -169,11 +170,10 @@ ASTNode* Parser::parseExpression(){
     return parseBinaryExpression();
 }
 
-ASTNode* Parser::parseStatement(){
-    printToken(currentToken());
+ASTNode* Parser::parseStatement(bool isFun){
+    Token currToken = currentToken();
     if(match(PRINT)){ // Print Statement
         std::cout << "this should be inside the print statement";
-        consumeToken();
         printToken(currentToken());
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
@@ -265,8 +265,18 @@ ASTNode* Parser::parseStatement(){
         }
         return new BlockStatement(statements);
     }
+    else if (match(TokenType::RETURN)){
+        if(isFun){
+            throw std::runtime_error("You return from outside any functions");
+        }
+        std::string return_name = currentToken().value;
+        expect(ID);
+        expect(END);
+
+        return new ReturnStatement(return_name);
+    }
     else {
-        throw std::runtime_error("Unexpected Error Occured");
+        throw std::runtime_error("Failed to parse statements, found unexpected token: " + printTokenType(currToken.type));
     }
 }
 
@@ -315,15 +325,19 @@ ASTNode* Parser::parseFunctionDeclaration() {
         }
     }
 
+    std::cout << "This needs to print right after parameters" << std::endl;
+
     expect(RPAREN);
 
-    Statement* body = dynamic_cast<Statement*>(parseStatement());
+    std::cout << "This needs to print right before body" << std::endl;
+
+    Statement* body = dynamic_cast<Statement*>(parseStatement(true));
     
     if (!body) {
         throw std::runtime_error("Invalid function body");
     }
 
-    Declaration* returnType = new VariableDeclaration(mapTokenTypeToVarType(returnTypeToken.value), "");
+    VariableDeclaration* returnType = new VariableDeclaration(mapTokenTypeToVarType(returnTypeToken.value), "");
 
     return new FunctionDeclaration(functionName, parameters, returnType, body);
 }
