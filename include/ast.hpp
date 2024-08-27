@@ -207,18 +207,18 @@ public:
     }
 };
 
-// Block Statement for collection of statements
+// Block Statement for collection of statements & declarations
 class BlockStatement : public Statement {
 public:
-    std::vector<Statement*> statements;
+    std::vector<ASTNode*> nodes;
 
-    BlockStatement(const std::vector<Statement*>& stmts) : statements(stmts) {}
+    BlockStatement(const std::vector<ASTNode*>& nodes) : nodes(nodes) {}
 
     void print();
 
     ~BlockStatement() {
-        for (auto stmt : statements) {
-            delete stmt;
+        for (auto node : nodes) {
+            delete node;
         }
     }
 };

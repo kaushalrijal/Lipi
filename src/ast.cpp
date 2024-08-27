@@ -99,8 +99,8 @@ void ForStatement::print() {
 // Function to print a block statement
 void BlockStatement::print() {
     std::cout << "BlockStatement: ";
-    for (auto stmt : statements) {
-        stmt->print();
+    for (auto node : nodes) {
+        node->print();
     }
 }
 
