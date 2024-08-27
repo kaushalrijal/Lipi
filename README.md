@@ -294,8 +294,6 @@ letter = 'A';
 
 ---
 
-# Lipi
-
 ## Building the Project
 
 ### Prerequisites
