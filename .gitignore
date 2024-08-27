@@ -9,3 +9,4 @@ build/
 *.s
 *.log
 *.tmp
+.vscodecounter/

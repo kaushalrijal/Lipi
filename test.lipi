@@ -1,1 +1,7 @@
-firta 3.5;
+kaam purna jod(purna x, purna y){
+    firta x + y;
+}
+
+kaam purna jodi(purna x){
+    firta x % 2;
+}

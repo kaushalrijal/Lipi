@@ -20,6 +20,9 @@ void Parser::consumeToken() {
 }
 
 bool Parser::check(TokenType type) {
+    while (currentToken().type == TokenType::NEWLINE) {
+        consumeToken();
+    }
     if(currentToken().type == type){
         return true;
     }
@@ -286,7 +289,6 @@ ASTNode* Parser::parseStatement(bool isFun){
             //     statements.push_back(decl);
             // }
             statements.push_back(parseStatement());
-            std::cout << "This should be printed out after matching the first statement/declaration";
             if(match(RBRACE)){
                 break;
             }
@@ -308,6 +310,9 @@ ASTNode* Parser::parseStatement(bool isFun){
         return nullptr;
     }
     else {
+        if(match(END_OF_FILE)){
+            return nullptr;
+        }
         Token currToken = currentToken();
         throw std::runtime_error("Failed to parse statements, found unexpected token: " + printTokenType(currToken.type));
     }
@@ -315,6 +320,7 @@ ASTNode* Parser::parseStatement(bool isFun){
 
 // Parse Function Decalartion
 ASTNode* Parser::parseFunctionDeclaration() {
+    std::cout << "Hello I am inside the function declaration!";
     expect(FUNC_DEF);
 
     Token returnTypeToken = currentToken();
