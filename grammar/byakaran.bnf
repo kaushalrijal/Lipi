@@ -30,7 +30,7 @@
 
 <for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ")" <block>
 
-<function_definition> ::= <type> "kaam" <identifier> "(" <parameter_list> ")" <block>
+<function_definition> ::= "kaam" <type> <identifier> "(" <parameter_list> ")" <block>
 
 <return_statement> ::= "firta" <expression>
 
