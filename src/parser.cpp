@@ -275,11 +275,15 @@ ASTNode* Parser::parseStatement(bool isFun){
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
         std::cout << "Reached block statement succesfully" << std::endl;
-        std::vector<Statement*> statements;
+        std::vector<ASTNode*> statements;
         while (!match(TokenType::RBRACE) && !match(TokenType::END_OF_FILE)) {
             std::cout << "Begin parsing statements!" << std::endl;
             printToken(currentToken());
-            statements.push_back(dynamic_cast<Statement*>(parseStatement()));
+            if(auto decl = dynamic_cast<Declaration*>(parseStatement())){
+                statements.push_back(decl);
+            } else{
+                statements.push_back(dynamic_cast<Statement*>(parseStatement()));
+            }
         }
         if (!match(TokenType::RBRACE)) {
             throw std::runtime_error("Expected '}' at end of block");

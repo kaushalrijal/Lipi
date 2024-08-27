@@ -27,8 +27,12 @@ void SemanticAnalyzer::analyzeStatement(Statement *stmt){
         }
         analyzeStatement(forStmt->body);
     } else if (auto* blockStmt = dynamic_cast<BlockStatement*>(stmt)) {
-        for (auto* s : blockStmt->statements) {
-            analyzeStatement(s);
+        for (auto* s : blockStmt->nodes) {
+            if(auto* decl = dynamic_cast<Declaration*>(s)){
+                analyzeDeclaration(decl);
+            } else {
+                analyzeStatement(dynamic_cast<Statement*>(s));
+            }
         }
     }
 }
