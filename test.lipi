@@ -1,4 +1,3 @@
-kaam purna add(purna x, purna y){
-    bhana(x + y);
-    firta x;
+{
+    purna x;
 }

@@ -28,13 +28,13 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
     } else if (auto ifStmt = dynamic_cast<IfStatement* >(stmt)){
         std::string code = "if (";
         code += generateExpression(ifStmt->condition);
-        code += ") {\n";
+        code += ")\n";
         code += generateStatement(ifStmt->thenBranch);
-        code += "}\n";
+        code += "\n";
         if(ifStmt->elseBranch){
-            code += "else {\n";
+            code += "else\n";
             code += generateStatement(ifStmt->elseBranch);
-            code += "}\n";
+            code += "\n";
         }
 
         return code;
@@ -42,9 +42,9 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
         std::string code;
         code += "while (";
         code += generateExpression(whileStmt->condition);  // Generate the condition expression
-        code += ") {\n";
+        code += ")\n";
         code += generateStatement(whileStmt->body);  // Generate the body of the loop
-        code += "}\n";
+        code += "\n";
 
         return code;
     } else if (auto blockStmt = dynamic_cast<BlockStatement*>(stmt)) {
@@ -192,14 +192,14 @@ std::string CodeGenerator::generateFunctionDeclaration(FunctionDeclaration* func
             code += ", ";
         }
     }
-    code += ") {\n";
+    code += ")\n";
 
     // Function body
     if (funcDecl->body) {
         code += generateStatement(funcDecl->body);
     }
 
-    code += "}\n";
+    code += "\n";
 
     return code;
 }
