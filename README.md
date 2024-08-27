@@ -11,7 +11,7 @@
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/yourusername/lipi.git
+    git clone https://github.com/kaushalrijal/lipi.git
     cd lipi
     ```
 
