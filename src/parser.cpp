@@ -48,6 +48,23 @@ void Parser::expect(TokenType type) {
     }
 }
 
+VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
+    if (tokenType == "purna") {
+        return VariableDeclaration::INT;
+    } else if (tokenType == "dasa") {
+        return VariableDeclaration::FLOAT;
+    } else if (tokenType == "akshar") {
+        return VariableDeclaration::CHAR;
+    } else if (tokenType == "paath") {
+        return VariableDeclaration::STRING;
+    } else if (tokenType == "khali") {
+        return VariableDeclaration::VOID;
+    } else {
+        throw std::runtime_error("Unknown token type for variable declaration");
+    }
+}
+
+
 ASTNode* Parser::parsePrimaryExpression(){
     if(check(NUMBER)){
         int in = std::stoi(currentToken().value);
@@ -198,14 +215,15 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new AssignmentStatement(varName, expr);
     } 
     else if (check(TYPE)) { // Assignment statement
-        // Token typeToken = currentToken();  
-        // expect(ID);  
-        // std::string varName = currentToken().value; 
-        // expect(ASSIGN); 
-        // Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
-        // expect(END); 
-        // return new AssignmentStatement(varName, expr); 
-        return parseDeclaration();
+        std::cout << "----------------------hello there-------------------" << std::endl;
+        std::string varTypeToken = currentToken().value;
+        consumeToken();
+        std::string varName = currentToken().value;
+        expect(ID);
+        expect(END);
+        VariableDeclaration::Type varType = mapTokenTypeToVarType(varTypeToken);
+        std::cout << "this is the end of variable declaration" << std::endl;
+        return new VariableDeclaration(varType, varName);
     } 
     else if (match(IF)){
         expect(LPAREN);
@@ -256,8 +274,11 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new ForStatement(initializer, condition, increment, body);
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
+        std::cout << "Reached block statement succesfully" << std::endl;
         std::vector<Statement*> statements;
         while (!match(TokenType::RBRACE) && !match(TokenType::END_OF_FILE)) {
+            std::cout << "Begin parsing statements!" << std::endl;
+            printToken(currentToken());
             statements.push_back(dynamic_cast<Statement*>(parseStatement()));
         }
         if (!match(TokenType::RBRACE)) {
@@ -279,23 +300,6 @@ ASTNode* Parser::parseStatement(bool isFun){
         throw std::runtime_error("Failed to parse statements, found unexpected token: " + printTokenType(currToken.type));
     }
 }
-
-VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
-    if (tokenType == "purna") {
-        return VariableDeclaration::INT;
-    } else if (tokenType == "dasa") {
-        return VariableDeclaration::FLOAT;
-    } else if (tokenType == "akshar") {
-        return VariableDeclaration::CHAR;
-    } else if (tokenType == "paath") {
-        return VariableDeclaration::STRING;
-    } else if (tokenType == "khali") {
-        return VariableDeclaration::VOID;
-    } else {
-        throw std::runtime_error("Unknown token type for variable declaration");
-    }
-}
-
 
 // Parse Function Decalartion
 ASTNode* Parser::parseFunctionDeclaration() {
