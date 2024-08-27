@@ -49,9 +49,14 @@ void Parser::expect(TokenType type) {
 
 ASTNode* Parser::parsePrimaryExpression(){
     if(check(NUMBER)){
-        int value = std::stoi(currentToken().value);
+        int in = std::stoi(currentToken().value);
+        float fp = std::stof(currentToken().value);
         consumeToken();
-        return new IntegerLiteral(value);
+        if(fp == static_cast<float>(in)){
+            return new IntegerLiteral(in);
+        } else {
+            return new FloatLiteral(fp);
+        }
     } else if (check(STRING)){
         std::string value = currentToken().value;
         consumeToken();
@@ -167,6 +172,9 @@ ASTNode* Parser::parseExpression(){
 ASTNode* Parser::parseStatement(){
     printToken(currentToken());
     if(match(PRINT)){ // Print Statement
+        std::cout << "this should be inside the print statement";
+        consumeToken();
+        printToken(currentToken());
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
         expect(RPAREN);
