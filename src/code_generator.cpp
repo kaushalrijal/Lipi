@@ -50,7 +50,11 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
     } else if (auto blockStmt = dynamic_cast<BlockStatement*>(stmt)) {
         std::string code = "{\n";
         for (auto& s : blockStmt->nodes) {
-            code += generateStatement(dynamic_cast<Statement*>(s));  // Generate all statements inside the block
+            if(auto decl = dynamic_cast<Declaration*>(s)){
+                code += generateDeclaration(decl);
+            } else {
+                code += generateStatement(dynamic_cast<Statement*>(s));  // Generate all statements inside the block
+            }
         }
         code += "}\n";
         return code;
