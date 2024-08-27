@@ -1,9 +1,10 @@
-purna age;
 
-age = 17;
+purna y;
 
-yadi(age > 18) {
-    bhana("Adult");
-} anyatha {
-    bhana("Minor");
+suna(y);
+
+yadi(y == 5){
+    bhana("Hello world");
+    purna x;
+    x = 5;
 }

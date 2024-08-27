@@ -190,6 +190,9 @@ ASTNode* Parser::parseExpression(){
 ASTNode* Parser::parseStatement(bool isFun){
     if(match(PRINT)){ // Print Statement
         printToken(currentToken());
+        if(check(PRINT)){
+            consumeToken();
+        }
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
         expect(RPAREN);
@@ -197,6 +200,7 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new PrintStatement(expr);
     } 
     else if(match(INPUT)){ // Input Statement
+        printToken(currentToken());
         expect(LPAREN);
         std::string vName = currentToken().value;
         expect(ID);
@@ -274,20 +278,18 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new ForStatement(initializer, condition, increment, body);
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
-        std::cout << "Reached block statement successfully" << std::endl;
         std::vector<ASTNode*> statements;
-        while (!match(RBRACE)) {
-            std::cout << "Begin parsing statements!" << std::endl;
-            printToken(currentToken());
-            if (auto stmt = dynamic_cast<Statement*>(parseStatement())) {
-                statements.push_back(stmt);
-            } else if (auto decl = dynamic_cast<Declaration*>(parseStatement())) {
-                std::cout << "This is printed out before pushback";
-                statements.push_back(decl);
-                std::cout << "This is printed out after pushback";
-            }
+        while (!check(TokenType::RBRACE)) {
+            // if (auto stmt = dynamic_cast<Statement*>(parseStatement())) {
+            //     statements.push_back(stmt);
+            // } else if (auto decl = dynamic_cast<Declaration*>(parseStatement())) {
+            //     statements.push_back(decl);
+            // }
+            statements.push_back(parseStatement());
             std::cout << "This should be printed out after matching the first statement/declaration";
-            printToken(currentToken());
+            if(match(RBRACE)){
+                break;
+            }
         }
         expect(TokenType::RBRACE);  // Ensure the closing brace is consumed
         return new BlockStatement(statements);
@@ -367,7 +369,7 @@ ASTNode* Parser::parseDeclaration(){
     } else if(typeT == FUNC_DEF){
         return parseFunctionDeclaration();
     } else {
-        throw std::runtime_error("Unexpected token for declaration");
+        throw std::runtime_error("Unexpected token for declaration: " + printTokenType(typeT));
     }
 }
 
