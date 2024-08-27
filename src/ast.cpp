@@ -116,6 +116,8 @@ void FunctionDeclaration::print() {
     for (auto param : parameters) {
         param->print();
     }
+    std::cout << "Body: ";
+    body->print();
     std::cout << "Return Type: ";
     returnType->print();
 }

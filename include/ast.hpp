@@ -241,14 +241,16 @@ public:
     std::string name;
     std::vector<VariableDeclaration*> parameters;
     Declaration* returnType;
-    FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType)
-        : name(name), parameters(params), returnType(returnType) {}
+    Statement* body;
+    FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType, Statement* functionBody)
+        : name(name), parameters(params), returnType(returnType), body(functionBody) {}
 
     void print();
 
     ~FunctionDeclaration() { 
         for (auto param : parameters) delete param;
         delete returnType;
+        delete body;
     }
 };
 

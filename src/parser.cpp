@@ -228,30 +228,21 @@ ASTNode* Parser::parseStatement(){
         expect(LPAREN);
 
         Statement* initializer = dynamic_cast<Statement *>(parseStatement());
-        if (!initializer) {
-            throw std::runtime_error("Failed to parse initializer in for loop");
-        }
         std::cout << "initialization successful" << std::endl;
 
         Expression* condition = dynamic_cast<Expression *>(parseExpression());
-        if (!condition) {
-            throw std::runtime_error("Failed to parse condition in for loop");
-        }
+        
         std::cout << "condition successful" << std::endl;
 
         expect(END);
 
         Statement* increment = dynamic_cast<Statement *>(parseStatement());
-        if (!increment) {
-            throw std::runtime_error("Failed to parse increment in for loop");
-        }
+        
 
         expect(RPAREN);
 
         Statement* body = dynamic_cast<Statement *>(parseStatement());
-        if (!body) {
-            throw std::runtime_error("Failed to parse body in for loop");
-        }
+        
         
         return new ForStatement(initializer, condition, increment, body);
     } 
@@ -270,43 +261,6 @@ ASTNode* Parser::parseStatement(){
     }
 }
 
-// Parse Function Decalartion
-ASTNode* Parser::parseFunctionDeclaration(){
-    expect(FUNC_DEF);
-    expect(ID);
-
-    std::string functionName = currentToken().value;
-
-    expect(LPAREN);
-
-    std::vector<VariableDeclaration*> parameters;
-
-    while(!match(RPAREN)){
-        Token typeToken = currentToken();
-        expect(TYPE);
-        expect(ID);
-        std::string paramName = currentToken().value;
-        parameters.push_back(new VariableDeclaration(static_cast<VariableDeclaration::Type>(typeToken.type), paramName));
-
-        if(match(COMMA)){
-            continue;
-        } else {
-            break;
-        }
-    }
-
-    // Parse return type
-    Declaration* returnType = nullptr;
-    if(match(TYPE)){
-        Token typeToken = currentToken();
-        returnType = new VariableDeclaration(static_cast<VariableDeclaration::Type>(typeToken.type), "");
-    }
-
-    Statement* body = dynamic_cast<Statement *>(parseStatement());
-
-    return new FunctionDeclaration(functionName, parameters, returnType);
-}
-
 VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
     if (tokenType == "purna") {
         return VariableDeclaration::INT;
@@ -323,9 +277,50 @@ VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
     }
 }
 
+
+// Parse Function Decalartion
+ASTNode* Parser::parseFunctionDeclaration() {
+    expect(FUNC_DEF);
+
+    Token returnTypeToken = currentToken();
+    expect(TYPE);
+    
+    std::string functionName = currentToken().value;
+    expect(ID);
+
+    expect(LPAREN);
+
+    std::vector<VariableDeclaration*> parameters;
+
+    while (!match(RPAREN)) {
+        Token typeToken = currentToken();
+        expect(TYPE);
+        std::string paramName = currentToken().value;
+        expect(ID);
+        parameters.push_back(new VariableDeclaration(mapTokenTypeToVarType(typeToken.value), paramName));
+
+        if (match(COMMA)) {
+            continue;
+        } else {
+            break;
+        }
+    }
+
+    expect(RPAREN);
+
+    Statement* body = dynamic_cast<Statement*>(parseStatement());
+    
+    if (!body) {
+        throw std::runtime_error("Invalid function body");
+    }
+
+    Declaration* returnType = new VariableDeclaration(mapTokenTypeToVarType(returnTypeToken.value), "");
+
+    return new FunctionDeclaration(functionName, parameters, returnType, body);
+}
+
 ASTNode* Parser::parseDeclaration(){
     TokenType typeT = currentToken().type;
-    printToken(currentToken());
 
     if(typeT == TYPE){
         std::string varTypeToken = currentToken().value;
