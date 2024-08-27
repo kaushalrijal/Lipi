@@ -7,6 +7,8 @@ std::string CodeGenerator::generate(ASTNode* root){
     for(auto node : program->nodes){
         if (auto stmt = dynamic_cast<Statement*>(node)) {
             code += generateStatement(stmt);
+        } else if (auto funcDecl = dynamic_cast<FunctionDeclaration*>(node)){
+            code += generateFunctionDeclaration(funcDecl);
         } else if (auto decl = dynamic_cast<Declaration*>(node)) {
             code += generateDeclaration(decl); 
         }
@@ -54,6 +56,8 @@ std::string CodeGenerator::generateStatement(Statement *stmt){
         return code;
     } else if (auto declStmt = dynamic_cast<Declaration *>(stmt)){
         return generateDeclaration(declStmt);
+    } else if (auto returnStmt = dynamic_cast<ReturnStatement*>(stmt)) { // Return statement
+        return "return " + returnStmt->varName + ";\n";
     }
 
     return "";
@@ -126,4 +130,76 @@ std::string CodeGenerator::generateDeclaration(Declaration *decl){
         }
     }
     return "";
+}
+
+std::string CodeGenerator::generateFunctionDeclaration(FunctionDeclaration* funcDecl) {
+    std::string code;
+
+    // Function return type
+    std::string returnType;
+    if (funcDecl->returnType) {
+        switch (funcDecl->returnType->type) {
+            case VariableDeclaration::INT:
+                returnType = "int";
+                break;
+            case VariableDeclaration::FLOAT:
+                returnType = "float";
+                break;
+            case VariableDeclaration::CHAR:
+                returnType = "char";
+                break;
+            case VariableDeclaration::STRING:
+                returnType = "std::string";
+                break;
+            case VariableDeclaration::VOID:
+                returnType = "void";
+                break;
+            default:
+                returnType = "void"; // Default to void if unknown
+                break;
+        }
+    } else {
+        returnType = "void"; // Default return type if not specified
+    }
+
+    // Function signature
+    code += returnType + " " + funcDecl->name + "(";
+    for (size_t i = 0; i < funcDecl->parameters.size(); ++i) {
+        auto param = funcDecl->parameters[i];
+        std::string paramType;
+        switch (param->type) {
+            case VariableDeclaration::INT:
+                paramType = "int";
+                break;
+            case VariableDeclaration::FLOAT:
+                paramType = "float";
+                break;
+            case VariableDeclaration::CHAR:
+                paramType = "char";
+                break;
+            case VariableDeclaration::STRING:
+                paramType = "std::string";
+                break;
+            case VariableDeclaration::VOID:
+                paramType = "void";
+                break;
+            default:
+                paramType = "int"; // Default to int if unknown
+                break;
+        }
+        code += paramType + " " + param->varName;
+        if (i < funcDecl->parameters.size() - 1) {
+            code += ", ";
+        }
+    }
+    code += ") {\n";
+
+    // Function body
+    if (funcDecl->body) {
+        code += generateStatement(funcDecl->body);
+    }
+
+    code += "}\n";
+
+    return code;
 }
