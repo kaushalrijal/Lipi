@@ -28,7 +28,7 @@
 
 <while_statement> ::= "jabasamma" "(" <expression> ")" <block>
 
-<for_statement> ::= "lagi" "(" <declaration_statement> ";" <expression> ";" <assignment_statement> ")" <block>
+<for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ")" <block>
 
 <function_definition> ::= <type> "kaam" <identifier> "(" <parameter_list> ")" <block>
 

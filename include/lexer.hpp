@@ -8,7 +8,7 @@ enum TokenType {
     PRINT, INPUT, TYPE, IF, ELSE, WHILE, FOR, FUNC_DEF, RETURN,
     NUMBER, STRING, CHAR, ID, ASSIGN, END, LPAREN, RPAREN,
     LBRACE, RBRACE, COMMA, ADD, SUB, MUL, DIV, MOD, AND, OR, NOT, EQ, NEQ, LT, GT, LE, GE,
-    TRUE, FALSE, SKIP, NEWLINE, COMMENT, MISMATCH, END_OF_FILE
+    TRUE, FALSE, SKIP, NEWLINE, COMMENT, MISMATCH, END_OF_FILE,
 };
 
 // thik bethik to be used for booleans
@@ -23,5 +23,9 @@ public:
     Lexer(const std::string&);
     std::vector<Token> tokenize();
 };
+
+void printToken(Token);
+
+std::string printTokenType(TokenType);
 
 #endif

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "parser.hpp"
 #include <stdexcept>
 
@@ -8,7 +9,7 @@ Token& Parser::currentToken(){
     if(current>=tokens.size()){
         throw std::runtime_error("No more tokens");
     }
-    return tokens[current+1];
+    return tokens[current];
 }
 
 // Move to next token
@@ -18,48 +19,60 @@ void Parser::consumeToken() {
     }
 }
 
-// Checks if the current token matches specific type
-bool Parser::match(TokenType type) {
-    if (currentToken().type == type) {
-        consumeToken();
+bool Parser::check(TokenType type) {
+    if(currentToken().type == type){
         return true;
     }
     return false;
 }
 
+// Checks if the current token matches specific type
+bool Parser::match(TokenType type) {
+    std::cout << "matching token " << printTokenType(type) << std::endl;
+    if (currentToken().type == type) {
+        consumeToken();
+        return true;
+    }
+    // Skip NEWLINE tokens
+    while (currentToken().type == TokenType::NEWLINE) {
+        consumeToken();
+    }
+    return currentToken().type == type;
+}
+
 // Check if the tokens matches a specific type and consume it. 
 void Parser::expect(TokenType type) {
     if (!match(type)) {
-        throw std::runtime_error("Unexpected token type");
+        throw std::runtime_error("Unexpected token type: " + printTokenType(type));;
     }
 }
 
 ASTNode* Parser::parsePrimaryExpression(){
-    if(match(NUMBER)){
+    if(check(NUMBER)){
         int value = std::stoi(currentToken().value);
         consumeToken();
         return new IntegerLiteral(value);
-    } else if (match(STRING)){
+    } else if (check(STRING)){
         std::string value = currentToken().value;
         consumeToken();
         return new StringLiteral(value);
-    } else if (match(ID)){
+    } else if (check(ID)){
         std::string name = currentToken().value;
         consumeToken();
         return new Variable(name);
-    } else if (match(CHAR)){
+    } else if (check(CHAR)){
         char value = currentToken().value[1];
         consumeToken();
         return new CharacterLiteral(value);
-    } else if (match(LPAREN)){
+    } else if (check(LPAREN)){
         consumeToken(); // Consume '('
         ASTNode* expression = parseExpression();
         expect(RPAREN);
         return expression;
-    } else if (match(TRUE)) {
+    } else if (check(TRUE)) {
         consumeToken();
         return new BooleanLiteral(true);
-    } else if (match(FALSE)) {
+    } else if (check(FALSE)) {
         consumeToken();
         return new BooleanLiteral(false);
     } else{
@@ -82,18 +95,27 @@ Expression* Parser::parseUnaryExpression(){
 
 int getPrecedence(TokenType type){
     switch (type) {
-        case ADD:
-        case SUB:
-            return 1;
-        case MUL:
-        case DIV:
-        case MOD:
-            return 2;
-        case EQ:
-        case NEQ:
+        case OR:         
             return 0;
+        case AND:        
+            return 1;
+        case EQ:         
+        case NEQ:        
+            return 2;
+        case LT:         
+        case GT:         
+        case LE:         
+        case GE:         
+            return 3;
+        case ADD:        
+        case SUB:        
+            return 4;
+        case MUL:        
+        case DIV:        
+        case MOD:        
+            return 5;
         default:
-            return -1;
+            return -1;  // unknown operator
     }
 }
 
@@ -106,6 +128,12 @@ BinaryOperation::OpType getBinaryOpType(TokenType type) {
         case MOD: return BinaryOperation::MOD;
         case EQ: return BinaryOperation::EQ;
         case NEQ: return BinaryOperation::NEQ;
+        case LT: return BinaryOperation::LT;
+        case GT: return BinaryOperation::GT;
+        case LE: return BinaryOperation::LE;
+        case GE: return BinaryOperation::GE;
+        case AND: return BinaryOperation::AND;
+        case OR: return BinaryOperation::OR;
         default:
             throw std::runtime_error("Unknown binary operator type");
     }
@@ -137,6 +165,7 @@ ASTNode* Parser::parseExpression(){
 }
 
 ASTNode* Parser::parseStatement(){
+    printToken(currentToken());
     if(match(PRINT)){ // Print Statement
         expect(LPAREN);
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
@@ -146,8 +175,8 @@ ASTNode* Parser::parseStatement(){
     } 
     else if(match(INPUT)){ // Input Statement
         expect(LPAREN);
-        expect(ID);
         std::string vName = currentToken().value;
+        expect(ID);
         expect(RPAREN);
         expect(END);
         return new InputStatement(vName);
@@ -161,7 +190,7 @@ ASTNode* Parser::parseStatement(){
         expect(END); 
         return new AssignmentStatement(varName, expr); 
     } 
-    else if (match(ID)) { // Assignment statement for predeclared variables
+    else if (check(ID)) { // Assignment statement for predeclared variables
         std::string varName = currentToken().value;
         consumeToken();
         expect(ASSIGN);
@@ -170,25 +199,21 @@ ASTNode* Parser::parseStatement(){
         return new AssignmentStatement(varName, expr);
     } 
     else if (match(IF)){
-        consumeToken();
         expect(LPAREN);
 
         Expression* condition = dynamic_cast<Expression*>(parseExpression());
         
         expect(RPAREN);
-        
         Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
         Statement* elseBranch = nullptr;
-
+        printToken(currentToken());
         if(match(ELSE)){
-            consumeToken();
             elseBranch = dynamic_cast<Statement*>(parseStatement());
         }
 
         return new IfStatement(condition, thenBranch, elseBranch);
     }
     else if(match(WHILE)){
-        consumeToken();
         expect(LPAREN);
 
         Expression* condition = dynamic_cast<Expression *>(parseExpression());
@@ -200,16 +225,34 @@ ASTNode* Parser::parseStatement(){
         return new WhileStatement(condition, body);
     }
     else if(match(FOR)){
-        consumeToken();
         expect(LPAREN);
 
         Statement* initializer = dynamic_cast<Statement *>(parseStatement());
-        Expression* condition = dynamic_cast<Expression *>(parseExpression());
-        expect(END);
-        Expression* increment = dynamic_cast<Expression *>(parseExpression());
-        expect(RPAREN);
-        Statement* body = dynamic_cast<Statement *>(parseStatement());
+        if (!initializer) {
+            throw std::runtime_error("Failed to parse initializer in for loop");
+        }
+        std::cout << "initialization successful" << std::endl;
 
+        Expression* condition = dynamic_cast<Expression *>(parseExpression());
+        if (!condition) {
+            throw std::runtime_error("Failed to parse condition in for loop");
+        }
+        std::cout << "condition successful" << std::endl;
+
+        expect(END);
+
+        Statement* increment = dynamic_cast<Statement *>(parseStatement());
+        if (!increment) {
+            throw std::runtime_error("Failed to parse increment in for loop");
+        }
+
+        expect(RPAREN);
+
+        Statement* body = dynamic_cast<Statement *>(parseStatement());
+        if (!body) {
+            throw std::runtime_error("Failed to parse body in for loop");
+        }
+        
         return new ForStatement(initializer, condition, increment, body);
     } 
     else if (match(TokenType::LBRACE)) {  // Block Statement
@@ -264,18 +307,34 @@ ASTNode* Parser::parseFunctionDeclaration(){
     return new FunctionDeclaration(functionName, parameters, returnType);
 }
 
+VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
+    if (tokenType == "purna") {
+        return VariableDeclaration::INT;
+    } else if (tokenType == "dasa") {
+        return VariableDeclaration::FLOAT;
+    } else if (tokenType == "akshar") {
+        return VariableDeclaration::CHAR;
+    } else if (tokenType == "paath") {
+        return VariableDeclaration::STRING;
+    } else if (tokenType == "khali") {
+        return VariableDeclaration::VOID;
+    } else {
+        throw std::runtime_error("Unknown token type for variable declaration");
+    }
+}
 
 ASTNode* Parser::parseDeclaration(){
     TokenType typeT = currentToken().type;
+    printToken(currentToken());
 
     if(typeT == TYPE){
-        expect(TYPE);
-        TokenType varType = currentToken().type;
-        expect(ID);
+        std::string varTypeToken = currentToken().value;
+        consumeToken();
         std::string varName = currentToken().value;
+        expect(ID);
         expect(END);
-
-        return new VariableDeclaration(static_cast<VariableDeclaration::Type>(varType), varName);
+        VariableDeclaration::Type varType = mapTokenTypeToVarType(varTypeToken);
+        return new VariableDeclaration(varType, varName);
     } else if(typeT == FUNC_DEF){
         return parseFunctionDeclaration();
     } else {
@@ -286,10 +345,10 @@ ASTNode* Parser::parseDeclaration(){
 ASTNode* Parser::parse(){
     std::vector<ASTNode*> nodes;
 
-    while(!match(END_OF_FILE)){
-        if(match(TokenType::FUNC_DEF)){
+    while(!check(END_OF_FILE)){
+        if(check(TokenType::FUNC_DEF)){
             nodes.push_back(parseFunctionDeclaration());
-        } else if (match(TYPE) || match(ID)){
+        } else if (check(TYPE) || check(ID)){
             nodes.push_back(parseDeclaration());
         } else {
             nodes.push_back(parseStatement());

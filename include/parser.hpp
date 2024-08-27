@@ -16,6 +16,7 @@ class Parser{
     void consumeToken();   
     bool match(TokenType type);
     void expect(TokenType type);
+    bool check(TokenType);
 
     // Parsing Methods
     // Parse different types of expressions

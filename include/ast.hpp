@@ -12,6 +12,7 @@ class Declaration;
 class ASTNode {
 public:
     virtual ~ASTNode() = default;
+    virtual void print() = 0;
 };
 
 // Base class for expressions
@@ -38,6 +39,9 @@ public:
     std::vector<ASTNode*> nodes;
 
     Program(const std::vector<ASTNode*>& nodes) : nodes(nodes) {}
+
+    void print();
+    
     ~Program() {
         for (auto node : nodes) {
             delete node;
@@ -50,30 +54,35 @@ class IntegerLiteral : public Expression {
 public:
     int value;
     IntegerLiteral(int val) : value(val) {}
+    void print();
 };
 
 class FloatLiteral : public Expression {
 public:
     float value;
     FloatLiteral(float val) : value(val) {}
+    void print();
 };
 
 class CharacterLiteral : public Expression {
 public:
     char value;
     CharacterLiteral(char val) : value(val) {}
+    void print();;
 };
 
 class StringLiteral : public Expression {
 public:
     std::string value;
     StringLiteral(const std::string& val) : value(val) {}
+    void print();;
 };
 
 class BooleanLiteral : public Expression {
 public:
     bool value; // true for thik, false for bethik
     BooleanLiteral(bool val) : value(val) {}
+    void print();;
 };
 
 // Variable expression
@@ -81,6 +90,7 @@ class Variable : public Expression {
 public:
     std::string name;
     Variable(const std::string& name) : name(name) {}
+    void print();
 };
 
 // Binary operations
@@ -90,7 +100,11 @@ public:
     Expression* left;
     Expression* right;
     OpType op;
+
     BinaryOperation(Expression* l, Expression* r, OpType op) : left(l), right(r), op(op) {}
+    
+    void print();;
+
     ~BinaryOperation() { delete left; delete right; }
 };
 
@@ -100,6 +114,9 @@ public:
     enum OpType { NOT, NEG } op;
     Expression* expr;
     UnaryOperation(Expression* e, OpType opt) : expr(e), op(opt) {}
+
+    void print();
+
     ~UnaryOperation() { delete expr; }
 };
 
@@ -108,6 +125,9 @@ class PrintStatement : public Statement {
 public:
     Expression* expr;
     PrintStatement(Expression* e) : expr(e) {}
+
+    void print();
+
     ~PrintStatement() { delete expr; }
 };
 
@@ -115,6 +135,9 @@ class InputStatement : public Statement {
 public:
     std::string varName; 
     InputStatement(const std::string& name) : varName(name) {}
+
+    void print();
+
     ~InputStatement() = default;
 };
 
@@ -123,6 +146,9 @@ public:
     std::string varName;
     Expression* expr;
     AssignmentStatement(const std::string& name, Expression* e) : varName(name), expr(e) {}
+
+    void print();
+
     ~AssignmentStatement() { delete expr; }
 };
 
@@ -135,6 +161,8 @@ public:
 
     IfStatement(Expression* cond, Statement* thenStmt, Statement* elseStmt = nullptr)
         : condition(cond), thenBranch(thenStmt), elseBranch(elseStmt) {}
+
+    void print();
 
     ~IfStatement() {
         delete condition;
@@ -151,6 +179,8 @@ public:
     WhileStatement(Expression* cond, Statement* bodyStmt)
         : condition(cond), body(bodyStmt) {}
 
+    void print();
+
     ~WhileStatement() {
         delete condition;
         delete body;
@@ -161,11 +191,13 @@ class ForStatement : public Statement {
 public:
     Statement* initializer;
     Expression* condition;
-    Expression* increment;
+    Statement* increment;
     Statement* body;
 
-    ForStatement(Statement* initStmt, Expression* condExpr, Expression* incrExpr, Statement* bodyStmt)
+    ForStatement(Statement* initStmt, Expression* condExpr, Statement* incrExpr, Statement* bodyStmt)
         : initializer(initStmt), condition(condExpr), increment(incrExpr), body(bodyStmt) {}
+
+    void print();
 
     ~ForStatement() {
         delete initializer;
@@ -182,6 +214,8 @@ public:
 
     BlockStatement(const std::vector<Statement*>& stmts) : statements(stmts) {}
 
+    void print();
+
     ~BlockStatement() {
         for (auto stmt : statements) {
             delete stmt;
@@ -197,6 +231,8 @@ public:
     Type type;
     std::string varName;
     VariableDeclaration(Type t, const std::string& name) : type(t), varName(name) {}
+
+    void print();
 };
 
 // Function Declaration
@@ -207,6 +243,9 @@ public:
     Declaration* returnType;
     FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType)
         : name(name), parameters(params), returnType(returnType) {}
+
+    void print();
+
     ~FunctionDeclaration() { 
         for (auto param : parameters) delete param;
         delete returnType;
