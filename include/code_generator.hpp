@@ -12,6 +12,7 @@ private:
     std::string generateExpression(Expression* expr);
     std::string generateStatement(Statement* stmt);
     std::string generateDeclaration(Declaration* decl);
+    std::string generateFunctionDeclaration(FunctionDeclaration* funcDecl);
 };
 
 #endif

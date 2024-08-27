@@ -223,6 +223,13 @@ public:
     }
 };
 
+class ReturnStatement : public Statement {
+public:
+    std::string varName;
+    ReturnStatement(std::string vName) : varName(vName) {}
+    void print();
+
+};
 
 // Declarations
 class VariableDeclaration : public Declaration {
@@ -240,16 +247,18 @@ class FunctionDeclaration : public Declaration {
 public:
     std::string name;
     std::vector<VariableDeclaration*> parameters;
-    Declaration* returnType;
-    FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, Declaration* returnType)
-        : name(name), parameters(params), returnType(returnType) {}
+    VariableDeclaration* returnType;
+    Statement* body;
+    FunctionDeclaration(const std::string& name, std::vector<VariableDeclaration*> params, VariableDeclaration* returnType, Statement* functionBody)
+        : name(name), parameters(params), returnType(returnType), body(functionBody) {}
 
     void print();
 
     ~FunctionDeclaration() { 
         for (auto param : parameters) delete param;
         delete returnType;
+        delete body;
     }
 };
 
-#endif // AST_H
+#endif 

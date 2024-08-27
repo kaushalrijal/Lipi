@@ -154,7 +154,7 @@ A statement in the program can be one of several types:
 
 1. **Clone the Repository**:
     ```sh
-    git clone https://github.com/yourusername/lipi.git
+    git clone https://github.com/kaushalrijal/lipi.git
     cd lipi
     ```
 

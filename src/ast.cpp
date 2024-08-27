@@ -104,6 +104,10 @@ void BlockStatement::print() {
     }
 }
 
+void ReturnStatement::print() {
+    std::cout << "ReturnStatement: variable = " << varName << std::endl;
+}
+
 // Function to print a variable declaration
 void VariableDeclaration::print() {
     std::cout << "VariableDeclaration: type = " << type << ", name = " << varName << std::endl;
@@ -116,6 +120,8 @@ void FunctionDeclaration::print() {
     for (auto param : parameters) {
         param->print();
     }
+    std::cout << "Body: ";
+    body->print();
     std::cout << "Return Type: ";
     returnType->print();
 }

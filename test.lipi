@@ -1,5 +1,3 @@
-purna x;
-
-yadi(x == 5){
-    bhana("x eqwuals 5");
+{
+    purna x;
 }

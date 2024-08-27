@@ -25,7 +25,7 @@ class Parser{
     Expression* parseBinaryExpression(int);
     ASTNode* parseExpression();
 
-    ASTNode* parseStatement();
+    ASTNode* parseStatement(bool isFun=false);
     ASTNode* parseDeclaration();
     ASTNode* parseFunctionDeclaration();
 
