@@ -1,12 +1,5 @@
-kaam purna jod(purna x, purna y){
-    firta x + y;
-}
+purna x;
 
-kaam purna jodi(purna x){
-    firta x % 2;
+lagi(x = 0; x < 10; x = x + 1;){
+    bhana("Hello world");
 }
-
-purna y;
-y = jod(3, 4);
-purna z;
-jodi(y);

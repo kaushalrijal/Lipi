@@ -31,7 +31,6 @@ bool Parser::check(TokenType type) {
 
 // Checks if the current token matches specific type
 bool Parser::match(TokenType type) {
-    // std::cout << "matching token " << printTokenType(type) << std::endl;
     if (currentToken().type == type) {
         consumeToken();
         return true;
@@ -87,9 +86,8 @@ ASTNode* Parser::parsePrimaryExpression(){
         consumeToken();
 
         if (match(LPAREN)) { // If followed by '(', it's a function call
-            std::cout << "Hello there" << std::endl;
             std::vector<ASTNode*> args;
-            printToken(currentToken());
+
             if (!match(RPAREN)) { // Check if there are arguments
                 do {
                     args.push_back(parseExpression());
@@ -206,7 +204,6 @@ ASTNode* Parser::parseExpression(){
 
 ASTNode* Parser::parseStatement(bool isFun){
     if(match(PRINT)){ // Print Statement
-        printToken(currentToken());
         if(check(PRINT)){
             consumeToken();
         }
@@ -217,7 +214,6 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new PrintStatement(expr);
     } 
     else if(match(INPUT)){ // Input Statement
-        printToken(currentToken());
         expect(LPAREN);
         std::string vName = currentToken().value;
         expect(ID);
@@ -226,22 +222,17 @@ ASTNode* Parser::parseStatement(bool isFun){
         return new InputStatement(vName);
     } 
     else if (check(ID)) { // Assignment statement for predeclared variables
-        std::cout << "this is the beginning of assignment matcher" << std::endl;
-        printToken(currentToken());
         std::string varName = currentToken().value;
         expect(ID);
 
         // Check for function call and take it on
         if (match(LPAREN)) {  // Function call detected
             std::vector<ASTNode*> args;
-            std::cout << "------------attention--------------------------" << std::endl;
-            printToken(currentToken());
+
             if (!match(RPAREN)) { // Check if there are arguments
                 do {
-                    std::cout << "This is supposed to be printed before parsing expressions" << std::endl;
                     args.push_back(parseExpression());
                     args.back()->print();
-                    std::cout << "This should show up after parsing any expression" << std::endl;
                 } while (match(COMMA));
             }
             expect(RPAREN);
@@ -251,9 +242,7 @@ ASTNode* Parser::parseStatement(bool isFun){
 
         expect(ASSIGN);
         Expression* expr = dynamic_cast<Expression *>(parseExpression());
-        std::cout << "Expression matched succesfully!" << std::endl;
         expect(END);
-        std::cout << "Assignment succesful" << std::endl;
         return new AssignmentStatement(varName, expr);
     } 
     else if (check(TYPE)) { // Assignment statement
@@ -273,7 +262,6 @@ ASTNode* Parser::parseStatement(bool isFun){
         expect(RPAREN);
         Statement* thenBranch = dynamic_cast<Statement*>(parseStatement());
         Statement* elseBranch = nullptr;
-        printToken(currentToken());
         if(match(ELSE)){
             elseBranch = dynamic_cast<Statement*>(parseStatement());
         }
@@ -293,26 +281,16 @@ ASTNode* Parser::parseStatement(bool isFun){
     }
     else if(match(FOR)){
         expect(LPAREN);
-
         Statement* initializer = dynamic_cast<Statement *>(parseStatement());
         std::cout << "initialization successful" << std::endl;
-
         Expression* condition = dynamic_cast<Expression *>(parseExpression());
-        
         std::cout << "condition successful" << std::endl;
-
         expect(END);
-
         Statement* increment = dynamic_cast<Statement *>(parseStatement());
-        
-
         expect(RPAREN);
-
         Statement* body = dynamic_cast<Statement *>(parseStatement());
-        
-        
         return new ForStatement(initializer, condition, increment, body);
-    } 
+    }
     else if (match(TokenType::LBRACE)) {  // Block Statement
         std::vector<ASTNode*> statements;
         while (!check(TokenType::RBRACE)) {
@@ -353,7 +331,6 @@ ASTNode* Parser::parseStatement(bool isFun){
 
 // Parse Function Decalartion
 ASTNode* Parser::parseFunctionDeclaration() {
-    std::cout << "Hello I am inside the function declaration!";
     expect(FUNC_DEF);
 
     Token returnTypeToken = currentToken();
