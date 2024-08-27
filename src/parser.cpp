@@ -181,15 +181,6 @@ ASTNode* Parser::parseStatement(){
         expect(END);
         return new InputStatement(vName);
     } 
-    else if (match(TYPE)) { // Assignment statement
-        Token typeToken = currentToken();  
-        expect(ID);  
-        std::string varName = currentToken().value; 
-        expect(ASSIGN); 
-        Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
-        expect(END); 
-        return new AssignmentStatement(varName, expr); 
-    } 
     else if (check(ID)) { // Assignment statement for predeclared variables
         std::string varName = currentToken().value;
         consumeToken();
@@ -197,6 +188,16 @@ ASTNode* Parser::parseStatement(){
         Expression* expr = dynamic_cast<Expression *>(parseExpression());
         expect(END);
         return new AssignmentStatement(varName, expr);
+    } 
+    else if (check(TYPE)) { // Assignment statement
+        // Token typeToken = currentToken();  
+        // expect(ID);  
+        // std::string varName = currentToken().value; 
+        // expect(ASSIGN); 
+        // Expression* expr = dynamic_cast<Expression*>(parseExpression()); 
+        // expect(END); 
+        // return new AssignmentStatement(varName, expr); 
+        return parseDeclaration();
     } 
     else if (match(IF)){
         expect(LPAREN);
@@ -343,7 +344,7 @@ ASTNode* Parser::parse(){
     while(!check(END_OF_FILE)){
         if(check(TokenType::FUNC_DEF)){
             nodes.push_back(parseFunctionDeclaration());
-        } else if (check(TYPE) || check(ID)){
+        } else if (check(TYPE)){
             nodes.push_back(parseDeclaration());
         } else {
             nodes.push_back(parseStatement());

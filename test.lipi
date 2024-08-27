@@ -1,3 +1,7 @@
-kaam purna add(purna x, purna y){
-    bhana("Hello orld");
-}
+purna x;
+purna y;
+dasa z;
+x = 5;
+y = 7.5;
+
+z = x + (y + 2) / 4 - 16;
