@@ -381,7 +381,7 @@ To run the compiler on a source file:
 ```
 ---
 ### Copyrights 2024
-Kaushal Rijal, Hariom Raj Chauhan, Prasant Roy, Guru Prakash
+#### Kaushal Rijal, Hariom Raj Chauhan, Prasant Roy, Guru Prakash
 ---
 
 
