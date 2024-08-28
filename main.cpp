@@ -12,13 +12,13 @@
 
 int main(int argc, char** argv){
     if(argc<2){
-        std::cerr << "Arguments list cannot be empty.";
+        std::cerr << "ARGUMENTS khali huna paudaina!";
     }
     
     std::ifstream inf(argv[1]);
 
     if(inf.fail()){
-        std::cerr << "Failed to open file " << argv[1];
+        std::cerr << "FILE kholna asafal" << argv[1];
     }
 
     std::stringstream buffer;
@@ -73,7 +73,7 @@ int main(int argc, char** argv){
     }
     else
     {
-        std::cerr << "Compilation failed." << std::endl;
+        std::cerr << "Compilation asafal." << std::endl;
     }
 
 

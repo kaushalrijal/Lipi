@@ -1,0 +1,9 @@
+purna x;
+purna y;
+
+x = 5;
+y = 6;
+
+yadi( x > 4 || y > 7 ){
+    bhana("true");
+}
