@@ -7,6 +7,8 @@
 class CodeGenerator {
 public:
     std::string generate(ASTNode* root); // Main method to generate code from AST
+    std::string local;
+    std::string global;
 
 private:
     std::string generateExpression(Expression* expr);

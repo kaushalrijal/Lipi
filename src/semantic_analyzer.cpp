@@ -72,11 +72,11 @@ void SemanticAnalyzer::analyzeDeclaration(Declaration* decl){
             }
         }
 
-        if (auto* returnTypeDecl = dynamic_cast<VariableDeclaration*>(funcDecl->returnType)) {
-            if (returnTypeDecl->type == VariableDeclaration::VOID) {
-                throw std::runtime_error("Function must have a non-VOID return type.");
-            }
-        }
+        // if (auto* returnTypeDecl = dynamic_cast<VariableDeclaration*>(funcDecl->returnType)) {
+        //     if (returnTypeDecl->type == VariableDeclaration::VOID) {
+        //         throw std::runtime_error("Function must have a non-VOID return type.");
+        //     }
+        // }
     }
 }
 

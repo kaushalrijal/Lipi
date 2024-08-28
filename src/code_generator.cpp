@@ -2,18 +2,21 @@
 
 std::string CodeGenerator::generate(ASTNode* root){
     Program* program= dynamic_cast<Program*>(root);
-    std::string code = "#include <iostream>\n\nint main(){\n";
 
     for(auto node : program->nodes){
         if (auto stmt = dynamic_cast<Statement*>(node)) {
-            code += generateStatement(stmt);
+            local += generateStatement(stmt);
         } else if (auto funcDecl = dynamic_cast<FunctionDeclaration*>(node)){
-            code += generateFunctionDeclaration(funcDecl);
+            global += generateFunctionDeclaration(funcDecl);
         } else if (auto decl = dynamic_cast<Declaration*>(node)) {
-            code += generateDeclaration(decl); 
+            local += generateDeclaration(decl); 
         }
     }
 
+    std::string code = "#include <iostream>\n";
+    code += global;
+    code += "int main(){\n";
+    code += local;
     code += "return 0;\n}";
     return code;
 }

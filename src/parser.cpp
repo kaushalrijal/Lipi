@@ -235,7 +235,9 @@ ASTNode* Parser::parseStatement(bool isFun){
                     args.back()->print();
                 } while (match(COMMA));
             }
-            expect(RPAREN);
+            if(!check(END))
+                expect(RPAREN);
+            
             expect(END); // Expect a semicolon at the end of the statement
             return new FunctionCallStatement(varName, args);
         }
@@ -354,8 +356,9 @@ ASTNode* Parser::parseFunctionDeclaration() {
             break;
         }
     }
-
-    expect(RPAREN);
+    if(!check(LBRACE)){
+        expect(RPAREN);
+    }
 
     Statement* body = dynamic_cast<Statement*>(parseStatement(true));
     

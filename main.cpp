@@ -2,13 +2,13 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <filesystem>
 
 #include "lexer.hpp"
 #include "parser.hpp"
 #include "semantic_analyzer.hpp"
 #include "code_generator.hpp"
 #include "executer.hpp"
-// #include "executer.cpp"
 
 int main(int argc, char** argv){
     if(argc<2){
@@ -50,10 +50,13 @@ int main(int argc, char** argv){
     CodeGenerator codeGenerator;
     std::string gen = codeGenerator.generate(root);
 
-    std::cout << "Generated Code:\n" << gen << std::endl;
+    // std::cout << "Generated Code:\n" << gen << std::endl;
 
-    std::string cppFilename = "temp_program.cpp";
-    std::string binaryFilename = "temp_program";
+    std::filesystem::path inputPath(argv[1]);
+    std::string filenameWithoutExtension = inputPath.stem().string();
+
+    std::string cppFilename = filenameWithoutExtension + ".cpp";
+    std::string binaryFilename = filenameWithoutExtension;
 
     // 3. Write the generated code to a file.
     generateCppFile(gen, cppFilename);
