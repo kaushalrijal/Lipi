@@ -381,6 +381,7 @@ To run the compiler on a source file:
 ```
 ---
 ### Copyrights 2024
+### Team Members Names
 ---
 1. Kaushal Rijal
 2. Hariom Raj Chauhan
