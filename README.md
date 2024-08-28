@@ -322,8 +322,12 @@ letter = 'A';
     ```sh
     cmake ..
     ```
+    or if this doesn't work then
+    ```sh
+    cmake -G "MinGW Makefiles" ..
+    ```
 
-4. **Build the Project**:
+5. **Build the Project**:
 
     ```sh
     make
