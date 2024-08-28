@@ -380,7 +380,7 @@ To run the compiler on a source file:
 ./lipi path/to/your/source_file.lipi
 ```
 ---
-### Copyrights 2024
+
 ### Team Members Names
 ---
 1. Kaushal Rijal
@@ -388,5 +388,6 @@ To run the compiler on a source file:
 3. Prasant Roy
 4. Guru Prakash Gupta
 ---
+##### Copyrights 2024
 
 
