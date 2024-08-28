@@ -381,10 +381,11 @@ To run the compiler on a source file:
 ```
 ---
 ### Copyrights 2024
+---
 1. Kaushal Rijal
 2. Hariom Raj Chauhan
-3. 3. Prasant Roy
-4. 4. Guru Prakash
+3. Prasant Roy
+4. Guru Prakash Gupta
 ---
 
 
