@@ -7,7 +7,7 @@ Parser::Parser(std::vector<Token>& tok) : tokens(tok), current(0) {};
 // Return Current Token
 Token& Parser::currentToken(){
     if(current>=tokens.size()){
-        throw std::runtime_error("No more tokens");
+        throw std::runtime_error("SyntaxError: aru TOKEN baaki chhainan");
     }
     return tokens[current];
 }
@@ -46,7 +46,7 @@ bool Parser::match(TokenType type) {
 void Parser::expect(TokenType type) {
     TokenType currType = currentToken().type;
     if (!match(type)) {
-        throw std::runtime_error("Expected token type: " + printTokenType(type) + "\nFound instead: " + printTokenType(currType));
+        throw std::runtime_error("SyntaxError:\nAasa garieko TOKEN type: " + printTokenType(type) + "\nPaieko TOKEN: " + printTokenType(currType));
     }
 }
 
@@ -62,7 +62,7 @@ VariableDeclaration::Type mapTokenTypeToVarType(const std::string tokenType) {
     } else if (tokenType == "khali") {
         return VariableDeclaration::VOID;
     } else {
-        throw std::runtime_error("Unknown token type for variable declaration");
+        throw std::runtime_error("SyntaxError: VARIABLE DECLARATION ma aasa nagarieko TYPE bhettiyo");
     }
 }
 
@@ -114,7 +114,7 @@ ASTNode* Parser::parsePrimaryExpression(){
         consumeToken();
         return new BooleanLiteral(false);
     } else{
-        throw std::runtime_error("Unexpected token in primary expression.");
+        throw std::runtime_error("SyntaxError: PRIMARY EXPRESSION ma aasa nagarieko TOKEN bhetiyo");
     }
     return nullptr;
 }
@@ -173,7 +173,7 @@ BinaryOperation::OpType getBinaryOpType(TokenType type) {
         case AND: return BinaryOperation::AND;
         case OR: return BinaryOperation::OR;
         default:
-            throw std::runtime_error("Unknown binary operator type");
+            throw std::runtime_error("SyntaxError: nachineko BINARY OPERATOR TYPE");
     }
 }
 
@@ -309,7 +309,7 @@ ASTNode* Parser::parseStatement(bool isFun){
     }
     else if (match(TokenType::RETURN)){
         if(isFun){
-            throw std::runtime_error("You cannot return from outside any functions");
+            throw std::runtime_error("SyntaxError: FUNCTION bahira bata FIRTA garna mildaina");
         }
         Expression* expr = dynamic_cast<Expression*>(parseExpression());
         expect(END);
@@ -325,7 +325,7 @@ ASTNode* Parser::parseStatement(bool isFun){
             return nullptr;
         }
         Token currToken = currentToken();
-        throw std::runtime_error("Failed to parse statements, found unexpected token: " + printTokenType(currToken.type));
+        throw std::runtime_error("SyntaxError: STATEMENTS PARSE garna asafal, bhetieyo nachaheko token: " + printTokenType(currToken.type));
     }
 }
 
@@ -363,7 +363,7 @@ ASTNode* Parser::parseFunctionDeclaration() {
     Statement* body = dynamic_cast<Statement*>(parseStatement(true));
     
     if (!body) {
-        throw std::runtime_error("Invalid function body");
+        throw std::runtime_error("SyntaxError: avaid FUNCTION BODY");
     }
 
     VariableDeclaration* returnType = new VariableDeclaration(mapTokenTypeToVarType(returnTypeToken.value), "");
@@ -385,7 +385,7 @@ ASTNode* Parser::parseDeclaration(){
     } else if(typeT == FUNC_DEF){
         return parseFunctionDeclaration();
     } else {
-        throw std::runtime_error("Unexpected token for declaration: " + printTokenType(typeT));
+        throw std::runtime_error("SyntaxError: DECLARATION ma aasa nagareko TOKEN bhettiyo: " + printTokenType(typeT));
     }
 }
 

@@ -1,5 +1,1 @@
-kaam khali bhan(){
-    bhana("hello there");
-}
-
-bhan();
+purna x = 5;

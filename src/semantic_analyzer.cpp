@@ -52,14 +52,14 @@ void SemanticAnalyzer::analyzeExpression(Expression* expr){
 void SemanticAnalyzer::analyzeDeclaration(Declaration* decl){
     if(auto* varDecl = dynamic_cast<VariableDeclaration*>(decl)){
         if(varDecl->type == VariableDeclaration::VOID){
-            throw std::runtime_error("Variable cannot have void type");
+            throw std::runtime_error("TypeError: VARIABLE ko TYPE 'KHALI' huna paudaina");
         }
         symbolTable.declareVariable(varDecl->varName, static_cast<VarType>(varDecl->type));
 
     } else if(auto * funcDecl = dynamic_cast<FunctionDeclaration*>(decl)){
         try {
             symbolTable.lookupVariable(funcDecl->name);
-            throw std::runtime_error("Function " + funcDecl->name + " already declared!");
+            throw std::runtime_error("Function " + funcDecl->name + " pahilai DECLARE garisakieko chha!");
         } catch (const std::runtime_error&){
             // nothing...
         }
@@ -68,7 +68,7 @@ void SemanticAnalyzer::analyzeDeclaration(Declaration* decl){
 
         for (auto* param : funcDecl->parameters) {
             if (param->type == VariableDeclaration::VOID) {
-                throw std::runtime_error("Function parameter cannot have VOID type.");
+                throw std::runtime_error("FUNCTION PARAMETER ko TYPE 'KHALI' huna sakdaina.");
             }
         }
 
@@ -114,11 +114,11 @@ void SemanticAnalyzer::checkType(Expression* expr, VarType expectedType){
     } else if (auto* boolLiteral = dynamic_cast<BooleanLiteral*>(expr)) {
         actualType = VarType::Thik_Bethik;
     } else {
-        throw std::runtime_error("Unknown expression type in type check");
+        throw std::runtime_error("TypeError: EXPRESSION ma aasa nagareko token bhettiyo");
     }
 
     if (actualType != expectedType) {
-        throw std::runtime_error("Type mismatch: Expected " + varTypeToString(expectedType) + ", got " + varTypeToString(actualType));
+        throw std::runtime_error("TypeMismatch: aasa garieko " + varTypeToString(expectedType) + ", bhetiyo " + varTypeToString(actualType));
     }
 }
 
