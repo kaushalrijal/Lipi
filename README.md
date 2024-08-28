@@ -58,14 +58,17 @@ bhana(name);  // Prints the value of the variable `name`
 
 ### Declaration Statement
 
-3. Use to  a variable. You cannot initialize a variable at the time of declaration.
-
-
+3. Use `purna` or `dasa` for your specific identifier. You cannot initialize a variable at the time of declaration.
 
 *Syntax:*
 
 ```sh
+//Syntax Error - Not Working 
+type variable_name = value;
+
+//Working
 type variable_name;
+vaiable_name = value;
 ```
 
 *Examples:*
@@ -93,14 +96,14 @@ age = 31;  // Assigns the value 31 to the variable `age`
 
 ### If Statement
 
-Use yadi to execute a block of code conditionally. You can include an anyatha block for the else condition.
+5. Use `yadi` to execute a block of code conditionally. You can include an `anyatha` block for the else condition.
 
 *Syntax:*
 
 ```sh
 yadi(expression) {
-    // block of code
-} anyatha {
+    //if block of code
+}anyatha {
     // else block of code
 }
 ```
@@ -110,14 +113,14 @@ yadi(expression) {
 ```sh
 yadi(age > 18) {
     bhana("Adult");
-} anyatha {
+}anyatha {
     bhana("Minor");
 }
 ```
 
 ### While Statement
 
-Use jabasamma to repeat a block of code while a condition is true.
+6. Use `jabasamma` to repeat a block of code while a condition is true.
 
 *Syntax:*
 
@@ -137,7 +140,7 @@ jabasamma(age < 30) {
 
 ### For Statement
 
-Use lagi to loop through a range of values, specifying initialization, condition, and update.
+7. Use `lagi` to loop through a range of values, specifying initialization, condition, and update.
 
 *Syntax:*
 
@@ -157,7 +160,7 @@ lagi(i = 0; i < 10; i = i + 1) {
 
 ### Function Definition
 
-Use kaam to define a new function.
+8. Use `kaam` to define a new function.
 
 *Syntax:*
 
@@ -177,7 +180,7 @@ kaam purna add(purna a, purna b) {
 
 ### Return Statement
 
-Use firta to return a value from a function.
+9. Use `firta` to return a value from a function.
 
 *Syntax:*
 
@@ -195,25 +198,23 @@ firta result;
 
 ### Basic Expressions
 
-You can perform operations with numbers, strings, and other values.
+10. You can perform operations with numbers, strings, and other values.
 
 *Syntax:*
 
 ```sh
-term { ("+" | "-" | "*" | "/") term }
+term { (`+` | `-` | `*` | `/`) term }
 ```
 
 *Examples:*
 
 ```sh
 5 + 3 * 2
-"Hello"
-'c'
 ```
 
 ### Logical Expressions
 
-Combine logical terms using &&, ||, or ! to form complex conditions.
+11. Combine logical terms using `&&`, `||`, or `!` to form complex conditions.
 
 *Syntax:*
 
@@ -229,7 +230,7 @@ age > 18 && age < 65
 
 ### Comparison
 
-Compare values using operators like ==, !=, <, <=, >, and >=.
+12. Compare values using operators like `==`, `!=`, `<`, `<=`, `>`, and `>=`.
 
 *Syntax:*
 
@@ -245,7 +246,7 @@ age == 30
 
 ### Modulo Expression
 
-Calculate the remainder of a division using %.
+13. Calculate the remainder of a division using `%`.
 
 *Syntax:*
 
@@ -261,11 +262,11 @@ expression % expression
 
 ## Data Types
 
-- purna: Integer
-- dasa: Decimal
-- akshar: Character
-- paath: String
-- khali: Void
+- `purna`: Integer
+- `dasa`: Decimal
+- `akshar`: Character
+- `paath`: String
+- `khali`: Void
 
 *Examples:*
 
@@ -284,12 +285,50 @@ khali nothing;  // Declare a void variable
 - *String:* A sequence of characters enclosed in double quotes (e.g., "Sample text").
 - *Character:* A single character enclosed in single quotes (e.g., 'A').
 
+
+### Code to take input and display the output
+
 *Examples:*
 
 ```sh
-number = 42;
-text = "Sample text";
-letter = 'A';
+purna age;
+paath name;
+akshar gender;
+
+bhana("Enter your name : ");
+suna(name);
+
+bhana("Enter your age : ");
+suna(age);
+
+bhana("Enter f or m for gender : ");
+suna(gender);
+bhana("\n");
+
+bhana("Your name is ");
+bhana(name);
+
+bhana("\nYour age is ");
+bhana(age);
+
+bhana("\n");
+
+yadi(gender == 'f'){
+    bhana("You are Female");
+}anyatha{
+    bhana("You are Male");
+}
+
+```
+*OUTPUT:*
+```sh
+Enter your name : hari
+Enter your age : 19
+Enter f or m for gender : m
+
+Your name is hari
+Your age is 19
+You are Male
 ```
 
 ---
@@ -339,4 +378,11 @@ To run the compiler on a source file:
 
 ```sh
 ./lipi path/to/your/source_file.lipi
->>>>>>
+```
+
+---
+@Copyrights 2024
+Kaushal Rijal, Hariom Raj Chauhan, Prasant Roy, Guru Prakash
+---
+
+
