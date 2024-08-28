@@ -103,8 +103,7 @@ age = 31;  // Assigns the value 31 to the variable `age`
 ```sh
 yadi(expression) {
     //if block of code
-}
-anyatha {
+}anyatha {
     // else block of code
 }
 ```
@@ -114,8 +113,7 @@ anyatha {
 ```sh
 yadi(age > 18) {
     bhana("Adult");
-}
-anyatha {
+}anyatha {
     bhana("Minor");
 }
 ```
@@ -212,8 +210,6 @@ term { (`+` | `-` | `*` | `/`) term }
 
 ```sh
 5 + 3 * 2
-"Hello"
-'c'
 ```
 
 ### Logical Expressions
