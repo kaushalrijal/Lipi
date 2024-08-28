@@ -379,9 +379,8 @@ To run the compiler on a source file:
 ```sh
 ./lipi path/to/your/source_file.lipi
 ```
-
 ---
-@Copyrights 2024
+### Copyrights 2024
 Kaushal Rijal, Hariom Raj Chauhan, Prasant Roy, Guru Prakash
 ---
 
