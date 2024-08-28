@@ -1,0 +1,13 @@
+purna x;
+purna y;
+purna z;
+
+bhana("Enter two numbers: ");
+
+suna(x);
+suna(y);
+
+z = x + y;
+
+bhana("The sum of two numbers is: ");
+bhana(z);

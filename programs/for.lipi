@@ -1,0 +1,9 @@
+purna x;
+purna y;
+
+lagi(x=0; x<5; x = x + 1;){
+    lagi(y=0; y<x; y=y+1;){
+        bhana("*");
+    }
+    bhana("\n");
+}

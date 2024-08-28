@@ -1,0 +1,13 @@
+kaam purna jod(purna x, purna y){
+    purna z;
+    z = x + y;
+    firta z;
+}
+
+hello();
+bhana(jod(4, 5));
+
+
+kaam khali hello(){
+    bhana("Hello");
+}

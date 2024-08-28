@@ -1,1 +1,3 @@
-purna x = 5;
+purna x;
+
+x = 5;

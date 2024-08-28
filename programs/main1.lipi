@@ -1,0 +1,27 @@
+purna age;
+paath name;
+akshar gender;
+
+bhana("Enter your name : ");
+suna(name);
+
+bhana("Enter your age : ");
+suna(age);
+
+bhana("Enter f or m for gender : ");
+suna(gender);
+bhana("\n");
+
+bhana("Your name is ");
+bhana(name);
+
+bhana("\nYour age is ");
+bhana(age);
+
+bhana("\n");
+
+yadi(gender == 'f'){
+    bhana("You are Female");
+}anyatha{
+    bhana("You are Male");
+}

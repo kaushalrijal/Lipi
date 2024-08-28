@@ -1,0 +1,6 @@
+paath naam;
+
+naam = "kaushal";
+
+bhana("Hello ");
+bhana(naam);

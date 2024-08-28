@@ -1,0 +1,14 @@
+paath naam;
+akshar c;
+purna x;
+dasa y;
+
+naam = "ERC";
+c = 'k';
+x = 5;
+y = 5.5;
+
+bhana(naam);
+bhana(c);
+bhana(x);
+bhana(y);

@@ -1,0 +1,7 @@
+purna x;
+x = 5;
+
+jabasamma(x < 10){
+    bhana("Hello dai\n");
+    x = x + 1;
+}   
