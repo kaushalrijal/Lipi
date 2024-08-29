@@ -1,4 +1,4 @@
-yadi( 5==5 ){
+yadi( thik ){
     bhana("5 equals 5");
 } anyatha {
     bhana("5 not equals 5");

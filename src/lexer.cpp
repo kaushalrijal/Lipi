@@ -46,7 +46,6 @@ void printToken(Token token){
         case TokenType::FALSE: typeStr = "FALSE"; break;
         case TokenType::SKIP: typeStr = "SKIP"; break;
         case TokenType::NEWLINE: typeStr = "NEWLINE"; break;
-        case TokenType::COMMENT: typeStr = "COMMENT"; break;
         case TokenType::MISMATCH: typeStr = "MISMATCH"; break;
         case TokenType::END_OF_FILE: typeStr = "END OF FILE"; break;
     }
@@ -94,7 +93,6 @@ std::string printTokenType(TokenType type){
         case TokenType::FALSE: typeStr = "FALSE"; break;
         case TokenType::SKIP: typeStr = "SKIP"; break;
         case TokenType::NEWLINE: typeStr = "NEWLINE"; break;
-        case TokenType::COMMENT: typeStr = "COMMENT"; break;
         case TokenType::MISMATCH: typeStr = "MISMATCH"; break;
         case TokenType::END_OF_FILE: typeStr = "END OF FILE"; break;
     }
@@ -147,6 +145,9 @@ std::vector<Token> Lexer::tokenize(){
         {NOT,       std::regex("!")},
         {SKIP,      std::regex("[ \t]+")},
         {NEWLINE,   std::regex("\n")},
+        {COMMENT_SINGLE, std::regex("\\:\\)")},  // Single-line comment pattern
+        {COMMENT_START, std::regex("\\(\\:")},   // Start of multi-line comment pattern
+        {COMMENT_END, std::regex("\\:\\)")},     // End of multi-line comment pattern
         {MISMATCH,  std::regex(".")}
     };
 
@@ -154,6 +155,33 @@ std::vector<Token> Lexer::tokenize(){
     while (start != end) {
         bool matched = false;
 
+        // Handle multi-line comments
+        if (std::regex_search(start, end, match, std::regex("\\(\\:"), std::regex_constants::match_continuous)) {
+            start = match[0].second;
+            while (start != end) {
+                if (std::regex_search(start, end, match, std::regex("\\:\\)"), std::regex_constants::match_continuous)) {
+                    start = match[0].second;
+                    matched = true;
+                    break;
+                }
+                start++;
+            }
+            if (!matched) {
+                throw std::runtime_error("Unterminated multi-line comment.");
+            }
+            continue;
+        }
+
+        // Handle single-line comments
+        if (std::regex_search(start, end, match, std::regex("\\:\\)"), std::regex_constants::match_continuous)) {
+            start = match[0].second;
+            while (start != end && *start != '\n') {
+                start++;
+            }
+            continue;
+        }
+
+        // Handle other tokens
         for (const auto &pattern : tokenPatterns) {
             if (std::regex_search(start, end, match, pattern.second, std::regex_constants::match_continuous)) {
                 if (pattern.first != TokenType::SKIP) {
