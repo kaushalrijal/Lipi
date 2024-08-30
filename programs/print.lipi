@@ -8,5 +8,7 @@ paath naam;
 
 naam = "kaushal";
 
+:) ignore this
+
 bhana("Hello ");
 bhana(naam);

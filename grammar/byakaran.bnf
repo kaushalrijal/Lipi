@@ -11,13 +11,13 @@
               | <for_statement>
               | <function_definition>
               | <return_statement>
+              | <block>
 
 <print_statement> ::= "bhana" "(" <expression> ")"
 
 <input_statement> ::= "suna" "(" <identifier> ")"
 
-<declaration_statement> ::= <type> <identifier> "=" <expression>
-                          | <type> <identifier>
+<declaration_statement> ::= <type> <identifier>
 
 <type> ::= "purna" | "dasa" | "akshar" | "paath" | "khali"
 
@@ -28,7 +28,7 @@
 
 <while_statement> ::= "jabasamma" "(" <expression> ")" <block>
 
-<for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ")" <block>
+<for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ";" ")" <block>
 
 <function_definition> ::= "kaam" <type> <identifier> "(" <parameter_list> ")" <block>
 
@@ -74,3 +74,6 @@
 <string> ::= '"' [^"]* '"'
 
 <character> ::= "'" [^'] "'"
+
+<parameter_list> ::= <parameter> { "," <parameter> }*
+<parameter> ::= <type> <identifier>
