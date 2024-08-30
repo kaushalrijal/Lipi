@@ -370,14 +370,22 @@ You are Male
 
     ```sh
     make
+        or
+    mingw32-make
     ```
 
 ## Running the Compiler
 
 To run the compiler on a source file:
 
+while in the build directory
 ```sh
-./lipi path/to/your/source_file.lipi
+.\lipi ../programs/main1.lipi
+```
+
+General Syntax:
+```sh
+.\lipi path/to/your/source_file.lipi
 ```
 ---
 
