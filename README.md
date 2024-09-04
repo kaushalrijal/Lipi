@@ -59,6 +59,8 @@ This project was developed for the ACES C++ Project Demonstration.
 	```sh
 	make
 	```
+
+If you are on Windows and don't feel like building this project, you can simply grab the precompiled executible from the [releases](https://github.com/kaushalrijal/Lipi/releases/tag/v1.0.0) section.
 ## Running the Compiler
 Once the build process is complete, an executable named Lipi.exe is formed inside the build directory. You can execute it from there, or copy it to desired location and use it as per needs. While in the same directory as the executable in the terminal:
 ```sh
