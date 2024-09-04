@@ -1,6 +1,7 @@
 <program> ::= <statement_list>
 
-<statement_list> ::= <statement> ";" <statement_list> | <statement> ";"
+<statement_list> ::= <statement> ";" <statement_list>
+                   | <statement> ";"
 
 <statement> ::= <print_statement>
               | <input_statement>
@@ -28,23 +29,23 @@
 
 <while_statement> ::= "jabasamma" "(" <expression> ")" <block>
 
-<for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ";" ")" <block>
+<for_statement> ::= "lagi" "(" <assignment_statement> ";" <expression> ";" <assignment_statement> ")" <block>
 
-<function_definition> ::= "kaam" <type> <identifier> "(" <parameter_list> ")" <block>
+<function_definition> ::= "kaam" <type> <identifier> "(" [<parameter_list>] ")" <block>
 
-<return_statement> ::= "firta" <expression>
+<return_statement> ::= "firta" <expression> ";"
 
 <block> ::= "{" <statement_list> "}"
 
 <expression> ::= <term> { ("+" | "-" | "*" | "/") <term> }
+              | <logical_expression>
+              | <mod_expression>
               | "thik"
               | "bethik"
               | <identifier>
               | <number>
               | <string>
               | <character>
-              | <logical_expression>
-              | <mod_expression>
 
 <logical_expression> ::= <logical_term> { ("&&" | "||" | "!") <logical_term> }
 
@@ -69,11 +70,13 @@
 
 <identifier> ::= [a-zA-Z_][a-zA-Z0-9_]*
 
-<number> ::= [0-9]+ | [0-9]*\.[0-9]+
+<number> ::= [0-9]+ ("." [0-9]*)?
+           | [0-9]* "." [0-9]+
 
 <string> ::= '"' [^"]* '"'
 
 <character> ::= "'" [^'] "'"
 
 <parameter_list> ::= <parameter> { "," <parameter> }*
+
 <parameter> ::= <type> <identifier>
