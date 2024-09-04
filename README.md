@@ -1,401 +1,72 @@
-# LIPI Documentation
+# LIPI: Aba Code Nepali Ma
 
-Welcome to the LIPI documentation! This guide will help you understand how to write and execute code in LIPI language.
+## Table of Contents
+- [Introduction](#introduction)
+- [Team Members](#team-members)
+- [Building the Project](#building-the-project)
+	- [Prerequisites](#prerequisites)
+	- [Steps](#steps)
+- [Running the Compiler](#running-the-compiler)
+- [Documentation](#documentation)
+- [Contributions and Discussion](#contributions-and-discussion)
 
-## Basic Syntax
+## Introduction
+Lipi is a high-level, Nepali-inspired programming language designed to be both expressive and accessible. It combines the simplicity of Nepali syntax with the power of modern programming concepts. Lipi is a versatile language that can be used for a variety of applications, from basic scripts to complex programs.
 
-### Program Structure
+Lipi includes a core set of language elements:
 
-A program is a sequence of statements, each ending with a semicolon `;`.
+-   Lipi supports fundamental constructs like variable declarations, assignments, and a range of expressions including arithmetic and logical operations.
+-   It offers control structures such as if-statements, loops, and function definitions, enabling users to write both simple and complex logic.
+-   Functions in Lipi are defined using Nepali terms, allowing for reusable code blocks and modular programming
 
-```sh
-statement1;
-statement2;
-```
+Lipi can be utilised for various programming tasks:
 
-## Keywords
+-   **Script Writing**: Ideal for writing simple scripts and automating tasks, Lipi’s clear syntax helps users quickly implement solutions without unnecessary complexity.
+-   **Application Development**: With its support for functions, control flow, and modular design, Lipi is suited for developing more intricate applications where readability and maintainability are crucial.
 
-The following keywords are reserved and cannot be used as identifiers:
+This project was developed for the ACES C++ Project Demonstration.
 
-  `bhana` `suna` `purna` `dasa` `akshar` `paath` `khali` `yadi` `anyatha` `jabasamma` `lagi` `kaam` `firta` `thik` `bethik`
+## Team Members 
+1. [Kaushal Rijal](https://github.com/kaushalrijal)
+2. [Hariom Raj Chauhan](https://github.com/HariomRajChauhan)
+3. [Prasant Roy](https://github.com/Prashantt6)
+4. [Guru Prakash Gupta](https://github.com/guptaguruprakash)
 
-## Statements
-
-### Print Statement
-
-1. Use `bhana` to print a value or expression to the output.
-
-*Syntax:*
-
-```sh
-bhana(expression);
-```
-
-*Example:*
-
-```sh
-bhana(5 + 3);  // Output: 8
-bhana("Hello, World!");  // Output: Hello, World!
-```
-
-### Input Statement
-
-2. Use `suna` to read a value from the user and store it in a variable.
-
-*Syntax:*
-
-```sh
-suna(variable_name);
-```
-
-*Example:*
-
-```sh
-purna name; // Declares an purna variable `name`
-suna(name);  // Reads input into the variable `name`
-bhana(name);  // Prints the value of the variable `name`
-```
-
-### Declaration Statement
-
-3. Use `purna` or `dasa` for your specific identifier. You cannot initialize a variable at the time of declaration.
-
-*Syntax:*
-
-```sh
-//Syntax Error - Not Working 
-type variable_name = value;
-
-//Working
-type variable_name;
-vaiable_name = value;
-```
-
-*Examples:*
-
-```sh
-purna age;  // Declares an integer variable `age`
-dasa salary;  // Declares a decimal variable `salary`
-```
-
-### Assignment Statement
-
-4. Use your own `Identifier` to assign a value to an existing variable.
-
-*Syntax:*
-
-```sh
-variable_name = expression;
-```
-
-*Examples:*
-
-```sh
-age = 31;  // Assigns the value 31 to the variable `age`
-```
-
-### If Statement
-
-5. Use `yadi` to execute a block of code conditionally. You can include an `anyatha` block for the else condition.
-
-*Syntax:*
-
-```sh
-yadi(expression) {
-    //if block of code
-}anyatha {
-    // else block of code
-}
-```
-
-*Examples:*
-
-```sh
-yadi(age > 18) {
-    bhana("Adult");
-}anyatha {
-    bhana("Minor");
-}
-```
-
-### While Statement
-
-6. Use `jabasamma` to repeat a block of code while a condition is true.
-
-*Syntax:*
-
-```sh
-jabasamma(expression) {
-    // block of code
-}
-```
-
-*Examples:*
-
-```sh
-jabasamma(age < 30) {
-    age = age + 1;
-}
-```
-
-### For Statement
-
-7. Use `lagi` to loop through a range of values, specifying initialization, condition, and update.
-
-*Syntax:*
-
-```sh
-lagi(initialization; condition; update) {
-    // block of code
-}
-```
-
-*Examples:*
-
-```sh
-lagi(i = 0; i < 10; i = i + 1) {
-    bhana(i);
-}
-```
-
-### Function Definition
-
-8. Use `kaam` to define a new function.
-
-*Syntax:*
-
-```sh
-kaam return_type function_name(parameter_list) {
-    // block of code
-}
-```
-
-*Examples:*
-
-```sh
-kaam purna add(purna a, purna b) {
-    firta a + b;
-}
-```
-
-### Return Statement
-
-9. Use `firta` to return a value from a function.
-
-*Syntax:*
-
-```sh
-firta(expression);
-```
-
-*Examples:*
-
-```sh
-firta result;
-```
-
-## Expressions
-
-### Basic Expressions
-
-10. You can perform operations with numbers, strings, and other values.
-
-*Syntax:*
-
-```sh
-term { (`+` | `-` | `*` | `/`) term }
-```
-
-*Examples:*
-
-```sh
-5 + 3 * 2
-```
-
-### Logical Expressions
-
-11. Combine logical terms using `&&`, `||`, or `!` to form complex conditions.
-
-*Syntax:*
-
-```sh
-logical_term { ("&&" | "||" | "!") logical_term }
-```
-
-*Examples:*
-
-```sh
-age > 18 && age < 65
-```
-
-### Comparison
-
-12. Compare values using operators like `==`, `!=`, `<`, `<=`, `>`, and `>=`.
-
-*Syntax:*
-
-```sh
-expression (== | != | < | <= | > | >=) expression
-```
-
-*Examples:*
-
-```sh
-age == 30
-```
-
-### Modulo Expression
-
-13. Calculate the remainder of a division using `%`.
-
-*Syntax:*
-
-```sh
-expression % expression
-```
-
-*Examples:*
-
-```sh
-10 % 3  // Results in 1
-```
-
-## Data Types
-
-- `purna`: Integer
-- `dasa`: Decimal
-- `akshar`: Character
-- `paath`: String
-- `khali`: Void
-
-*Examples:*
-
-```sh
-purna count;  // Declare an integer variable
-dasa price;   // Declare a decimal variable
-akshar ch;  // Declare a character variable
-paath name;  // Declare a string variable
-khali nothing;  // Declare a void variable
-```
-
-## Identifiers and Literals
-
-- *Identifier:* A name for a variable or function, starting with a letter or underscore, followed by letters, numbers, or underscores (e.g., variable1, _temp).
-- *Number:* An integer or decimal value (e.g., 42, 3.14).
-- *String:* A sequence of characters enclosed in double quotes (e.g., "Sample text").
-- *Character:* A single character enclosed in single quotes (e.g., 'A').
-
-
-### Code to take input and display the output
-
-*Examples:*
-
-```sh
-purna age;
-paath name;
-akshar gender;
-
-bhana("Enter your name : ");
-suna(name);
-
-bhana("Enter your age : ");
-suna(age);
-
-bhana("Enter f or m for gender : ");
-suna(gender);
-bhana("\n");
-
-bhana("Your name is ");
-bhana(name);
-
-bhana("\nYour age is ");
-bhana(age);
-
-bhana("\n");
-
-yadi(gender == 'f'){
-    bhana("You are Female");
-}anyatha{
-    bhana("You are Male");
-}
-
-```
-*OUTPUT:*
-```sh
-Enter your name : hari
-Enter your age : 19
-Enter f or m for gender : m
-
-Your name is hari
-Your age is 19
-You are Male
-```
-
----
-
-## Building the Project
-
+## Building the Project 
 ### Prerequisites
-
 - CMake 3.10 or higher
 - A C++ compiler (e.g., g++, clang++)
-
 ### Steps
-
-1. **Clone the Repository**:
-
-    ```sh
-    git clone https://github.com/yourusername/lipi.git
-    cd lipi
-    ```
-
-2. **Create a Build Directory**:
-
-    ```sh
-    mkdir build
-    cd build
-    ```
-
-3. **Run CMake**:
-
-    ```sh
-    cmake ..
-    ```
-    or if this doesn't work then
-    ```sh
-    cmake -G "MinGW Makefiles" ..
-    ```
-
-5. **Build the Project**:
-
-    ```sh
-    make
-        or
-    mingw32-make
-    ```
-
+1.  **Clone the Repository**:
+	```sh
+	git clone https://github.com/yourusername/lipi.git
+	cd lipi
+	```
+2.  **Create a Build Directory**:
+	```sh
+	mkdir build
+	cd build
+	```
+3.  **Run CMake**:
+	```sh
+	cmake ..
+	```
+	if you don't have nmake then
+	```sh
+	cmake -G "MinGW Makefiles" ..
+	```
+4.  **Build the Project**:
+	```sh
+	make
+	```
 ## Running the Compiler
-
-To run the compiler on a source file:
-
-while in the build directory
+Once the build process is complete, an executable named Lipi.exe is formed inside the build directory. You can execute it from there, or copy it to desired location and use it as per needs. While in the same directory as the executable in the terminal:
 ```sh
-.\lipi ../programs/main1.lipi
+.\lipi  path/to/your/source_file.lipi
 ```
+## Documentation
+For detailed documentation, please refer to [docs/README.md](docs/readme.md).
 
-General Syntax:
-```sh
-.\lipi path/to/your/source_file.lipi
-```
----
+## Contributions and Discussion
 
-### Team Members Names
----
-1. Kaushal Rijal
-2. Hariom Raj Chauhan
-3. Prasant Roy
-4. Guru Prakash Gupta
----
-##### Copyrights 2024
-
-
+We welcome contributions and feedback from the community. If you encounter any issues or have suggestions for improvements, please open an issue on our GitHub repository or submit a pull request. We appreciate your support and look forward to collaborating with you!
