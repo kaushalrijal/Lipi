@@ -28,8 +28,7 @@
 	- [Modulo Expression](#modulo-expression)
 - [Examples](#examples)
 ##  Preface
-In Lipi, the syntax is intentionally designed to be familiar to speakers
-of Nepali-lingual, making it easier to learn and use for those with a background in the Nepali, Hindi, or other Sanskrit based languages. It provides a straightforward set of constructs for defining variables, creating functions, and managing control flow, all while using Nepali keywords and expressions.
+In Lipi, the syntax is intentionally designed to be familiar to speakers of Nepali language, making it easier to learn and use for those with a background in the Nepali, Hindi, or other Sanskrit based languages. It provides a straightforward set of constructs for defining variables, creating functions, and managing control flow, all while using Nepali keywords and expressions.
 
 This guide assumes you have the following basic background:
 
