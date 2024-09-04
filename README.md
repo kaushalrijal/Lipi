@@ -65,7 +65,7 @@ Once the build process is complete, an executable named Lipi.exe is formed insid
 .\lipi  path/to/your/source_file.lipi
 ```
 ## Documentation
-For detailed documentation, please refer to [docs/README.md](docs/readme.md).
+For detailed documentation, please refer to [docs/README.md](docs/README.md).
 
 ## Contributions and Discussion
 
