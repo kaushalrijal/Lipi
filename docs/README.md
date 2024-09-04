@@ -50,11 +50,13 @@ statement2;
 ## Comments
 Comments are annotations in your code that are ignored by the compiler or interpreter. They are used for documentation, to explain, clarify, or temporarily disable parts of the code without affecting its execution. Comments are essential for documenting your code and making it easier for others (or yourself) to understand its purpose and functionality.
 1. Single Line comments:
+
 	*Syntax:*
 	```
 	:) This is a single line comment
 	```
 2. Multi Line comments:
+
 	*Syntax:*
 	```
 	(: This is a
@@ -96,6 +98,7 @@ khali  nothing; //  Invalid, khali is only for functions
 ```
 ## Variables
 You use variables as symbolic names for values in your application. The names of variables, called identifiers, and must conform to the rules of identifiers. A variable can be declared in Lipi as:
+
 *Syntax:*
 ```
 type identifier;
@@ -110,6 +113,7 @@ purna x = 5; :) Invalid
 ## Statements
 ### Print Statement
 Use `bhana` to print a value or expression to the output.
+
 *Syntax:*
 ```sh
 bhana(expression);
@@ -121,6 +125,7 @@ bhana("Hello, World!"); //  Output:  Hello,  World!
 ```
 ### Input Statement
 Use `suna` to read a value from the user and store it in a variable.
+
 *Syntax:*
 ```sh
 suna(variable_name);
@@ -133,6 +138,7 @@ bhana(name); //  Prints  the  value  of  the  variable  `name`
 ```
 ### Assignment Statement
 A value can be assigned to an existing variable. Make sure you don't assign a value at the time of declaration!
+
 *Syntax:*
 ```sh
 variable_name  =  expression;
@@ -144,6 +150,7 @@ age  =  31; //  Assigns  the  value  31  to  the  variable  `age`
 ```
 ### If Statement
 Use `yadi` to execute a block of code conditionally. You can include an `anyatha` block for the else condition.
+
 *Syntax:*
 ```sh
 yadi(expression) {
@@ -162,6 +169,7 @@ bhana("Minor");
 ```
 ### While Statement
 Use `jabasamma` to repeat a block of code while a condition is true.
+
 *Syntax:*
 ```sh
 jabasamma(expression) {
@@ -176,6 +184,7 @@ age  =  age  +  1;
 ```
 ### For Statement
 Use `lagi` to loop through a range of values, specifying initialization, condition, and update.
+
 *Syntax:*
 ```sh
 lagi(initialization; condition; update;) {
@@ -191,6 +200,7 @@ bhana(i);
 ```
 ### Function Definition
 Use `kaam` to define a new function.
+
 *Syntax:*
 ```sh
 kaam  return_type  function_name(parameter_list) {
@@ -205,6 +215,7 @@ firta  a  +  b;
 ```
 #### Return Statement
 Use `firta` to return a value from a function.
+
 *Syntax:*
 ```sh
 firta expression;
@@ -216,6 +227,7 @@ firta  result;
 ## Expressions
 ### Basic Expressions
 You can perform operations with numbers, strings, and other values.
+
 *Syntax:*
 ```sh
 term  { (`+`  |  `-`  |  `*`  |  `/`) term }
@@ -226,6 +238,7 @@ term  { (`+`  |  `-`  |  `*`  |  `/`) term }
 ```
 ### Logical Expressions
 Combine logical terms using `&&`, `||`, or `!` to form complex conditions.
+
 *Syntax:*
 ```sh
 logical_term  { ("&&"  |  "||"  |  "!") logical_term }
@@ -236,6 +249,7 @@ age  >  18 && age  <  65
 ```
 ### Comparison
 Compare values using operators like `==`, `!=`, `<`, `<=`, `>`, and `>=`.
+
 *Syntax:*
 ```sh
 expression (== |  !=  |  <  |  <=  |  >  |  >=) expression
@@ -246,6 +260,7 @@ age  ==  30
 ```
 ### Modulo Expression
 Calculate the remainder of a division using `%`.
+
 *Syntax:*
 ```sh
 expression  %  expression
