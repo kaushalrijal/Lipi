@@ -39,7 +39,7 @@ This project was developed for the ACES C++ Project Demonstration.
 ### Steps
 1.  **Clone the Repository**:
 	```sh
-	git clone https://github.com/yourusername/lipi.git
+	git clone https://github.com/kaushalrijal/lipi.git
 	cd lipi
 	```
 2.  **Create a Build Directory**:
