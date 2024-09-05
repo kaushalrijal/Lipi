@@ -51,7 +51,7 @@ This project was developed for the ACES C++ Project Demonstration.
 	```sh
 	cmake ..
 	```
-	if you don't have nmake then
+	if you don't have `nmake` then
 	```sh
 	cmake -G "MinGW Makefiles" ..
 	```
