@@ -11,7 +11,7 @@ void SymbolTable::declareVariable(const std::string& name, VarType type){
 
 VarType SymbolTable::lookupVariable(const std::string& name){
     if(table.find(name)==table.end()){
-        throw std::runtime_error("SemanticError: Variable " + name + " DECLARE bhaisakeko chha!");
+        throw std::runtime_error("SemanticError: Variable " + name + " DECLARE bhaeko chhaina!");
     }
     return table[name];
 }
